@@ -1,21 +1,32 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Default storage (localStorage in web)
-import SignInSlice from "./Slice/SignInSlice"; // Import SignInSlice here
+import storage from "redux-persist/lib/storage";
+
+import SignInSlice from "./Slice/SignInSlice"; // Only SignIn will be persisted
 
 // Redux Persist Configuration
 const persistConfig = {
-  key: "root", // Key for the persist storage
-  storage, // This uses localStorage by default
+  key: "signin",         // Optional: can be "root" as well
+  storage,
+  version: 1,
 };
 
-// Persisted reducer configuration
-const persistedReducer = persistReducer(persistConfig, SignInSlice); // Use the slice reducer
-
-// Configure the Redux store
-export const store = configureStore({
-  reducer: persistedReducer, // Use the persisted reducer
+// Combine Reducers (in case you want to add more non-persisted reducers later)
+const rootReducer = combineReducers({
+  user: SignInSlice,     // Only this will be persisted
 });
 
-// Create the persistor to handle persisted state
+// Apply persist reducer to the slice you want to persist
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Create and export store
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false, // Avoid warnings from redux-persist
+    }),
+});
+
+// Persistor instance
 export const persistor = persistStore(store);

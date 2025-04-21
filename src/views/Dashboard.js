@@ -11,15 +11,20 @@ import "../assets/css/Dashboard.css";
 
 function Dashboard() {
   const dailyShiftData = {
-    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    labels: ["AM TM", "GURKHA", "HBA", "ICANRM", "MC"],
     datasets: [
       {
-        label: "Bangalore",
+        label: "Present",
         data: [12, 19, 14, 10, 15],
         backgroundColor: "#36A2EB",
       },
       {
-        label: "Hyderabad",
+        label: "Absent",
+        data: [8, 11, 9, 7, 13],
+        backgroundColor: "#FF6384",
+      },
+      {
+        label: "Late",
         data: [8, 11, 9, 7, 13],
         backgroundColor: "#FF6384",
       },
@@ -47,46 +52,94 @@ function Dashboard() {
   };
   const barOptions = {
     responsive: true,
-    maintainAspectRatio: false, // This is key for custom height
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top',
+        labels: {
+          boxWidth: 12,
+        },
+      },
+      title: {
+        display: true,
+        text: 'Daily Location Shifts',
+        font: {
+          size: 18,
+        },
+      },
+    },
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: 'No. of Employees',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Daily Location Shift',
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
+      },
+    },
   };
-  
+
+
 
   return (
     <div className="dashboard-container bg-blue-50 min-h-screen p-4">
-      <Container fluid>
-      <Row>
-  <Col md={12}>
-    <Card className="mb-4 shadow-sm bg-white">
-      <Card.Body style={{ height: "350px" }}>
-        <Card.Title className="fw-bold text-primary mb-3">Daily Shifts</Card.Title>
-        <div style={{ height: "250px", width: "100%" }}>
-          <Bar data={dailyShiftData} options={barOptions} />
-        </div>
-      </Card.Body>
-    </Card>
-  </Col>
-</Row>
-
-
+      <Container >
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <Card className="mb-4 shadow-sm bg-white">
-              <Card.Body>
-                <Card.Title className="fw-bold text-success mb-3">Employee Attendance</Card.Title>
-                <Pie data={attendanceData} />
-              </Card.Body>
-            </Card>
-          </Col>
-
-          <Col md={6}>
-            <Card className="mb-4 shadow-sm bg-white">
-              <Card.Body>
-                <Card.Title className="fw-bold text-warning mb-3">Early Out Employees</Card.Title>
-                <Pie data={earlyOutData} />
+              <Card.Body style={{ height: "350px" }}>
+                <Card.Title className="text-slate-400 p-[10px] text-primary mb-3">DAILY SHIFTS/SCHEDULES EMPLOYEE ATTENDENCE STATUS</Card.Title>
+                <div style={{ height: "250px", width: "100%" }}>
+                  <Bar data={dailyShiftData} options={barOptions} />
+                </div>
               </Card.Body>
             </Card>
           </Col>
         </Row>
+
+
+        <Row className="gx-4">
+          <Col md={6}>
+            <Card className="mb-4 shadow-sm bg-white">
+              <Card.Body>
+                <Card.Title className="fw-bold text-success mb-3">Employee Attendance</Card.Title>
+                <div style={{ height: "250px" }}>
+                  <Pie data={attendanceData} />
+                </div>
+              </Card.Body>
+            </Card>
+            <Col md={6}>
+            <Card className="mb-4 shadow-sm bg-white">
+              <Card.Body>
+                <Card.Title className="fw-bold text-warning mb-3">Early Out Employees</Card.Title>
+                <div style={{ height: "250px" }}>
+                  <Pie data={earlyOutData} />
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+          </Col>
+
+    
+        </Row>
+
       </Container>
     </div>
   );

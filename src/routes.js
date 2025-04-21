@@ -1,5 +1,6 @@
 
 import Dashboard from "views/Dashboard.js";
+import Department from "views/Department/Department";
 // import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
 // import Typography from "views/Typography.js";
@@ -24,6 +25,14 @@ const dashboardRoutes = [
     component: Dashboard,
     layout: "/admin",
   },
+  {
+    path: "/department",
+    name: "Department",
+    icon: "nc-icon nc-chart-pie-35",
+    component: Department,
+    layout: "/admin",
+  },
+
   // {
   //   path: "/user",
   //   name: "Attendance Register",
