@@ -1,6 +1,9 @@
-import React from "react";
-import { Navbar, Nav, Container, Image } from "react-bootstrap";
-import reactlogo from "../../assets/img/reactlogo.png";
+
+import React, { Component } from "react";
+import { useLocation } from "react-router-dom";
+import { Navbar, Container, Nav, Dropdown, Button } from "react-bootstrap";
+
+import routes from "routes.js";
 
 function Header() {
   return (
