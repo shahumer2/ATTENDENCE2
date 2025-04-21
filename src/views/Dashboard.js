@@ -32,7 +32,7 @@ function Dashboard() {
           <Col md={8}>
             <Card className="h-100">
               <Card.Body>
-                <Bar data={lineChartData} options={lineChartOptions} />
+                {/* <Bar  options={lineChartOptions} /> */}
               </Card.Body>
             </Card>
           </Col>
@@ -40,7 +40,7 @@ function Dashboard() {
           <Col md={4}>
             <Card className="h-100">
               <Card.Body>
-                <Pie data={pieChartData} />
+                {/* <Pie data={pieChartData} /> */}
               </Card.Body>
             </Card>
           </Col>
