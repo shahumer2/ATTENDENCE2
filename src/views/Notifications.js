@@ -76,13 +76,7 @@ function Notifications() {
                 Nazare Emanuel-Ioan
               </a>
               . Please checkout the{" "}
-              <a
-                href="https://github.com/creativetimofficial/react-notification-alert"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                full documentation.
-              </a>
+          
             </p>
           </Card.Header>
           <Card.Body>
