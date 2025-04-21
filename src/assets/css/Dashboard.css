@@ -6,10 +6,11 @@ body, html {
   }
   
   .dashboard-container {
-    width: 100%;
-    padding: 0;
-    margin: 0;
+    background-color: #ebf8ff; /* light blue bg if not using Tailwind */
+    padding: 2rem;
+    min-height: 100vh;
   }
+  
   
   /* Full-width container */
   .container-fluid {

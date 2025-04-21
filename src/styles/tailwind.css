@@ -3,3 +3,7 @@
 @tailwind utilities;
 
 /* Add your custom styles below */
+
+body {
+    background-color: #ebf8ff; /* Tailwind's blue-50 */
+  }
