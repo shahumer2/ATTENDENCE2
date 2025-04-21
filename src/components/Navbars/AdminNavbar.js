@@ -4,18 +4,18 @@ import reactlogo from "../../assets/img/reactlogo.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
-import { AiOutlinePoweroff } from "react-icons/ai";
+import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
 import routes from "routes.js";
 
 function Header() {
   return (
-    <nav className="bg-[#0e2288] p-4">
-      <div className="container mx-auto flex flex-col items-start">
+    <nav className="bg-[#0e2288] p-3 h-[90px]">
+      {/* Removed container mx-auto */}
+      <div className="flex flex-col items-start w-full">
         {/* Top Row: Logo + Title + Icons */}
-        <div className="flex items-center mb-3 w-full">
+        <div className="flex items-center mb-2 w-full">
           <a href="#" onClick={(e) => e.preventDefault()}>
-            <img src={reactlogo} alt="Logo" className="w-[70px] h-auto" />
+            <img src={reactlogo} alt="Logo" className="w-[65px] h-auto" />
           </a>
           <span className="ml-3 text-[#FFD700] text-xl font-semibold">
             PAYROLL
@@ -27,18 +27,18 @@ function Header() {
             <BsBuildings className="text-white text-2xl ml-4 cursor-pointer" />
             <IoNotificationsOutline className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlineQuestionCircle className="text-white text-2xl ml-4 cursor-pointer" />
-            <AiOutlinePoweroff  className="text-white text-2xl ml-4 cursor-pointer" />
+            <AiOutlinePoweroff className="text-white text-2xl ml-4 cursor-pointer" />
           </div>
         </div>
 
         {/* Bottom Row: Navigation Links */}
-        <div className="flex space-x-8">
+        <div className="flex space-x-6">
           {["Home", "Department", "User", "Company"].map((item, idx) => (
             <a
               key={idx}
               href="#"
               onClick={(e) => e.preventDefault()}
-              className="text-white text-lg font-medium hover:text-[#FFD700] transition"
+              className="text-white text-sm font-medium hover:text-[#FFD700] transition"
             >
               {item}
             </a>
