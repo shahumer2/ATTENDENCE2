@@ -1,4 +1,5 @@
 
+import Company from "views/Company/Company";
 import Dashboard from "views/Dashboard.js";
 import Department from "views/Department/Department";
 // import UserProfile from "views/UserProfile.js";
@@ -30,6 +31,13 @@ const dashboardRoutes = [
     name: "Department",
     icon: "nc-icon nc-chart-pie-35",
     component: Department,
+    layout: "/admin",
+  },
+  {
+    path: "/company",
+    name: "Company",
+    icon: "nc-icon nc-chart-pie-35",
+    component: Company,
     layout: "/admin",
   },
 
