@@ -1,22 +1,34 @@
-
-import React, { Component } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
-import { Navbar, Container, Nav, Dropdown, Button, Image } from "react-bootstrap";
-import reactlogo from "../../assets/img/reactlogo.png"
+import reactlogo from "../../assets/img/reactlogo.png";
+import { PiDotsNineBold } from "react-icons/pi";
+import { BsBuildings } from "react-icons/bs";
+import { IoNotificationsOutline } from "react-icons/io5";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+import { AiOutlinePoweroff } from "react-icons/ai";
 import routes from "routes.js";
 
 function Header() {
   return (
     <nav className="bg-[#0e2288] p-4">
       <div className="container mx-auto flex flex-col items-start">
-        {/* Top Row: Logo + Title */}
-        <div className="flex items-center mb-3">
+        {/* Top Row: Logo + Title + Icons */}
+        <div className="flex items-center mb-3 w-full">
           <a href="#" onClick={(e) => e.preventDefault()}>
             <img src={reactlogo} alt="Logo" className="w-[70px] h-auto" />
           </a>
           <span className="ml-3 text-[#FFD700] text-xl font-semibold">
             PAYROLL
           </span>
+
+          {/* Icons aligned to the right */}
+          <div className="ml-auto flex items-center">
+            <PiDotsNineBold className="text-white text-2xl ml-4 cursor-pointer" />
+            <BsBuildings className="text-white text-2xl ml-4 cursor-pointer" />
+            <IoNotificationsOutline className="text-white text-2xl ml-4 cursor-pointer" />
+            <AiOutlineQuestionCircle className="text-white text-2xl ml-4 cursor-pointer" />
+            <AiOutlinePoweroff  className="text-white text-2xl ml-4 cursor-pointer" />
+          </div>
         </div>
 
         {/* Bottom Row: Navigation Links */}
