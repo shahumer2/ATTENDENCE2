@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import reactlogo from "../../assets/img/reactlogo.png";
+import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -12,9 +12,13 @@ function Header() {
       <div className="flex flex-col items-start w-full">
         {/* Top Row: Logo + Title + Icons */}
         <div className="flex items-center mb-2 w-full">
+          {/* <Link to="/">
+            <img src={pay} alt="Logo" className="w-[39px] h-auto" />
+          </Link> */}
           <Link to="/">
-            <img src={reactlogo} alt="Logo" className="w-[65px] h-auto" />
-          </Link>
+  <img src={pay} alt="Logo" className="w-[39px] h-[39px] rounded-full object-cover" />
+</Link>
+
           <span className="ml-3 text-[#FFD700] text-xl font-semibold">
             PAYROLL
           </span>
