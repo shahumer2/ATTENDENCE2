@@ -32,13 +32,23 @@ function Header() {
                   color: "#FFD700",
                 }}
               >
-                SCHEDULE MANAGEMENT SOFTWARE
+                PAYROLL
               </span>
             </div>
           </div>
 
           {/* Bottom Row: Nav Links */}
           <Nav className="d-flex align-items-center">
+          <Nav.Item>
+              <Nav.Link
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="text-white"
+                style={{ fontSize: "1.2rem", fontWeight: "500" }}
+              >
+                Home
+              </Nav.Link>
+            </Nav.Item>
             <Nav.Item>
               <Nav.Link
                 href="#"
@@ -46,7 +56,7 @@ function Header() {
                 className="text-white"
                 style={{ fontSize: "1.2rem", fontWeight: "500" }}
               >
-                Dashboard
+                Department
               </Nav.Link>
             </Nav.Item>
 
