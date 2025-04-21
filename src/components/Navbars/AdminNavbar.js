@@ -1,22 +1,20 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import reactlogo from "../../assets/img/reactlogo.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
-import routes from "routes.js";
 
 function Header() {
   return (
     <nav className="bg-[#0e2288] p-3 h-[90px]">
-      {/* Removed container mx-auto */}
       <div className="flex flex-col items-start w-full">
         {/* Top Row: Logo + Title + Icons */}
         <div className="flex items-center mb-2 w-full">
-          <a href="#" onClick={(e) => e.preventDefault()}>
+          <Link to="/">
             <img src={reactlogo} alt="Logo" className="w-[65px] h-auto" />
-          </a>
+          </Link>
           <span className="ml-3 text-[#FFD700] text-xl font-semibold">
             PAYROLL
           </span>
@@ -33,16 +31,30 @@ function Header() {
 
         {/* Bottom Row: Navigation Links */}
         <div className="flex space-x-6">
-          {["Home", "Department", "User", "Company"].map((item, idx) => (
-            <a
-              key={idx}
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className="text-white text-sm font-medium hover:text-[#FFD700] transition"
-            >
-              {item}
-            </a>
-          ))}
+          <Link
+            to="/"
+            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+          >
+            Home
+          </Link>
+          <Link
+            to="/admin/department"
+            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+          >
+            Department
+          </Link>
+          <Link
+            to="/admin/user"
+            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+          >
+            User
+          </Link>
+          <Link
+            to="/admin/company"
+            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+          >
+            Company
+          </Link>
         </div>
       </div>
     </nav>
