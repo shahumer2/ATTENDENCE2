@@ -1,3 +1,4 @@
+import { USER_ADD } from "Constants/utils";
 import { GET_COMPANY_LIST } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
 import { useState } from "react";
@@ -21,7 +22,16 @@ const useUser = () => {
 
         console.log(values,"jj");
         try {
-            const response = await fetch('YOUR_FINAL_SUBMIT_ENDPOINT', {
+            const formData = new FormData();
+    
+            // Append the full employee object as a JSON string
+            formData.append("user", JSON.stringify(values));
+        
+            // Append the profile picture (if present)
+            if (profilePic) {
+                formData.append("profilePic", profilePic);
+            }
+            const response = await fetch(USER_ADD, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

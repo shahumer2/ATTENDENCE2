@@ -451,7 +451,7 @@ const AddEmployee = () => {
                               selected={child.dob}
                               onChange={(date) => handleChildChange(index, 'dob', date.toISOString().split('T')[0] || "")}
                               className="w-full p-1 border rounded"
-                              placeholderText="Select date"
+                              placeholderText="Select date" 
                             />
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">

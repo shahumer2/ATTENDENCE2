@@ -17,9 +17,9 @@ const User = () => {
   const [formData, setFormData] = useState({
     // Basic Info
     employeeId: '',
-    employeeName: '',
+    name: '',
     email: '',
-    mobileNumber: '',
+    phoneNumber: '',
     
     // App Access
     appAccess: '',
@@ -126,9 +126,9 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
   const [profilePic, setprofilePic] = useState(null)
   const validationSchema = Yup.object().shape({
     employeeId: Yup.string().required('Employee ID is required'),
-    employeeName: Yup.string().required('Employee name is required'),
+    name: Yup.string().required('Employee name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
-    mobileNumber: Yup.string().required('Mobile number is required'),
+    phoneNumber: Yup.string().required('Mobile number is required'),
   });
 
   return (
@@ -150,8 +150,8 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Employee Name*</label>
-                  <Field name="employeeName" className="w-full p-2 border rounded" />
-                  <ErrorMessage name="employeeName" component="div" className="text-red-500 text-xs" />
+                  <Field name="name" className="w-full p-2 border rounded" />
+                  <ErrorMessage name="name" component="div" className="text-red-500 text-xs" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Email*</label>
@@ -160,8 +160,8 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Mobile Number*</label>
-                  <Field name="mobileNumber" className="w-full p-2 border rounded" />
-                  <ErrorMessage name="mobileNumber" component="div" className="text-red-500 text-xs" />
+                  <Field name="phoneNumber" className="w-full p-2 border rounded" />
+                  <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-xs" />
                 </div>
               </div>
             </div>

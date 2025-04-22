@@ -19,7 +19,7 @@ export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 
 
 //user
-
+export const USER_ADD = `${BASE_URL}/api/user/save-user`;
 export const USER_CREATE = `${BASE_URL}/api/companies`;
 
 
