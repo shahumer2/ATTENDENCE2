@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import AdminLayout from './layouts/Admin';  // Your Admin Layout
 import Login from 'components/auth/Login';  // Your Login Component
 import { store, persistor } from './redux/Store.js';  // Import your store and persistor
-import Department from 'views/Department/Department';
+
 
 // Create root first
 const root = ReactDOM.createRoot(document.getElementById('root'));

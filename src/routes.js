@@ -2,8 +2,10 @@
 import Company from "views/Company/Company";
 import Dashboard from "views/Dashboard.js";
 import Department from "views/Department/Department";
+import User from "views/Users/User";
 // import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
+import AddEmployee from "views/Employee/AddEmployee";
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
 // import Maps from "views/Maps.js";
@@ -19,6 +21,20 @@ const dashboardRoutes = [
   //   component: Upgrade,
   //   layout: "/admin",
   // },
+  {
+    path: "/user",
+    name: "User", 
+    icon: "nc-icon nc-chart-pie-35",
+    component: User,
+    layout: "/admin",
+  },
+  {
+    path: "/addEmployee",
+    name: "Add Employee", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddEmployee,
+    layout: "/admin",
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -40,6 +56,7 @@ const dashboardRoutes = [
     component: Company,
     layout: "/admin",
   },
+
 
   // {
   //   path: "/user",
