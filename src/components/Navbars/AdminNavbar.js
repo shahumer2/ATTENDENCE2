@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings } from "react-icons/bs";
@@ -12,14 +12,14 @@ function Header() {
       <div className="flex flex-col items-start w-full">
         {/* Top Row: Logo + Title + Icons */}
         <div className="flex items-center mb-2 w-full">
-          {/* <Link to="/">
+          {/* <NavLink to="/">
             <img src={pay} alt="Logo" className="w-[39px] h-auto" />
-          </Link> */}
-          <Link to="/">
-  <img src={pay} alt="Logo" className="w-[39px] h-[39px] rounded-full object-cover" />
-</Link>
+          </NavLink> */}
+          <NavLink to="/">
+               <img src={pay} alt="Logo" className="w-[39px] h-[39px] rounded-full" />
+           </NavLink>
 
-          <span className="ml-3 text-[#FFD700] text-xl font-semibold">
+          <span className="ml-3 text-[#FFD700] text-2xl font-semibold">
             PAYROLL
           </span>
 
@@ -35,30 +35,62 @@ function Header() {
 
         {/* Bottom Row: Navigation Links */}
         <div className="flex space-x-6">
-          <Link
+          {/* <NavLink
             to="/"
-            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#FFD700] text-sm font-bold transition"
+                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+            }
           >
             Home
-          </Link>
-          <Link
+          </NavLink> */}
+
+<NavLink
+  to="/admin/dashboard"
+  end
+  className={({ isActive }) =>
+    isActive
+      ? "text-[#FFD700] text-sm font-bold transition"
+      : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+  }
+>
+  Home
+</NavLink>
+
+
+          <NavLink
             to="/admin/department"
-            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#FFD700] text-sm font-bold transition"
+                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+            }
           >
             Department
-          </Link>
-          <Link
+          </NavLink>
+
+          <NavLink
             to="/admin/user"
-            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#FFD700] text-sm font-bold transition"
+                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+            }
           >
             User
-          </Link>
-          <Link
+          </NavLink>
+
+          <NavLink
             to="/admin/company"
-            className="text-slate-300 text-sm font-medium hover:text-[#FFD700] transition"
+            className={({ isActive }) =>
+              isActive
+                ? "text-[#FFD700] text-sm font-bold transition"
+                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+            }
           >
             Company
-          </Link>
+          </NavLink>
         </div>
       </div>
     </nav>
