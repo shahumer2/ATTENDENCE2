@@ -25,9 +25,11 @@ const Company = () => {
   const [totalItems, setTotalItems] = useState(0);
 
   // Fetch companies from API with pagination
-  const fetchCompanies = useCallback(async (page = 0, search = '') => {
+  const fetchCompanies = useCallback(async (page=0, search = '') => {
+   
     try {
-      const url = `${COMPANY_LIST}?page=${page}`;
+      const url = `${COMPANY_LIST}?page=${page-1}`;
+      console.log("url===",url);
       const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${token}`,
