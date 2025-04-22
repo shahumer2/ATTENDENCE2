@@ -234,9 +234,9 @@ const Company = () => {
 
       {/* Add Company Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl">
-            <div className="p-6">
+        <div className="fixed inset-0  bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl ">
+            <div className="p-6 ">
               <h3 className="text-lg font-medium mb-4">Add Company</h3>
               <Formik
                 initialValues={initialValues}
@@ -244,144 +244,116 @@ const Company = () => {
                 onSubmit={handleSubmit}
               >
                 {({ isSubmitting, setFieldValue }) => (
-                  <Form>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {/* Company Code */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Company Code *</label>
-                        <Field
-                          name="companyCode"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter company code"
-                        />
-                        <ErrorMessage name="companyCode" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* Company Name */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Company Name *</label>
-                        <Field
-                          name="companyName"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter company name"
-                        />
-                        <ErrorMessage name="companyName" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* Location */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Location *</label>
-                        <Field
-                          name="location"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter location"
-                        />
-                        <ErrorMessage name="location" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* Street */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Street *</label>
-                        <Field
-                          name="street"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter street"
-                        />
-                        <ErrorMessage name="street" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* City */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">City *</label>
-                        <Field
-                          name="city"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter city"
-                        />
-                        <ErrorMessage name="city" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* Postal Code */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Postal Code *</label>
-                        <Field
-                          name="postalCode"
-                          type="text"
-                          className="w-full px-3 py-2 border rounded"
-                          placeholder="Enter postal code"
-                        />
-                        <ErrorMessage name="postalCode" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {/* Mobile App Logo */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Mobile App Logo *</label>
-                        <input
-                          name="mobileAppLogo"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            handleFileChange(e, setMobileAppLogoFile, setPreviewMobileAppLogo);
-                            setFieldValue('mobileAppLogo', e.currentTarget.files[0]);
-                          }}
-                          className="w-full px-3 py-2 border rounded"
-                        />
-                        <ErrorMessage name="mobileAppLogo" component="div" className="text-red-500 text-xs mt-1" />
-                        {previewMobileAppLogo && (
-                          <div className="mt-2">
-                            <img src={previewMobileAppLogo} alt="Mobile App Logo Preview" className="h-20 w-20 object-contain" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Pay Slip Logo */}
-                      <div className="mb-4">
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Pay Slip Logo *</label>
-                        <input
-                          name="paySlipLogo"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            handleFileChange(e, setPaySlipLogoFile, setPreviewPaySlipLogo);
-                            setFieldValue('paySlipLogo', e.currentTarget.files[0]);
-                          }}
-                          className="w-full px-3 py-2 border rounded"
-                        />
-                        <ErrorMessage name="paySlipLogo" component="div" className="text-red-500 text-xs mt-1" />
-                        {previewPaySlipLogo && (
-                          <div className="mt-2">
-                            <img src={previewPaySlipLogo} alt="Pay Slip Logo Preview" className="h-20 w-20 object-contain" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end space-x-3 mt-4">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowModal(false);
-                          setPreviewMobileAppLogo('');
-                          setPreviewPaySlipLogo('');
-                        }}
-                        className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-                      >
-                        {isSubmitting ? 'Saving...' : 'Save'}
-                      </button>
-                    </div>
-                  </Form>
+                 <Form>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                   {/* Company Code */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Company Code *</label>
+                     <Field name="companyCode" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter company code" />
+                     <ErrorMessage name="companyCode" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* Company Name */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Company Name *</label>
+                     <Field name="companyName" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter company name" />
+                     <ErrorMessage name="companyName" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* Location */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Location *</label>
+                     <Field name="location" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter location" />
+                     <ErrorMessage name="location" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* Street */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Street *</label>
+                     <Field name="street" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter street" />
+                     <ErrorMessage name="street" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* City */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">City *</label>
+                     <Field name="city" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter city" />
+                     <ErrorMessage name="city" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* Postal Code */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Postal Code *</label>
+                     <Field name="postalCode" type="text" className="w-full px-3 py-2 border rounded" placeholder="Enter postal code" />
+                     <ErrorMessage name="postalCode" component="div" className="text-red-500 text-xs mt-1" />
+                   </div>
+               
+                   {/* Mobile App Logo */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Mobile App Logo *</label>
+                     <input
+                       name="mobileAppLogo"
+                       type="file"
+                       accept="image/*"
+                       onChange={(e) => {
+                         handleFileChange(e, setMobileAppLogoFile, setPreviewMobileAppLogo);
+                         setFieldValue('mobileAppLogo', e.currentTarget.files[0]);
+                       }}
+                       className="w-full px-3 py-2 border rounded"
+                     />
+                     <ErrorMessage name="mobileAppLogo" component="div" className="text-red-500 text-xs mt-1" />
+                     {previewMobileAppLogo && (
+                       <div className="mt-2">
+                         <img src={previewMobileAppLogo} alt="Mobile App Logo Preview" className="h-20 w-20 object-contain" />
+                       </div>
+                     )}
+                   </div>
+               
+                   {/* Pay Slip Logo */}
+                   <div className="mb-4">
+                     <label className="block text-gray-700 text-sm font-bold mb-2">Pay Slip Logo *</label>
+                     <input
+                       name="paySlipLogo"
+                       type="file"
+                       accept="image/*"
+                       onChange={(e) => {
+                         handleFileChange(e, setPaySlipLogoFile, setPreviewPaySlipLogo);
+                         setFieldValue('paySlipLogo', e.currentTarget.files[0]);
+                       }}
+                       className="w-full px-3 py-2 border rounded"
+                     />
+                     <ErrorMessage name="paySlipLogo" component="div" className="text-red-500 text-xs mt-1" />
+                     {previewPaySlipLogo && (
+                       <div className="mt-2">
+                         <img src={previewPaySlipLogo} alt="Pay Slip Logo Preview" className="h-20 w-20 object-contain" />
+                       </div>
+                     )}
+                   </div>
+                 </div>
+               
+                 {/* Buttons */}
+                 <div className="flex justify-end space-x-3 mt-4">
+                   <button
+                     type="button"
+                     onClick={() => {
+                       setShowModal(false);
+                       setPreviewMobileAppLogo('');
+                       setPreviewPaySlipLogo('');
+                     }}
+                     className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+                   >
+                     Cancel
+                   </button>
+                   <button
+                     type="submit"
+                     disabled={isSubmitting}
+                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
+                   >
+                     {isSubmitting ? 'Saving...' : 'Save'}
+                   </button>
+                 </div>
+               </Form>
+               
                 )}
               </Formik>
             </div>
