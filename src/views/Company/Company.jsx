@@ -37,6 +37,7 @@ const Company = () => {
       if (!response.ok) throw new Error('Failed to fetch companies');
 
       const data = await response.json();
+      console.log(data,"jamshedd");
       setCompanies(data?.content || []);
       setTotalItems(data?.totalElements || 0);
     } catch (error) {

@@ -13,7 +13,8 @@ export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
 
 //compny
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;
-export const COMPANY_LIST = `${BASE_URL}/api/companies/all-companies`;
+
+export const COMPANY_LIST = `${BASE_URL}/api/companies/fetchAll-companies`;
 export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 
 

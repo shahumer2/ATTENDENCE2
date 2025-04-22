@@ -19,36 +19,55 @@ const useUser = () => {
 
     ];
     const handleFinalSubmit = async (values) => {
-
-        console.log(values,"jj");
         try {
-            const formData = new FormData();
-    
-            // Append the full employee object as a JSON string
-            formData.append("user", JSON.stringify(values));
-        
-            // Append the profile picture (if present)
-            if (profilePic) {
-                formData.append("profilePic", profilePic);
-            }
-            const response = await fetch(USER_ADD, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(formData),
-            });
-
-            if (response.ok) {
-                toast.success('User created successfully');
-            } else {
-                throw new Error('Failed to create user');
-            }
+          const formData = new FormData();
+      
+          // Extract only IDs from selectedCompanies and selectedDepartments
+          const selectedCompanyIds = values.selectedCompanies?.map(c => c.id) || [];
+          const selectedDepartmentIds = values.selectedDepartments?.map(d => d.id) || [];
+      
+          // Construct final user object to send
+          const {
+            profilePicFile,
+            profileImage,
+            selectedCompanies,
+            selectedDepartments,
+            ...rest
+          } = values;
+          
+          // Construct final user object to send
+          const userPayload = {
+            ...rest,
+            companyIds: selectedCompanyIds,
+            departmentIds: selectedDepartmentIds
+          };
+          
+          formData.append("user", JSON.stringify(userPayload));
+      
+          // Attach file (make sure you're keeping it in state like profilePic in BasicInfoSection)
+          if (values.profilePicFile) {
+            formData.append("image", values.profilePicFile);
+          }
+      
+          const response = await fetch(USER_ADD, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            body: formData,
+          });
+      
+          if (response.ok) {
+            toast.success('User created successfully');
+          } else {
+            throw new Error('Failed to create user');
+          }
         } catch (error) {
-            toast.error(error.message);
+          console.error(error);
+          toast.error(error.message || 'Something went wrong');
         }
-    };
+      };
+      
 
 
     const getDepartment = async () => {
