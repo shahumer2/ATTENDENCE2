@@ -29,6 +29,7 @@ const Department = () => {
         if (!response.ok) throw new Error('Failed to fetch departments');
 
         const data = await response.json();
+        console.log(data,"hey");
         setDepartments(data?.content);
       } catch (error) {
         toast.error('Failed to fetch departments');
@@ -37,7 +38,7 @@ const Department = () => {
     };
 
     fetchDepartments();
-  }, [token]);
+  }, []);
 
   // Debounce search input
   const debounceSearch = useCallback(

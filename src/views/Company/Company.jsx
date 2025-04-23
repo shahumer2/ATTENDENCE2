@@ -28,6 +28,7 @@ const Company = () => {
   const fetchCompanies = useCallback(async (page=0, search = '') => {
    
     try {
+      
       const url = `${COMPANY_LIST}?page=${page-1}`;
       console.log("url===",url);
       const response = await fetch(url, {

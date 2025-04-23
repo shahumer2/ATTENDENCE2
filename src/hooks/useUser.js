@@ -109,6 +109,8 @@ const useUser = () => {
         }
     };
 
+    
+
     return { handleFinalSubmit, sections,getDepartment,getCompany,department,company }
 }
 

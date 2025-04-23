@@ -22,10 +22,22 @@ export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 //user
 export const USER_ADD = `${BASE_URL}/api/user/save-user`;
 export const USER_CREATE = `${BASE_URL}/api/companies`;
+export const GET_ACTIVEUSERS = `${BASE_URL}/api/user/active`;
+export const GET_INACTIVEUSERS = `${BASE_URL}/api/user/inactive`;
+
+
+
+
 
 
 //Employee
 export const ADD_EMPLOYEE_DATA = `${BASE_URL}/employee/addEmployee`;
+export const GET_ALL_EMPLOYEE_DATA = `${BASE_URL}/employee/getAllEmployee`;
+export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
+export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
+
+
+ 
 
 
 

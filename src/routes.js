@@ -6,6 +6,8 @@ import User from "views/Users/User";
 // import UserProfile from "views/UserProfile.js";
 import TableList from "views/TableList.js";
 import AddEmployee from "views/Employee/AddEmployee";
+import ViewUser from "views/Users/ViewUser";
+import ViewEmployee from "views/Employee/ViewEmployee";
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
 // import Maps from "views/Maps.js";
@@ -22,17 +24,31 @@ const dashboardRoutes = [
   //   layout: "/admin",
   // },
   {
-    path: "/user",
+    path: "/user/add",
     name: "User", 
     icon: "nc-icon nc-chart-pie-35",
     component: User,
     layout: "/admin",
   },
   {
-    path: "/addEmployee",
+    path: "/user/view",
+    name: "View User", 
+    icon: "nc-icon nc-chart-pie-35",
+    component: ViewUser,
+    layout: "/admin",
+  },
+  {
+    path: "/employee/add",
     name: "Add Employee", 
     icon: "nc-icon nc-chart-pie-35",
     component :AddEmployee,
+    layout: "/admin",
+  },
+  {
+    path: "/employee/view",
+    name: "View Employee", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :ViewEmployee,
     layout: "/admin",
   },
   {
