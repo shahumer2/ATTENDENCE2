@@ -293,7 +293,7 @@ const CompanyAccessSection = ({ initialValues, onSubmit, onBack }) => {
   const { getCompany, company } = useUser()
   useEffect(() => {
     getCompany(); // Fetch 
-  }, []);
+  }, [company]);
 
   console.log("company", company);
 
@@ -315,29 +315,38 @@ const CompanyAccessSection = ({ initialValues, onSubmit, onBack }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {company?.map(company => (
-                  <tr key={company.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <input
-                        type="checkbox"
-                        checked={values.selectedCompanies.some(c => c.id === company.id)}
-                        onChange={() => {
-                          const newCompanies = values.selectedCompanies.some(c => c.id === company.id)
-                            ? values.selectedCompanies.filter(c => c.id !== company.id)
-                            : [...values.selectedCompanies, company];
-                          setFieldValue('selectedCompanies', newCompanies);
-                        }}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {company.companyCode}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {company.companyName}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+  {company && company.length > 0 ? (
+    company.map(company => (
+      <tr key={company.id}>
+        <td className="px-6 py-4 whitespace-nowrap">
+          <input
+            type="checkbox"
+            checked={values.selectedCompanies.some(c => c.id === company.id)}
+            onChange={() => {
+              const newCompanies = values.selectedCompanies.some(c => c.id === company.id)
+                ? values.selectedCompanies.filter(c => c.id !== company.id)
+                : [...values.selectedCompanies, company];
+              setFieldValue('selectedCompanies', newCompanies);
+            }}
+          />
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {company.companyCode}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+          {company.companyName}
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+        No company available
+      </td>
+    </tr>
+  )}
+</tbody>
+
             </table>
           </div>
           <div className="flex justify-between">
