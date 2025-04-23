@@ -68,8 +68,8 @@ const User = () => {
           <button
             key={section.id}
             className={`px-4 py-2 font-medium ${activeSection === section.id
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
+              ? 'border-b-2 border-blue-500 text-blue-600'
+              : 'text-gray-500 hover:text-gray-700'
               }`}
             onClick={() => setActiveSection(section.id)}
           >
@@ -162,8 +162,8 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
                 </div>
                 <div className="relative">
                   <Field
-                  name="password"
-                   
+                    name="password"
+
                     type={showPassword ? 'text' : 'password'}
                     className="w-full p-2 mt-5 border rounded pr-10"
                   />
@@ -315,37 +315,37 @@ const CompanyAccessSection = ({ initialValues, onSubmit, onBack }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-  {company && company.length > 0 ? (
-    company.map(company => (
-      <tr key={company.id}>
-        <td className="px-6 py-4 whitespace-nowrap">
-          <input
-            type="checkbox"
-            checked={values.selectedCompanies.some(c => c.id === company.id)}
-            onChange={() => {
-              const newCompanies = values.selectedCompanies.some(c => c.id === company.id)
-                ? values.selectedCompanies.filter(c => c.id !== company.id)
-                : [...values.selectedCompanies, company];
-              setFieldValue('selectedCompanies', newCompanies);
-            }}
-          />
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {company.companyCode}
-        </td>
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          {company.companyName}
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
-        No company available
-      </td>
-    </tr>
-  )}
-</tbody>
+                {company && company.length > 0 ? (
+                  company.map(company => (
+                    <tr key={company.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={values.selectedCompanies.some(c => c.id === company.id)}
+                          onChange={() => {
+                            const newCompanies = values.selectedCompanies.some(c => c.id === company.id)
+                              ? values.selectedCompanies.filter(c => c.id !== company.id)
+                              : [...values.selectedCompanies, company];
+                            setFieldValue('selectedCompanies', newCompanies);
+                          }}
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {company.companyCode}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {company.companyName}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+                      No company available
+                    </td>
+                  </tr>
+                )}
+              </tbody>
 
             </table>
           </div>
@@ -398,29 +398,38 @@ const DepartmentAccessSection = ({ initialValues, onSubmit, onBack }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {department?.map(department => (
-                  <tr key={department.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <input
-                        type="checkbox"
-                        checked={values.selectedDepartments.some(d => d.id === department.id)}
-                        onChange={() => {
-                          const newDepartments = values.selectedDepartments.some(d => d.id === department.id)
-                            ? values.selectedDepartments.filter(d => d.id !== department.id)
-                            : [...values.selectedDepartments, department];
-                          setFieldValue('selectedDepartments', newDepartments);
-                        }}
-                      />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {department?.departmentCode}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {department?.departmentName}
+                {department && department.length > 0 ? (
+                  department.map(department => (
+                    <tr key={department.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={values.selectedDepartments.some(d => d.id === department.id)}
+                          onChange={() => {
+                            const newDepartments = values.selectedDepartments.some(d => d.id === department.id)
+                              ? values.selectedDepartments.filter(d => d.id !== department.id)
+                              : [...values.selectedDepartments, department];
+                            setFieldValue('selectedDepartments', newDepartments);
+                          }}
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {department.departmentCode}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {department.departmentName}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+                      No department available
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
+
             </table>
           </div>
           <div className="flex justify-between">
