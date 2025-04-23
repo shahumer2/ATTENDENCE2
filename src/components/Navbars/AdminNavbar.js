@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings, BsChevronDown, BsChevronUp } from "react-icons/bs";
@@ -7,6 +7,8 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
 
 function Header() {
+
+  const navigate = useNavigate(); 
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
   const userDropdownTimeoutRef = useRef(null);
@@ -67,7 +69,11 @@ function Header() {
             <BsBuildings className="text-white text-2xl ml-4 cursor-pointer" />
             <IoNotificationsOutline className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlineQuestionCircle className="text-white text-2xl ml-4 cursor-pointer" />
-            <AiOutlinePoweroff className="text-white text-2xl ml-4 cursor-pointer" />
+            <AiOutlinePoweroff
+  onClick={() => navigate("/login")}
+  className="text-white text-2xl ml-4 cursor-pointer"
+/>
+
           </div>
         </div>
 
