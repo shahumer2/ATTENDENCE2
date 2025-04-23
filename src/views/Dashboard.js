@@ -100,12 +100,14 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container bg-blue-50 min-h-screen p-4">
-      <Container >
+      <Container fluid>
         <Row>
           <Col md={12}>
             <Card className="mb-4 shadow-sm bg-white">
               <Card.Body style={{ height: "350px" }}>
-                <Card.Title className="text-slate-400 p-[10px] text-primary mb-3">DAILY SHIFTS/SCHEDULES EMPLOYEE ATTENDENCE STATUS</Card.Title>
+                <Card.Title className="text-slate-400 p-[10px] text-primary mb-3">
+                  DAILY SHIFTS/SCHEDULES EMPLOYEE ATTENDENCE STATUS
+                </Card.Title>
                 <div style={{ height: "250px", width: "100%" }}>
                   <Bar data={dailyShiftData} options={barOptions} />
                 </div>
@@ -114,34 +116,41 @@ function Dashboard() {
           </Col>
         </Row>
 
+        {/* PIE CHARTS ROW - SIDE BY SIDE */}
+        <Row className="gx-4 flex gap-5">
+          <Card className="mb-4 shadow-sm bg-white w-full">
+            <Card.Body className="d-flex flex-column justify-content-center items-center">
+              <Card.Title className="font-semibold text-slate-600 text-success mb-3 text-center mt-3">
+                Employee Attendance
+              </Card.Title>
+              <div
+                className="flex justify-center items-center"
+                style={{ height: "250px", width: "100%" }}
+              >
+                <Pie data={attendanceData} />
+              </div>
+            </Card.Body>
+          </Card>
 
-        <Row className="gx-4">
-          <Col md={6}>
-            <Card className="mb-4 shadow-sm bg-white">
-              <Card.Body>
-                <Card.Title className="fw-bold text-success mb-3">Employee Attendance</Card.Title>
-                <div style={{ height: "250px" }}>
-                  <Pie data={attendanceData} />
-                </div>
-              </Card.Body>
-            </Card>
-            <Col md={6}>
-            <Card className="mb-4 shadow-sm bg-white">
-              <Card.Body>
-                <Card.Title className="fw-bold text-warning mb-3">Early Out Employees</Card.Title>
-                <div style={{ height: "250px" }}>
-                  <Pie data={earlyOutData} />
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-          </Col>
 
-    
+
+
+          <Card className="mb-4 shadow-sm bg-white h-100 w-full">
+            <Card.Body className="d-flex flex-column justify-content-center">
+            <Card.Title className="font-semibold text-slate-600 text-success mb-3 text-center mt-3">Early Out Employees</Card.Title>
+              <div
+                className="flex justify-center items-center"
+                style={{ height: "250px", width: "100%",marginBottom:"20px" }}
+              >
+                <Pie data={earlyOutData} />
+              </div>
+            </Card.Body>
+          </Card>
+
         </Row>
-
       </Container>
     </div>
+
   );
 }
 
