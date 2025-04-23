@@ -32,7 +32,7 @@ const Company = () => {
       console.log("url===",url);
       const response = await fetch(url, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,   
         },
       });
 
