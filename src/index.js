@@ -18,29 +18,31 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>  {/* Wrap your app with the Redux Provider */}
-      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>  {/* Wrapping with PersistGate */}
-        <BrowserRouter>
-          <Routes>
-         
-            <Route path="/login" element={<Login />} />
-       
-            <Route path="/admin/*" element={<AdminLayout />} />
-            <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-          </Routes>
-          <ToastContainer 
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-          />
-        </BrowserRouter>
-      </PersistGate>
-    </Provider>
+ <Provider store={store}>
+  <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin/*" element={<AdminLayout />} />
+
+        {/* Redirect root (/) to login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
+
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+    </BrowserRouter>
+  </PersistGate>
+</Provider>
+
   </React.StrictMode>
 );

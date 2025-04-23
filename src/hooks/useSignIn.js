@@ -44,7 +44,7 @@ const useSignIn = () => {
         toast.success('Successfully logged in!');  // Show success toast
 
         // Redirect to the home page or dashboard
-        navigate('/');
+        navigate('/admin/dashboard');
       } else {
         // Dispatch signInFailure action with error message
         dispatch(signInFailure('Invalid credentials'));
