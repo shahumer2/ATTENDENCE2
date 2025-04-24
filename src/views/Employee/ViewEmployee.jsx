@@ -151,7 +151,7 @@ const ViewEmployee = () => {
               <tr key={index}>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeCode}</td>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeName}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeName.split(" ")[0]||""}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeName}</td>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.gender}</td>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.fingerPrint}</td>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.section}</td>
