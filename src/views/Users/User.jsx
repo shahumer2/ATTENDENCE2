@@ -179,7 +179,7 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
                   <ErrorMessage name="employeeId" component="div" className="text-red-500 text-xs" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Employee Name*</label>
+                  <label className="block text-sm font-medium text-gray-700">Display Name*</label>
                   <Field name="name" className="w-full p-2 border rounded" />
                   <ErrorMessage name="name" component="div" className="text-red-500 text-xs" />
                 </div>
