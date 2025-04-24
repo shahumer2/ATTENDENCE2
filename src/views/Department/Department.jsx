@@ -56,7 +56,7 @@ const Department = () => {
 
   console.log("departs:+++",departments);
 
-  const filteredDepartments = departments.filter((dept) =>
+  const filteredDepartments = departments?.filter((dept) =>
     dept.departmentCode?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
     dept.departmentName?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   );
