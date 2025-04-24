@@ -149,12 +149,12 @@ const ViewEmployee = () => {
           <tbody className="bg-white divide-y divide-gray-200">
             {employees.map((employee, index) => (
               <tr key={index}>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.employeeCode}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.employeeName}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.employeeName.split(" ")[0]}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.gender}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.fingerPrint}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee.section}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeCode}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeName}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.employeeName.split(" ")[0]||""}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.gender}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.fingerPrint}</td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{employee?.section}</td>
                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                   <span className={`px-2 py-1 rounded-full text-xs ${
                     employee.active == 'true' ? 'bg-green-100 text-green-800' : 
