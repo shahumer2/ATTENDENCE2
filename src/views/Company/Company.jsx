@@ -192,15 +192,24 @@ const Company = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {companies.map((company, index) => (
-              <tr key={index}>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.companyCode}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.companyName}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.location}</td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.city}</td>
-              </tr>
-            ))}
-          </tbody>
+  {companies.length > 0 ? (
+    companies.map((company, index) => (
+      <tr key={index}>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.companyCode}</td>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.companyName}</td>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.location}</td>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{company.city}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">
+        No data found
+      </td>
+    </tr>
+  )}
+</tbody>
+
         </table>
       </div>
 

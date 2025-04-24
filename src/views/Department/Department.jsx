@@ -26,7 +26,7 @@ const Department = () => {
           },
         });
 
-        if (!response.ok) throw new Error('Failed to fetch departments');
+        // if (!response.ok) throw new Error('Failed to fetch departments');
 
         const data = await response.json();
         console.log(data,"hey");
@@ -160,17 +160,26 @@ const Department = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredDepartments.map((dept, index) => (
-              <tr key={index}>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                  {dept.departmentCode}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                  {dept.departmentName}
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {filteredDepartments.length > 0 ? (
+    filteredDepartments.map((dept, index) => (
+      <tr key={index}>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+          {dept.departmentCode}
+        </td>
+        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+          {dept.departmentName}
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
+        No data available
+      </td>
+    </tr>
+  )}
+</tbody>
+
         </table>
       </div>
 

@@ -6,7 +6,7 @@ export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 
 //department
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
-export const DEPARTMENT_LIST = `${BASE_URL}/api/department/all-departments`;
+export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
 
 
