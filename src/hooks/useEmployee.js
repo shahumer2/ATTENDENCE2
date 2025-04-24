@@ -9,7 +9,7 @@ console.log(profilePic,"profilepic+++++");
         employeeCode: '',
         employeeName: '',
         gender: '',
-        maritalStatus: '',
+        martialStatus: '',
         email: '',
         phoneNumber: '',
         probationMonths: '',

@@ -40,8 +40,8 @@ const AddEmployee = () => {
       name: '', 
       dob: null, 
       gender: '', 
-      birthCertNo: '', 
-      isSingaporeCitizen: false 
+      birthCertificateNo: '', 
+      singaporeCitizen: false 
     }]);
   };
 
@@ -136,7 +136,7 @@ const AddEmployee = () => {
                           <label className="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
                           <Field
                             as="select"
-                            name="maritalStatus"
+                            name="martialStatus"
                             className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                           >
                             <option value="">Select Status</option>
@@ -492,8 +492,8 @@ const AddEmployee = () => {
                               <td className="px-6 py-4 whitespace-nowrap">
                                 <input
                                   type="text"
-                                  value={child.birthCertNo}
-                                  onChange={(e) => handleChildChange(index, 'birthCertNo', e.target.value)}
+                                  value={child.birthCertificateNo}
+                                  onChange={(e) => handleChildChange(index, 'birthCertificateNo', e.target.value)}
                                   className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                   placeholder="Certificate number"
                                 />
@@ -501,8 +501,9 @@ const AddEmployee = () => {
                               <td className="px-6 py-4 whitespace-nowrap text-center">
                                 <input
                                   type="checkbox"
-                                  checked={child.isSingaporeCitizen}
-                                  onChange={(e) => handleChildChange(index, 'isSingaporeCitizen', e.target.checked)}
+                                  checked={child.singaporeCitizen}
+                                  onChange={(e) => handleChildChange(index, 'singaporeCitizen', e.target.checked)}
+
                                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                 />
                               </td>
