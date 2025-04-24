@@ -140,7 +140,7 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
   }, [])
   console.log(Employee,"empp++++");
 
-  const formattedEmployee = Employee.map((employee) => ({
+  const formattedEmployee = Employee?.map((employee) => ({
     label: employee?.employeeName,
     value: employee?.id,
   }));
