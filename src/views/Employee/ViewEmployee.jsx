@@ -161,7 +161,7 @@ const ViewEmployee = () => {
                     employee.blocked == 'true' ? 'bg-red-100 text-red-800' : 
                     'bg-gray-100 text-gray-800'
                   }`}>
-                    {employee.status || 'N/A'}
+                    {employee?.status || 'N/A'}
                   </span>
                 </td>
               </tr>
