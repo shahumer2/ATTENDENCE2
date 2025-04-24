@@ -111,7 +111,7 @@ const useUser = () => {
         }
     };
     const getEmployee = async () => {
-      console.log("hey");
+    
       try {
           const response = await fetch(`${GET_EMPLOYEE_DATA}`, {
               method: "GET",

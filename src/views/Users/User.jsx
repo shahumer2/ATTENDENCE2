@@ -138,12 +138,13 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
   useEffect(() => {
     getEmployee()
   }, [])
-  console.log(Employee,"empp++++");
 
-  const formattedEmployee =Employee&& Employee?.map((employee) => ({
+
+  const formattedEmployee = (Employee || []).map((employee) => ({
     label: employee?.employeeName,
     value: employee?.id,
   }));
+  
   
   
 
@@ -161,14 +162,19 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Employee*</label>
-<Select
-  name="employeeId"
-  options={formattedEmployee}
-  value={formattedEmployee.find(option => option.value === values.employeeId)}
-  onChange={(selectedOption) => setFieldValue('employeeId', selectedOption.value)}
-  className="react-select-container"
-  classNamePrefix="react-select"
-/>
+                {formattedEmployee.length > 0 ? (
+  <Select
+    name="employeeId"
+    options={formattedEmployee}
+    value={formattedEmployee.find(option => option.value === values.employeeId)}
+    onChange={(selectedOption) => setFieldValue('employeeId', selectedOption.value)}
+    className="react-select-container"
+    classNamePrefix="react-select"
+  />
+) : (
+  <div className="text-sm text-gray-500">Loading employees...</div>
+)}
+
 <ErrorMessage name="employeeId" component="div" className="text-red-500 text-xs" />
                   <ErrorMessage name="employeeId" component="div" className="text-red-500 text-xs" />
                 </div>
