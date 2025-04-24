@@ -113,7 +113,7 @@ function Header() {
               text-slate-300 
               hover:text-[#FFD700]"
             >
-              User
+              Administration
               {userDropdownOpen ? (
                 <BsChevronUp className="ml-1" />
               ) : (
