@@ -33,6 +33,9 @@ export const GET_INACTIVEUSERS = `${BASE_URL}/api/user/inactive`;
 //Employee
 export const ADD_EMPLOYEE_DATA = `${BASE_URL}/employee/addEmployee`;
 export const GET_ALL_EMPLOYEE_DATA = `${BASE_URL}/employee/getAllEmployee`;
+export const GET_EMPLOYEE_DATA = `${BASE_URL}/employee/getAll-Employees`;
+
+
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 

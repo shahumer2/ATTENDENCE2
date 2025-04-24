@@ -7,6 +7,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useUser from 'hooks/useUser';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Select from 'react-select';
+
 const User = () => {
 
   const { handleFinalSubmit, sections, getDepartment, getCompany, department, company } = useUser()
@@ -124,6 +126,7 @@ const User = () => {
 
 // Basic Info Section
 const BasicInfoSection = ({ initialValues, onSubmit }) => {
+  const{getEmployee,Employee}=useUser()
   const [showPassword, setShowPassword] = useState(false);
   const [profilePic, setprofilePic] = useState(null)
   const validationSchema = Yup.object().shape({
@@ -132,6 +135,17 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
     email: Yup.string().email('Invalid email').required('Email is required'),
     phoneNumber: Yup.string().required('Mobile number is required'),
   });
+  useEffect(() => {
+    getEmployee()
+  }, [])
+  console.log(Employee,"empp++++");
+
+  const formattedEmployee = Employee.map((employee) => ({
+    label: employee?.employeeName,
+    value: employee?.id,
+  }));
+  
+  
 
   return (
     <Formik
@@ -146,8 +160,16 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
             <div className="w-3/4 pr-4">
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Employee ID*</label>
-                  <Field type="number" name="employeeId" className="w-full p-2 border rounded" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Employee*</label>
+<Select
+  name="employeeId"
+  options={formattedEmployee}
+  value={formattedEmployee.find(option => option.value === values.employeeId)}
+  onChange={(selectedOption) => setFieldValue('employeeId', selectedOption.value)}
+  className="react-select-container"
+  classNamePrefix="react-select"
+/>
+<ErrorMessage name="employeeId" component="div" className="text-red-500 text-xs" />
                   <ErrorMessage name="employeeId" component="div" className="text-red-500 text-xs" />
                 </div>
                 <div>
@@ -161,11 +183,12 @@ const BasicInfoSection = ({ initialValues, onSubmit }) => {
                   <ErrorMessage name="username" component="div" className="text-red-500 text-xs" />
                 </div>
                 <div className="relative">
+                <label className="block text-sm font-medium text-gray-700">Password</label>
                   <Field
                     name="password"
 
                     type={showPassword ? 'text' : 'password'}
-                    className="w-full p-2 mt-5 border rounded pr-10"
+                    className="w-full p-2 border rounded pr-10"
                   />
                   <button
                     type="button"
@@ -293,9 +316,9 @@ const CompanyAccessSection = ({ initialValues, onSubmit, onBack }) => {
   const { getCompany, company } = useUser()
   useEffect(() => {
     getCompany(); // Fetch 
-  }, [company]);
+  }, []);
 
-  console.log("company", company);
+ 
 
 
   return (

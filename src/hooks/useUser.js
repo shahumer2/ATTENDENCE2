@@ -1,5 +1,6 @@
 import { USER_ADD } from "Constants/utils";
 import { GET_COMPANY_LIST } from "Constants/utils";
+import { GET_EMPLOYEE_DATA } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +12,7 @@ const useUser = () => {
     const token = currentUser?.token;
     const [department, setdepartment] = useState(null)
     const [company, setcompany] = useState(null)
+    const [Employee, setEmployee] = useState([])
     const sections = [
         { id: 'basic', label: 'Basic Information' },
         { id: 'app-access', label: 'App Access' },
@@ -108,10 +110,29 @@ const useUser = () => {
             toast.error("Failed to fetch HsnCode");
         }
     };
+    const getEmployee = async () => {
+      console.log("hey");
+      try {
+          const response = await fetch(`${GET_EMPLOYEE_DATA}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+              }
+          });
+          const data = await response.json();
+         
+          setEmployee(data);
+
+      } catch (error) {
+          console.error(error);
+          toast.error("Failed to fetch HsnCode");
+      }
+  };
 
     
 
-    return { handleFinalSubmit, sections,getDepartment,getCompany,department,company }
+    return { handleFinalSubmit, sections,getDepartment,getCompany,department,company,getEmployee,Employee }
 }
 
 export default useUser
