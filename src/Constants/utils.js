@@ -9,7 +9,9 @@ export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
 
-
+//designations
+export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
+export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
 
 //compny
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;

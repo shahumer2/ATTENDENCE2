@@ -11,7 +11,9 @@ function Header() {
   const navigate = useNavigate(); 
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
+  const [masterDropdownOpen, setMasterDropdownOpen] = useState(false);
   const userDropdownTimeoutRef = useRef(null);
+  const masterDropdownTimeoutRef = useRef(null);
   const employeeDropdownTimeoutRef = useRef(null);
 
   // Clear timeouts when component unmounts
@@ -36,6 +38,20 @@ function Header() {
   const handleUserMouseLeave = () => {
     userDropdownTimeoutRef.current = setTimeout(() => {
       setUserDropdownOpen(false);
+    }, 300); // 300ms delay before closing
+  };
+
+  //master
+  const handleMasterMouseEnter = () => {
+    if (masterDropdownTimeoutRef.current) {
+      clearTimeout(masterDropdownTimeoutRef.current);
+    }
+    setMasterDropdownOpen(true);
+  };
+
+  const handleMasterMouseLeave = () => {
+    masterDropdownTimeoutRef.current = setTimeout(() => {
+      setMasterDropdownOpen(false);
     }, 300); // 300ms delay before closing
   };
 
@@ -90,8 +106,62 @@ function Header() {
           >
             Home
           </NavLink>
+{/* master */}
 
-          <NavLink
+          <div
+            className="relative group"
+            onMouseEnter={handleMasterMouseEnter}
+            onMouseLeave={handleMasterMouseLeave}
+          >
+            <div className="flex items-center text-sm font-bold cursor-pointer transition 
+              group-hover:text-[#FFD700] 
+              text-slate-300 
+              hover:text-[#FFD700]"
+            >
+              Master
+              {masterDropdownOpen ? (
+                <BsChevronUp className="ml-1" />
+              ) : (
+                <BsChevronDown className="ml-1" />
+              )}
+            </div>
+
+            {/* Dropdown content */}
+            {masterDropdownOpen && (
+              <div
+                className="absolute left-0 mt-1 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-50"
+                onMouseEnter={handleMasterMouseEnter}
+                onMouseLeave={handleMasterMouseLeave}
+              >
+                <NavLink
+                 to="/admin/department"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive
+                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Designation
+                </NavLink>
+                {/* <NavLink
+                  to="/admin/designation"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${
+                      isActive
+                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  View Users
+                </NavLink> */}
+              </div>
+            )}
+          </div>
+
+          {/* <NavLink
             to="/admin/department"
             className={({ isActive }) =>
               isActive
@@ -100,7 +170,7 @@ function Header() {
             }
           >
             Department
-          </NavLink>
+          </NavLink> */}
 
           {/* USER DROPDOWN */}
           <div

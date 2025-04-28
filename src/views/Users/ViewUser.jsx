@@ -35,6 +35,7 @@ const ViewUser = () => {
       if (!response.ok) throw new Error(`Failed to fetch ${activeTab} users`);
 
       const data = await response.json();
+      
       setUsers(data?.content || []);
       setTotalItems(data?.totalElements || 0);
     } catch (error) {
@@ -98,7 +99,7 @@ const ViewUser = () => {
       {/* Search */}
       <div className="mb-4">
         <input
-          type="text"
+          type="text" 
           placeholder={`Search ${activeTab} users...`}
           className="w-full md:w-64 px-4 py-2 border rounded"
           value={searchTerm}
