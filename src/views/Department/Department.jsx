@@ -3,44 +3,27 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { FaEdit } from "react-icons/fa";
 import { debounce } from 'lodash';
-import { DEPARTMENT_ADD } from 'Constants/utils';
-import { DEPARTMENT_LIST } from 'Constants/utils';
-import { DESIGNATION_ADD } from 'Constants/utils';
-import { DESIGNATION_LIST } from 'Constants/utils';
+import { DEPARTMENT_ADD, DEPARTMENT_LIST, DEPARTMENT_UPDATE } from 'Constants/utils';
+import { DESIGNATION_ADD, DESIGNATION_LIST, DESIGNATION_UPDATE } from 'Constants/utils';
 
-// API endpoints configuration
 const API_CONFIG = {
   department: {
     list: DEPARTMENT_LIST,
     add: DEPARTMENT_ADD,
+    update: DEPARTMENT_UPDATE,
     codeKey: 'departmentCode',
     nameKey: 'departmentName'
   },
   designation: {
     list: DESIGNATION_LIST,
     add: DESIGNATION_ADD,
+    update: DESIGNATION_UPDATE,
     codeKey: 'designationCode',
     nameKey: 'designationName'
   },
-  section: {
-    list: 'SECTION_LIST_APIi',
-    add: 'SECTION_ADD_API',
-    codeKey: 'sectionCode',
-    nameKey: 'sectionName'
-  },
-  category: {
-    list: 'CATEGORY_LIST_API',
-    add: 'CATEGORY_ADD_API',
-    codeKey: 'categoryCode',
-    nameKey: 'categoryName'
-  },
-  aws: {
-    list: 'AWS_LIST_API',
-    add: 'AWS_ADD_API',
-    codeKey: 'awsCode',
-    nameKey: 'awsName'
-  }
+  // Add other configurations as needed
 };
 
 const Department = () => {
@@ -49,79 +32,68 @@ const Department = () => {
 
   const [activeTab, setActiveTab] = useState('department');
   const [showModal, setShowModal] = useState(false);
+  const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // Fetch data based on active tab
+  // Fetch data
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(API_CONFIG[activeTab].list, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const result = await response.json();
+      setData(result?.content || []);
+    } catch (error) {
+      toast.error(`Failed to fetch ${activeTab} data`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(API_CONFIG[activeTab].list, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) throw new Error('Failed to fetch data');
-
-        const result = await response.json();
-        setData(result?.content || []);
-      } catch (error) {
-        toast.error(`Failed to fetch ${activeTab} data`);
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [activeTab, token]);
 
-  // Debounce search input
+  // Debounce search
   const debounceSearch = useCallback(
-    debounce((value) => {
-      setDebouncedSearchTerm(value);
-    }, 300),
+    debounce((value) => setDebouncedSearchTerm(value), 300),
     []
   );
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    debounceSearch(value);
+    setSearchTerm(e.target.value);
+    debounceSearch(e.target.value);
   };
 
-  const filteredData = data.filter((item) => {
-    const codeKey = API_CONFIG[activeTab].codeKey;
-    const nameKey = API_CONFIG[activeTab].nameKey;
-    
+  const filteredData = data.filter(item => {
+    const { codeKey, nameKey } = API_CONFIG[activeTab];
+    const search = debouncedSearchTerm.toLowerCase();
     return (
-      item[codeKey]?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-      item[nameKey]?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+      item[codeKey]?.toLowerCase().includes(search) ||
+      item[nameKey]?.toLowerCase().includes(search)
     );
   });
 
-  const initialValues = {
-    code: '',
-    name: '',
-  };
-
+  // Form handling
   const validationSchema = Yup.object().shape({
     code: Yup.string().required(`${activeTab} code is required`),
     name: Yup.string().required(`${activeTab} name is required`),
   });
 
   const handleSubmit = async (values, { resetForm }) => {
+    const config = API_CONFIG[activeTab];
     const newItem = {
-      [API_CONFIG[activeTab].codeKey]: values.code,
-      [API_CONFIG[activeTab].nameKey]: values.name,
+      [config.codeKey]: values.code,
+      [config.nameKey]: values.name,
     };
 
     try {
-      const response = await fetch(API_CONFIG[activeTab].add, {
+      const response = await fetch(config.add, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,20 +102,49 @@ const Department = () => {
         body: JSON.stringify(newItem),
       });
 
-      const result = await response.json();
-
       if (response.ok) {
         toast.success(`${activeTab} added successfully`);
         resetForm();
         setShowModal(false);
-        // Refresh the list after adding
-        setData((prev) => [...prev, newItem]);
+        fetchData();
       } else {
-        toast.error(result.message || `Failed to add ${activeTab}`);
+        throw new Error('Failed to add');
       }
     } catch (error) {
-      toast.error('An error occurred. Please try again later.');
-      console.error(error);
+      toast.error(error.message);
+    }
+  };
+
+  const handleUpdateSubmit = async (values, { resetForm }) => {
+    if (!selectedItem) return;
+    
+    const config = API_CONFIG[activeTab];
+    const updatedItem = {
+      id: selectedItem.id,
+      [config.codeKey]: values.code,
+      [config.nameKey]: values.name,
+    };
+
+    try {
+      const response = await fetch(`${config.update}/${selectedItem.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedItem),
+      });
+
+      if (response.ok) {
+        toast.success(`${activeTab} updated successfully`);
+        resetForm();
+        setShowModalUpdate(false);
+        fetchData();
+      } else {
+        throw new Error('Failed to update');
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
@@ -202,28 +203,39 @@ const Department = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {activeTab} Name
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredData.length > 0 ? (
-                filteredData.map((item, index) => {
-                  const codeKey = API_CONFIG[activeTab].codeKey;
-                  const nameKey = API_CONFIG[activeTab].nameKey;
-                  
+                filteredData.map((item) => {
+                  const { codeKey, nameKey } = API_CONFIG[activeTab];
                   return (
-                    <tr key={index}>
+                    <tr key={item.id}>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {item[codeKey]}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {item[nameKey]}
                       </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setShowModalUpdate(true);
+                          }}
+                        >
+                          <FaEdit size="1.3rem" />
+                        </button>
+                      </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
+                  <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
                     No data available
                   </td>
                 </tr>
@@ -233,76 +245,96 @@ const Department = () => {
         )}
       </div>
 
-      {/* Add Modal */}
+      {/* Modals */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-            <div className="p-6">
-              <h3 className="text-lg font-medium mb-4">Add {activeTab}</h3>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={validationSchema}
-                onSubmit={handleSubmit}
-              >
-                {({ isSubmitting }) => (
-                  <Form>
-                    <div className="mb-4">
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        {activeTab} Code *
-                      </label>
-                      <Field
-                        name="code"
-                        type="text"
-                        className="w-full px-3 py-2 border rounded"
-                        placeholder={`Enter ${activeTab} code`}
-                      />
-                      <ErrorMessage
-                        name="code"
-                        component="div"
-                        className="text-red-500 text-xs mt-1"
-                      />
-                    </div>
-                    <div className="mb-6">
-                      <label className="block text-gray-700 text-sm font-bold mb-2">
-                        {activeTab} Name *
-                      </label>
-                      <Field
-                        name="name"
-                        type="text"
-                        className="w-full px-3 py-2 border rounded"
-                        placeholder={`Enter ${activeTab} name`}
-                      />
-                      <ErrorMessage
-                        name="name"
-                        component="div"
-                        className="text-red-500 text-xs mt-1"
-                      />
-                    </div>
-                    <div className="flex justify-end space-x-3">
-                      <button
-                        type="button"
-                        onClick={() => setShowModal(false)}
-                        className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-          </div>
-        </div>
+        <ModalForm
+          title={`Add ${activeTab}`}
+          initialValues={{ code: '', name: '' }}
+          validationSchema={validationSchema}
+          onClose={() => setShowModal(false)}
+          onSubmit={handleSubmit}
+        />
+      )}
+
+      {showModalUpdate && selectedItem && (
+        <ModalForm
+          title={`Update ${activeTab}`}
+          initialValues={{
+            code: selectedItem[API_CONFIG[activeTab].codeKey],
+            name: selectedItem[API_CONFIG[activeTab].nameKey],
+          }}
+          validationSchema={validationSchema}
+          onClose={() => {
+            setShowModalUpdate(false);
+            setSelectedItem(null);
+          }}
+          onSubmit={handleUpdateSubmit}
+          isUpdate
+        />
       )}
     </div>
   );
 };
+
+const ModalForm = ({ title, initialValues, validationSchema, onClose, onSubmit, isUpdate }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <div className="p-6">
+        <h3 className="text-lg font-medium mb-4">{title}</h3>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          enableReinitialize
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Code *
+                </label>
+                <Field
+                  name="code"
+                  type="text"
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder="Enter code"
+                />
+                <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
+              </div>
+              <div className="mb-6">
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Name *
+                </label>
+                <Field
+                  name="name"
+                  type="text"
+                  className="w-full px-3 py-2 border rounded"
+                  placeholder="Enter name"
+                />
+                <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-4 py-2 border rounded text-gray-700 hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  {isUpdate ? "Update" : "Save"}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
+    </div>
+  </div>
+);
 
 export default Department;

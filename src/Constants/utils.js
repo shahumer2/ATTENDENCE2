@@ -8,10 +8,16 @@ export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
+export const GET_DEPARTMENT_id = `${BASE_URL}/api/department/id`;
+export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
+
+
 
 //designations
 export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
+export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
+
 
 //compny
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;
