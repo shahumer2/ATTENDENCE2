@@ -24,7 +24,7 @@ const API_CONFIG = {
     nameKey: 'designationName'
   },
   section: {
-    list: 'SECTION_LIST_API',
+    list: 'SECTION_LIST_APIi',
     add: 'SECTION_ADD_API',
     codeKey: 'sectionCode',
     nameKey: 'sectionName'
