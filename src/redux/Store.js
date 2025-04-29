@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import SignInSlice from "./Slice/SignInSlice"; // Only SignIn will be persisted
+import CompanySlice from "./Slice/CompanySlice";
 
 // Redux Persist Configuration
 const persistConfig = {
@@ -13,7 +14,8 @@ const persistConfig = {
 
 // Combine Reducers (in case you want to add more non-persisted reducers later)
 const rootReducer = combineReducers({
-  user: SignInSlice,     // Only this will be persisted
+  user: SignInSlice,
+  company:CompanySlice     // Only this will be persisted
 });
 
 // Apply persist reducer to the slice you want to persist

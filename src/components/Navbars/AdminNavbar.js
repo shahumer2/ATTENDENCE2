@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedCompany } from "../../redux/Slice/CompanySlice"; // Adjust import path
 import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings, BsChevronDown, BsChevronUp } from "react-icons/bs";
@@ -7,66 +9,110 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
 
 function Header() {
-
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const selectedCompany = useSelector((state) => state.company.selectedCompany);
+  
+  const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
   const [masterDropdownOpen, setMasterDropdownOpen] = useState(false);
+  
   const userDropdownTimeoutRef = useRef(null);
   const masterDropdownTimeoutRef = useRef(null);
   const employeeDropdownTimeoutRef = useRef(null);
+  const companyDropdownTimeoutRef = useRef(null);
+
+  // Sample companies data
+  const companies = [
+    { id: 1, name: "Aste" },
+    { id: 2, name: "XYZ" },
+    { id: 3, name: "Demo" }
+  ];
 
   // Clear timeouts when component unmounts
   useEffect(() => {
     return () => {
+      if (userDropdownTimeoutRef.current) clearTimeout(userDropdownTimeoutRef.current);
+      if (employeeDropdownTimeoutRef.current) clearTimeout(employeeDropdownTimeoutRef.current);
+      if (masterDropdownTimeoutRef.current) clearTimeout(masterDropdownTimeoutRef.current);
+      if (companyDropdownTimeoutRef.current) clearTimeout(companyDropdownTimeoutRef.current);
+    };
+  }, []);
+    // Clear timeouts when component unmounts
+    useEffect(() => {
+      return () => {
+        if (userDropdownTimeoutRef.current) {
+          clearTimeout(userDropdownTimeoutRef.current);
+        }
+        if (employeeDropdownTimeoutRef.current) {
+          clearTimeout(employeeDropdownTimeoutRef.current);
+        }
+      };
+    }, []);
+  
+    const handleUserMouseEnter = () => {
       if (userDropdownTimeoutRef.current) {
         clearTimeout(userDropdownTimeoutRef.current);
       }
+      setUserDropdownOpen(true);
+    };
+  
+    const handleUserMouseLeave = () => {
+      userDropdownTimeoutRef.current = setTimeout(() => {
+        setUserDropdownOpen(false);
+      }, 300); // 300ms delay before closing
+    };
+  
+    //master
+    const handleMasterMouseEnter = () => {
+      if (masterDropdownTimeoutRef.current) {
+        clearTimeout(masterDropdownTimeoutRef.current);
+      }
+      setMasterDropdownOpen(true);
+    };
+  
+    const handleMasterMouseLeave = () => {
+      masterDropdownTimeoutRef.current = setTimeout(() => {
+        setMasterDropdownOpen(false);
+      }, 300); // 300ms delay before closing
+    };
+  
+    const handleEmployeeMouseEnter = () => {
       if (employeeDropdownTimeoutRef.current) {
         clearTimeout(employeeDropdownTimeoutRef.current);
       }
+      setEmployeeDropdownOpen(true);
     };
-  }, []);
+  
+    const handleEmployeeMouseLeave = () => {
+      employeeDropdownTimeoutRef.current = setTimeout(() => {
+        setEmployeeDropdownOpen(false);
+      }, 300); // 300ms delay before closing
+    };
 
-  const handleUserMouseEnter = () => {
-    if (userDropdownTimeoutRef.current) {
-      clearTimeout(userDropdownTimeoutRef.current);
+  // Company dropdown handlers with delay
+  const handleCompanyMouseEnter = () => {
+    if (companyDropdownTimeoutRef.current) {
+      clearTimeout(companyDropdownTimeoutRef.current);
     }
-    setUserDropdownOpen(true);
+    setShowDropdown(true);
   };
 
-  const handleUserMouseLeave = () => {
-    userDropdownTimeoutRef.current = setTimeout(() => {
-      setUserDropdownOpen(false);
+  const handleCompanyMouseLeave = () => {
+    companyDropdownTimeoutRef.current = setTimeout(() => {
+      setShowDropdown(false);
     }, 300); // 300ms delay before closing
   };
 
-  //master
-  const handleMasterMouseEnter = () => {
-    if (masterDropdownTimeoutRef.current) {
-      clearTimeout(masterDropdownTimeoutRef.current);
-    }
-    setMasterDropdownOpen(true);
+  // Select company handler
+  const handleSelectCompany = (company) => {
+    dispatch(setSelectedCompany(company));
+    setShowDropdown(false);
   };
+  
 
-  const handleMasterMouseLeave = () => {
-    masterDropdownTimeoutRef.current = setTimeout(() => {
-      setMasterDropdownOpen(false);
-    }, 300); // 300ms delay before closing
-  };
-
-  const handleEmployeeMouseEnter = () => {
-    if (employeeDropdownTimeoutRef.current) {
-      clearTimeout(employeeDropdownTimeoutRef.current);
-    }
-    setEmployeeDropdownOpen(true);
-  };
-
-  const handleEmployeeMouseLeave = () => {
-    employeeDropdownTimeoutRef.current = setTimeout(() => {
-      setEmployeeDropdownOpen(false);
-    }, 300); // 300ms delay before closing
-  };
+  // ... keep all your existing handler functions ...
 
   return (
     <nav className="bg-[#0e2288] p-3 h-[90px]">
@@ -82,18 +128,47 @@ function Header() {
           {/* Right Icons */}
           <div className="ml-auto flex items-center">
             <PiDotsNineBold className="text-white text-2xl ml-4 cursor-pointer" />
-            <BsBuildings className="text-white text-2xl ml-4 cursor-pointer" />
+            
+            {/* Company Dropdown */}
+            <div 
+              className="relative"
+              onMouseEnter={handleCompanyMouseEnter}
+              onMouseLeave={handleCompanyMouseLeave}
+            >
+              <div className="flex items-center">
+                <BsBuildings className="text-white text-2xl ml-4" />
+                {selectedCompany && (
+                  <span className="text-white text-sm ml-2">
+                    {selectedCompany.name}
+                  </span>
+                )}
+              </div>
+              
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-50">
+                  <ul className="text-black py-2">
+                    {companies.map((company) => (
+                      <li 
+                        key={company.id}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleSelectCompany(company)}
+                      >
+                        {company.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            
             <IoNotificationsOutline className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlineQuestionCircle className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlinePoweroff
-  onClick={() => navigate("/login")}
-  className="text-white text-2xl ml-4 cursor-pointer"
-/>
-
+              onClick={() => navigate("/login")}
+              className="text-white text-2xl ml-4 cursor-pointer"
+            />
           </div>
         </div>
-
-        {/* Bottom Row: Navigation Links */}
         <div className="flex space-x-6 relative">
           <NavLink
             to="/admin/dashboard"
@@ -290,7 +365,10 @@ function Header() {
               </div>
             )}
           </div>
-        </div>
+        </div>  
+
+        {/* Bottom Row: Navigation Links */}
+        {/* ... keep your existing navigation links ... */}
       </div>
     </nav>
   );
