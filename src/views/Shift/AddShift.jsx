@@ -316,6 +316,62 @@ const AddShift = () => {
                   </div>
                 </div>
               </div>
+              <div className="mt-8 overflow-scroll">
+                <h2 className="text-xl font-bold mb-4">Shift Schedule</h2>
+                <table className="min-w-full bg-white border border-gray-300">
+                  <thead>
+                    <tr>
+                      {['Day', 'Time In', 'Time Out', 'Lunch Out', 'Lunch In', 'NRM', 'RES', 'OT', 'Extra', 'E. Rate', 'Max Hr.', 'Lunch Late', 'Dinner Late'].map((heading, index) => (
+                        <th key={index} className="border px-4 py-2 text-left">{heading}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {daysOfWeek.map((day, index) => (
+                      <tr key={index}>
+                        <td className="border px-4 py-2">{day}</td>
+                        <td className="border px-4 py-2">
+                          <Field type="time" name={`days[${index}].inTime`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="time" name={`days[${index}].outTime`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="time" name={`days[${index}].lunchOut`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="time" name={`days[${index}].lunchIn`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="text" name={`days[${index}].nrm`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="number" name={`days[${index}].res`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="number" name={`days[${index}].overTime`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="text" name={`days[${index}].extra`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="number" name={`days[${index}].eRate`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="text" name={`days[${index}].maxHr`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="text" name={`days[${index}].lunchLate`} />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field type="text" name={`days[${index}].dinnerLate1`} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
 
               {/* Submit Button */}
               <div className="flex justify-end mt-8">
