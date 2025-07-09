@@ -48,8 +48,8 @@ export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 
 
- 
+ //shift
 
-
+ export const Shift_LIST = `${BASE_URL}/shifts`;
 
 
