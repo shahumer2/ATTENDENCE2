@@ -466,9 +466,9 @@ const AddShift = () => {
               {/* Shift Schedule Table */}
               <div className="mt-8 overflow-scroll">
                 <h2 className="text-xl font-bold mb-4">Shift Schedule</h2>
-                <table className="min-w-full bg-white border border-gray-300">
+                <table className="min-w-full bg-white border border-gray-200">
                   <thead>
-                    <tr>
+                    <tr className='bg-blue-100'>
                       {['Day', 'Time In', 'Time Out', 'Lunch Out', 'Lunch In', 'NRM', 'RES', 'OT', 'Extra', 'E. Rate', 'Max Hr.', 'Lunch Late'].map((heading, index) => (
                         <th key={index} className="border px-4 py-2 text-left">{heading}</th>
                       ))}
@@ -478,38 +478,38 @@ const AddShift = () => {
                       <th className="border px-4 py-2 text-left" colSpan={2}>Dinner</th>
                       <th className="border px-4 py-2 text-left" colSpan={4}>Over Time Deductions</th>
                       <th className="border px-4 py-2 text-left" colSpan={6}>Breaks</th>
-                      <th className="border px-9 py-2 text-left">Show Off</th>
+                      <th className="border px-9 py-2 text-left ">Show Off</th>
                     </tr>
                     <tr>
                       {Array(15).fill().map((_, index) => (
-                        <th key={`empty-${index}`} className="border px-4 py-2 text-left"></th>
+                        <th key={`empty-${index}`} className="border px-4 py-2 text-left  bg-gray-100"></th>
                       ))}
-                       <th className="border px-4 py-2 text-left">Late 1</th>
-                       <th className="border px-4 py-2 text-left">Late 2</th>
-                      <th className="border px-4 py-2 text-left">OT Hr 1-Ded</th>
-                      <th className="border px-4 py-2 text-left">OT Hr 2</th>
-                      <th className="border px-4 py-2 text-left">2-Ded</th>
-                      <th className="border px-4 py-2 text-left">OT Hr 3-Ded</th>
-                      <th className="border px-4 py-2 text-left">Break 1 Out</th>
-                      <th className="border px-4 py-2 text-left">Break 1 In</th>
-                      <th className="border px-4 py-2 text-left">Break 2 Out</th>
-                      <th className="border px-4 py-2 text-left">Break 2 In</th>
-                      <th className="border px-4 py-2 text-left">Break 3 Out</th>
-                      <th className="border px-4 py-2 text-left">Break 3 In</th>
+               <th className="border px-4 w-[300px] py-2 text-left bg-gray-100 whitespace-nowrap">Late 1</th>
+                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Late 2</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 1-Ded</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">OT Hr 2</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">2-Ded</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">OT Hr 3-Ded</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 1 Out</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 1 In</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 2 Out</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 2 In</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 3 Out</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 3 In</th>
                     </tr>
                   </thead>
                   <tbody>
                     {values?.shiftSchedulers.map((day, index) => (
-                      <tr key={index}>
-                        <td className="border px-4 py-2">{daysOfWeek[index].charAt(0) + daysOfWeek[index].slice(1).toLowerCase()}</td>
-                        <td className="border px-4 py-2">
+                      <tr key={index} className='bg-gray-50'>
+                        <td className="border px-4 py-2 bg-yellow-100">{daysOfWeek[index].charAt(0) + daysOfWeek[index].slice(1).toLowerCase()}</td>
+                        <td className="border px-4 py-2 bg-purple-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].inTime`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-purple-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].outTime`}
