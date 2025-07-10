@@ -21,11 +21,13 @@ export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignatio
 
 //compny
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;
-
+export const GET_COMPANY_id = `${BASE_URL}/api/get-company/id`;
 export const COMPANY_LIST = `${BASE_URL}/api/companies/fetchAll-companies`;
 export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
+export const COMPANY_UPDATE = `${BASE_URL}/api/companies`;
 
-
+//image
+export const IMAGE = `${BASE_URL}/api/v1/images`;
 
 //user
 export const USER_ADD = `${BASE_URL}/api/user/save-user`;
