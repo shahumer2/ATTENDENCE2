@@ -446,7 +446,7 @@ const AddShift = () => {
                       <th className="border px-4 py-2 text-left" >PH Max</th>
                       <th className="border px-4 py-2 text-left">PH Ext</th>
                       <th className="border px-4 py-2 text-left" colSpan={2}>Dinner</th>
-                      <th className="border px-4 py-2 text-left" colSpan={4}>Over Time Deductions</th>
+                      <th className="border px-4 py-2 text-left" colSpan={6}>Over Time Deductions</th>
                       <th className="border px-4 py-2 text-left" colSpan={6}>Breaks</th>
                       <th className="border px-9 py-2 text-left ">Show Off</th>
                     </tr>
