@@ -6,9 +6,9 @@ import useShift from 'hooks/useShift';
 const AddShift = () => {
 
 
-  const {handleSubmit,initialValues}=useShift()
+  const { handleSubmit, initialValues } = useShift()
   // Initial form values
- 
+
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -25,7 +25,7 @@ const AddShift = () => {
   // Handle form submission
   // const handleSubmit = (values) => {
   //   // Prepare the data for API
-  
+
   //   };
 
   //   console.log('Submitted values:', requestData);
@@ -399,6 +399,40 @@ const AddShift = () => {
                 </div>
               </div>
 
+              <div>
+                <div>
+
+                  <Field
+                    type="checkbox"
+                    // name={`shiftSchedulers[${index}].res`}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    // value={values.shiftSchedulers[index].res}
+                    // checked={values.shiftSchedulers[index].res}
+                    onChange={(e) => {
+                      // setFieldValue(`shiftSchedulers[${index}].res`, e.target.checked);
+                    }}
+                  />
+                  <label>Day Change On Same Day</label>
+
+                </div>
+                <div>
+
+                  <Field
+                    type="checkbox"
+                    // name={`shiftSchedulers[${index}].res`}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    // value={values.shiftSchedulers[index].res}
+                    // checked={values.shiftSchedulers[index].res}
+                    onChange={(e) => {
+                      // setFieldValue(`shiftSchedulers[${index}].res`, e.target.checked);
+                    }}
+                  />
+                  <label>Off Set Ph</label>
+
+                </div>
+
+              </div>
+
               {/* Shift Schedule Table */}
               <div className="mt-8 overflow-scroll">
                 <h2 className="text-xl font-bold mb-4">Shift Schedule</h2>
@@ -420,12 +454,15 @@ const AddShift = () => {
                       {Array(15).fill().map((_, index) => (
                         <th key={`empty-${index}`} className="border px-4 py-2 text-left  bg-gray-100"></th>
                       ))}
-               <th className="border px-4 w-[300px] py-2 text-left bg-gray-100 whitespace-nowrap">Late 1</th>
-                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Late 2</th>
-                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 1-Ded</th>
-                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">OT Hr 2</th>
+                      <th className="border px-4 w-[300px] py-2 text-left bg-gray-100 whitespace-nowrap">Late 1</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Late 2</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 1</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">1-Ded</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 2</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">2-Ded</th>
-                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">OT Hr 3-Ded</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 3</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">3-Ded</th>
+
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 1 Out</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 1 In</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 2 Out</th>
@@ -493,7 +530,7 @@ const AddShift = () => {
                           />
                         </td>
                         <td className="border px-4 py-2">
-                        
+
                           <Field
                             type="checkbox"
                             name={`shiftSchedulers[${index}].extra`}
@@ -520,7 +557,7 @@ const AddShift = () => {
                           />
                         </td>
                         <td className="border px-4 py-2">
-                       
+
                           <Field
                             type="checkbox"
                             name={`shiftSchedulers[${index}].lunchLate`}
@@ -558,7 +595,7 @@ const AddShift = () => {
 
 
                         <td className="border px-4 py-2">
-                        <Field
+                          <Field
                             type="checkbox"
                             name={`shiftSchedulers[${index}].dinnerLate1`}
                             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -570,7 +607,7 @@ const AddShift = () => {
                           />
                         </td>
                         <td className="border px-4 py-2">
-                        <Field
+                          <Field
                             type="checkbox"
                             name={`shiftSchedulers[${index}].dinnerLate2`}
                             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -585,6 +622,13 @@ const AddShift = () => {
 
 
 
+                        <td className="border px-4 py-2">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].otHour1`}
+                            className="w-full p-1 border border-gray-300 rounded"
+                          />
+                        </td>
                         <td className="border px-4 py-2">
                           <Field
                             type="time"
@@ -603,6 +647,13 @@ const AddShift = () => {
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otDeduct2`}
+                            className="w-full p-1 border border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].otHour3`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
