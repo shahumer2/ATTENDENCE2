@@ -587,28 +587,28 @@ const AddShift = () => {
 
                         <td className="border px-4 py-2">
                           <Field
-                            type="text"
+                            type="time"
                             name={`shiftSchedulers[${index}].otDeduct1`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
                         <td className="border px-4 py-2">
                           <Field
-                            type="text"
+                            type="time"
                             name={`shiftSchedulers[${index}].otHour2`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
                         <td className="border px-4 py-2">
                           <Field
-                            type="text"
+                            type="time"
                             name={`shiftSchedulers[${index}].otDeduct2`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
                         <td className="border px-4 py-2">
                           <Field
-                            type="text"
+                            type="time"
                             name={`shiftSchedulers[${index}].otDeduct3`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />

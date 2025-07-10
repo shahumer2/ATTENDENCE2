@@ -72,7 +72,7 @@ const useShift = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const token = currentUser?.token;
-
+    const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const handleSubmit = async (values) => {
         console.log(values, "Form values");
         
@@ -81,7 +81,7 @@ const useShift = () => {
                 ...values,
                 shiftSchedulers: values.shiftSchedulers.map((scheduler, index) => ({
                     ...scheduler,
-                    // weekDay: daysOfWeek[index]
+                    weekDay: daysOfWeek[index]
                 }))
             }; // Added missing closing brace
     
