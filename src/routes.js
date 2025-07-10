@@ -8,6 +8,9 @@ import TableList from "views/TableList.js";
 import AddEmployee from "views/Employee/AddEmployee";
 import ViewUser from "views/Users/ViewUser";
 import ViewEmployee from "views/Employee/ViewEmployee";
+import Shift from "views/Shift/Shift";
+import AddShift from "views/Shift/AddShift";
+
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
 // import Maps from "views/Maps.js";
@@ -49,6 +52,20 @@ const dashboardRoutes = [
     name: "View Employee", 
     icon: "nc-icon nc-chart-pie-35",
     component :ViewEmployee,
+    layout: "/admin",
+  },
+  {
+    path: "/shift/view",
+    name: "View Shift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :Shift,
+    layout: "/admin",
+  },
+  {
+    path: "/shift/add",
+    name: "View Shift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddShift,
     layout: "/admin",
   },
   {

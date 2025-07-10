@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedCompany } from "../../redux/Slice/CompanySlice"; // Adjust import path
 import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings, BsChevronDown, BsChevronUp } from "react-icons/bs";
@@ -7,22 +9,51 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
 
 function Header() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const selectedCompany = useSelector((state) => state.company.selectedCompany);
 
-  const navigate = useNavigate(); 
+  const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
+  const [ShiftDropdownOpen, setShiftDropdownOpen] = useState(false);
   const [masterDropdownOpen, setMasterDropdownOpen] = useState(false);
+
   const userDropdownTimeoutRef = useRef(null);
   const masterDropdownTimeoutRef = useRef(null);
   const employeeDropdownTimeoutRef = useRef(null);
+  const ShiftDropdownTimeoutRef = useRef(null);
+  
+  const companyDropdownTimeoutRef = useRef(null);
+
+  // Sample companies data
+  const companies = [
+    { id: 1, name: "Aste" },
+    { id: 2, name: "XYZ" },
+    { id: 3, name: "Demo" }
+  ];
 
   // Clear timeouts when component unmounts
   useEffect(() => {
     return () => {
+      if (userDropdownTimeoutRef.current) clearTimeout(userDropdownTimeoutRef.current);
+      if (employeeDropdownTimeoutRef.current) clearTimeout(employeeDropdownTimeoutRef.current);
+      if (ShiftDropdownTimeoutRef.current) clearTimeout(employeeDropdownTimeoutRef.current);
+      if (masterDropdownTimeoutRef.current) clearTimeout(masterDropdownTimeoutRef.current);
+      if (companyDropdownTimeoutRef.current) clearTimeout(companyDropdownTimeoutRef.current);
+    };
+  }, []);
+  // Clear timeouts when component unmounts
+  useEffect(() => {
+    return () => {
       if (userDropdownTimeoutRef.current) {
+
         clearTimeout(userDropdownTimeoutRef.current);
       }
       if (employeeDropdownTimeoutRef.current) {
+        clearTimeout(employeeDropdownTimeoutRef.current);
+      }
+      if (ShiftDropdownTimeoutRef.current) {
         clearTimeout(employeeDropdownTimeoutRef.current);
       }
     };
@@ -67,6 +98,42 @@ function Header() {
       setEmployeeDropdownOpen(false);
     }, 300); // 300ms delay before closing
   };
+  //shidt dropdown
+  const handleShiftMouseEnter = () => {
+    if (ShiftDropdownTimeoutRef.current) {
+      clearTimeout(ShiftDropdownTimeoutRef.current);
+    }
+    setShiftDropdownOpen(true);
+  };
+
+  const handleShiftMouseLeave = () => {
+    ShiftDropdownTimeoutRef.current = setTimeout(() => {
+      setShiftDropdownOpen(false);
+    }, 300); // 300ms delay before closing
+  };
+
+  // Company dropdown handlers with delay
+  const handleCompanyMouseEnter = () => {
+    if (companyDropdownTimeoutRef.current) {
+      clearTimeout(companyDropdownTimeoutRef.current);
+    }
+    setShowDropdown(true);
+  };
+
+  const handleCompanyMouseLeave = () => {
+    companyDropdownTimeoutRef.current = setTimeout(() => {
+      setShowDropdown(false);
+    }, 300); // 300ms delay before closing
+  };
+
+  // Select company handler
+  const handleSelectCompany = (company) => {
+    dispatch(setSelectedCompany(company));
+    setShowDropdown(false);
+  };
+
+
+  // ... keep all your existing handler functions ...
 
   return (
     <nav className="bg-[#0e2288] p-3 h-[90px]">
@@ -80,20 +147,51 @@ function Header() {
           <span className="ml-3 text-[#FFD700] text-2xl font-semibold">PAYROLL</span>
 
           {/* Right Icons */}
+
+
           <div className="ml-auto flex items-center">
             <PiDotsNineBold className="text-white text-2xl ml-4 cursor-pointer" />
-            <BsBuildings className="text-white text-2xl ml-4 cursor-pointer" />
+
+            {/* Company Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={handleCompanyMouseEnter}
+              onMouseLeave={handleCompanyMouseLeave}
+            >
+              <div className="flex items-center">
+                <BsBuildings className="text-white text-2xl ml-4" />
+                {selectedCompany && (
+                  <span className="text-white text-sm ml-2">
+                    {selectedCompany.name}
+                  </span>
+                )}
+              </div>
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-50">
+                  <ul className="text-black py-2">
+                    {companies.map((company) => (
+                      <li
+                        key={company.id}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleSelectCompany(company)}
+                      >
+                        {company.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
             <IoNotificationsOutline className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlineQuestionCircle className="text-white text-2xl ml-4 cursor-pointer" />
             <AiOutlinePoweroff
-  onClick={() => navigate("/login")}
-  className="text-white text-2xl ml-4 cursor-pointer"
-/>
-
+              onClick={() => navigate("/login")}
+              className="text-white text-2xl ml-4 cursor-pointer"
+            />
           </div>
         </div>
-
-        {/* Bottom Row: Navigation Links */}
         <div className="flex space-x-6 relative">
           <NavLink
             to="/admin/dashboard"
@@ -106,7 +204,8 @@ function Header() {
           >
             Home
           </NavLink>
-{/* master */}
+          
+          {/* master */}
 
           <div
             className="relative group"
@@ -134,16 +233,15 @@ function Header() {
                 onMouseLeave={handleMasterMouseLeave}
               >
                 <NavLink
-                 to="/admin/department"
+                  to="/admin/department"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${
-                      isActive
-                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
-                 Designation
+                  Designation
                 </NavLink>
                 {/* <NavLink
                   to="/admin/designation"
@@ -201,10 +299,9 @@ function Header() {
                 <NavLink
                   to="/admin/user/add"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${
-                      isActive
-                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
@@ -213,15 +310,56 @@ function Header() {
                 <NavLink
                   to="/admin/user/view"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${
-                      isActive
-                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
                   View Users
                 </NavLink>
+              </div>
+            )}
+          </div>
+{/* 
+          Shift */}
+
+<div
+            className="relative"
+            onMouseEnter={handleShiftMouseEnter}
+            onMouseLeave={handleShiftMouseLeave}
+          >
+            <button
+              className={`flex items-center text-sm font-bold transition ${ShiftDropdownOpen || window.location.pathname.includes('/admin/shift')
+                  ? "text-[#FFD700]"
+                  : "text-slate-300 hover:text-[#FFD700]"
+                }`}
+            >
+              Shift
+              {ShiftDropdownOpen ? (
+                <BsChevronUp className="ml-1" />
+              ) : (
+                <BsChevronDown className="ml-1" />
+              )}
+            </button>
+            {ShiftDropdownOpen && (
+              <div
+                className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10"
+                onMouseEnter={handleShiftMouseEnter}
+                onMouseLeave={handleShiftMouseLeave}
+              >
+                <NavLink
+                  to="/admin/shift/view"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Shift 
+                </NavLink>
+             
               </div>
             )}
           </div>
@@ -244,11 +382,10 @@ function Header() {
             onMouseLeave={handleEmployeeMouseLeave}
           >
             <button
-              className={`flex items-center text-sm font-bold transition ${
-                employeeDropdownOpen || window.location.pathname.includes('/admin/employee/add')
+              className={`flex items-center text-sm font-bold transition ${employeeDropdownOpen || window.location.pathname.includes('/admin/employee/add')
                   ? "text-[#FFD700]"
                   : "text-slate-300 hover:text-[#FFD700]"
-              }`}
+                }`}
             >
               Employee
               {employeeDropdownOpen ? (
@@ -258,7 +395,7 @@ function Header() {
               )}
             </button>
             {employeeDropdownOpen && (
-              <div 
+              <div
                 className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10"
                 onMouseEnter={handleEmployeeMouseEnter}
                 onMouseLeave={handleEmployeeMouseLeave}
@@ -266,10 +403,9 @@ function Header() {
                 <NavLink
                   to="/admin/employee/add"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${
-                      isActive
-                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
@@ -278,10 +414,9 @@ function Header() {
                 <NavLink
                   to="/admin/employee/view"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${
-                      isActive
-                        ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                        : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
@@ -291,6 +426,9 @@ function Header() {
             )}
           </div>
         </div>
+
+        {/* Bottom Row: Navigation Links */}
+        {/* ... keep your existing navigation links ... */}
       </div>
     </nav>
   );
