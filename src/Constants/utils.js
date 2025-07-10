@@ -51,5 +51,8 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  //shift
 
  export const Shift_LIST = `${BASE_URL}/shifts`;
+ export const ADD_SHIFT_DATA = `${BASE_URL}/api/shifts/create`;
+
+ 
 
 

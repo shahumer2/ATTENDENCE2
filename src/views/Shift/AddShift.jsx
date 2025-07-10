@@ -1,73 +1,14 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import useShift from 'hooks/useShift';
 
 const AddShift = () => {
+
+
+  const {handleSubmit,initialValues}=useShift()
   // Initial form values
-  const initialValues = {
-    shiftCode: '',
-    shiftName: '',
-    lateGracePeriod: '',
-    lateAfterPeriod: '',
-    latenessDeduct: '',
-    excludeGracePeriod: false,
-    latenessOffsetOT: false,
-    earlyOutGracePeriod: '',
-    earlyOutAfterEvery: '',
-    earlyOutDeduct: '',
-    overTimeRound: 'NEAREST',
-    overTimeRoundValue: '',
-    overTimeMinOT: '',
-    earlyOverTimeRound: 'NEAREST',
-    earlyOverTimeRoundValue: '',
-    earlyOverTimeMinOT: '',
-    lunchLateTwoThree: false,
-    lunchLateFourFive: false,
-    lunchLateSixSeven: false,
-    dinnerOneLateTwoThree: false,
-    dinnerOneLateFourFive: false,
-    dinnerOneLateSixSeven: false,
-    dinnerTwoLateTwoThree: false,
-    dinnerTwoLateFourFive: false,
-    dinnerTwoLateSixSeven: false,
-    isActive: true,
-    halfDaySetting: [],
-    shiftSchedulers: Array(6).fill().map(() => ({
-      dayChangeOnSameDay: true,
-      offsetPH: false,
-      weekDay: '',
-      inTime: '',
-      outTime: '',
-      dayChange: '00:00:00',
-      lunchOut: '',
-      lunchIn: '',
-      nrm: '',
-      res: false,
-      overTime: '',
-      extra: false,
-      eRate: '',
-      maxHour: '',
-      lunchLate: false,
-      dinnerLate1: false,
-      dinnerLate2: false,
-      phHours: '',
-      phMax: '',
-      phExtra: '',
-      otHour1: '',
-      otHour2: '',
-      otHour3: '',
-      otDeduct1: '',
-      otDeduct2: '',
-      otDeduct3: '',
-      break1Out: '',
-      break1In: '',
-      break2Out: '',
-      break2In: '',
-      break3Out: null,
-      break3In: null,
-      showOff: false
-    }))
-  };
+ 
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -82,20 +23,15 @@ const AddShift = () => {
   const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
   // Handle form submission
-  const handleSubmit = (values) => {
-    // Prepare the data for API
-    const requestData = {
-      ...values,
-      shiftSchedulers: values.shiftSchedulers.map((scheduler, index) => ({
-        ...scheduler,
-        weekDay: daysOfWeek[index]
-      }))
-    };
+  // const handleSubmit = (values) => {
+  //   // Prepare the data for API
+  
+  //   };
 
-    console.log('Submitted values:', requestData);
-    // Add your API submission logic here
-    // axios.post('/api/shifts', requestData).then(...)
-  };
+  //   console.log('Submitted values:', requestData);
+  //   // Add your API submission logic here
+  //   // axios.post('/api/shifts', requestData).then(...)
+  // };
 
   return (
     <div className="bg-white m-6 min-h-screen p-6">
