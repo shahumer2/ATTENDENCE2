@@ -20,7 +20,7 @@ const AddShift = () => {
   });
 
   // Days of the week
-  const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const daysOfWeek = ['SUNDAY','MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
   // Handle form submission
   // const handleSubmit = (values) => {
@@ -299,7 +299,7 @@ const AddShift = () => {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Dinner Late</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Dinner 1 Late</label>
                         <div className="space-y-2">
                           <div className="flex items-center">
                             <Field
@@ -309,7 +309,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerOneLateTwoThree" className="ml-2 block text-sm text-gray-700">
-                              Dinner1 Cik 2 & 3
+                              Clk 2 & 3
                             </label>
                           </div>
                           <div className="flex items-center">
@@ -320,7 +320,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerOneLateFourFive" className="ml-2 block text-sm text-gray-700">
-                              Dinner1 Cik 4 & 5
+                              Clk 4 & 5
                             </label>
                           </div>
                           <div className="flex items-center">
@@ -331,9 +331,13 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerOneLateSixSeven" className="ml-2 block text-sm text-gray-700">
-                              Dinner1 Cik 6 & 7
+                              Clk 6 & 7
                             </label>
                           </div>
+
+
+
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Dinner 2 Late</label>
                           <div className="flex items-center">
                             <Field
                               type="checkbox"
@@ -342,7 +346,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerTwoLateTwoThree" className="ml-2 block text-sm text-gray-700">
-                              Dinner2 Cik 2 & 3
+                              Clk 2 & 3
                             </label>
                           </div>
                           <div className="flex items-center">
@@ -353,7 +357,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerTwoLateFourFive" className="ml-2 block text-sm text-gray-700">
-                              Dinner2 Cik 4 & 5
+                              Clk 4 & 5
                             </label>
                           </div>
                           <div className="flex items-center">
@@ -364,7 +368,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="dinnerTwoLateSixSeven" className="ml-2 block text-sm text-gray-700">
-                              Dinner2 Cik 6 & 7
+                              Clk 6 & 7
                             </label>
                           </div>
                         </div>
@@ -439,23 +443,31 @@ const AddShift = () => {
                 <table className="min-w-full bg-white border border-gray-200">
                   <thead>
                     <tr className='bg-blue-100'>
-                      {['Day', 'Time In', 'Time Out', 'Lunch Out', 'Lunch In', 'NRM', 'RES', 'OT', 'Extra', 'E. Rate', 'Max Hr.', 'Lunch Late'].map((heading, index) => (
+                      {['Day', 'Time In', 'Time Out', 'Day Change', 'Lunch Out', 'Lunch In', 'NRM', 'RES', 'OT', 'Extra', 'E. Rate', 'Max Hr.', 'Lunch Late'].map((heading, index) => (
                         <th key={index} className="border px-4 py-2 text-left">{heading}</th>
                       ))}
+
+                      <th className="border px-4 py-2 text-left" colSpan={2}>Dinner</th>
                       <th className="border px-4 py-2 text-left" >PH</th>
                       <th className="border px-4 py-2 text-left" >PH Max</th>
                       <th className="border px-4 py-2 text-left">PH Ext</th>
-                      <th className="border px-4 py-2 text-left" colSpan={2}>Dinner</th>
                       <th className="border px-4 py-2 text-left" colSpan={6}>Over Time Deductions</th>
                       <th className="border px-4 py-2 text-left" colSpan={6}>Breaks</th>
                       <th className="border px-9 py-2 text-left ">Show Off</th>
                     </tr>
                     <tr>
-                      {Array(15).fill().map((_, index) => (
+                      {Array(13).fill().map((_, index) => (
                         <th key={`empty-${index}`} className="border px-4 py-2 text-left  bg-gray-100"></th>
                       ))}
                       <th className="border px-4 w-[300px] py-2 text-left bg-gray-100 whitespace-nowrap">Late 1</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Late 2</th>
+                      <th className="border px-4 py-2 text-left bg-gray-100"></th>
+                      <th className="border px-4 py-2 text-left bg-gray-100"></th>
+                      <th className="border px-4 py-2 text-left bg-gray-100"></th>
+
+
+
+
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 1</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">1-Ded</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap" >OT Hr 2</th>
@@ -469,6 +481,12 @@ const AddShift = () => {
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 2 In</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 3 Out</th>
                       <th className="border px-4 py-2 text-left bg-gray-100 whitespace-nowrap">Break 3 In</th>
+                    </tr>
+
+
+                    <tr>
+
+
                     </tr>
                   </thead>
                   <tbody>
@@ -486,6 +504,13 @@ const AddShift = () => {
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].outTime`}
+                            className="w-full p-1 border border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="border px-4 py-2 bg-purple-100">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].dayChange`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
@@ -526,7 +551,7 @@ const AddShift = () => {
                           <Field
                             type="number"
                             name={`shiftSchedulers[${index}].overTime`}
-                            className="w-full p-1 border border-gray-300 rounded"
+                            className="px-2 w-[80px] mx-1 border border-gray-300 rounded"
                           />
                         </td>
                         <td className="border px-4 py-2">
@@ -546,7 +571,7 @@ const AddShift = () => {
                           <Field
                             type="number"
                             name={`shiftSchedulers[${index}].eRate`}
-                            className="w-full p-1 border border-gray-300 rounded"
+                            className="px-2 w-[80px] mx-1 p-1 border border-gray-300 rounded"
                           />
                         </td>
                         <td className="border px-4 py-2">
@@ -569,30 +594,6 @@ const AddShift = () => {
                             }}
                           />
                         </td>
-                        <td className="border px-4 py-2">
-                          <Field
-                            type="number"
-                            name={`shiftSchedulers[${index}].phHours`}
-                            className="w-full p-1 border border-gray-300 rounded"
-                          />
-                        </td>
-                        <td className="border px-4 py-2">
-                          <Field
-                            type="time"
-                            name={`shiftSchedulers[${index}].phMax`}
-                            className="w-full p-1 border border-gray-300 rounded"
-                          />
-                        </td>
-                        <td className="border px-4 py-2">
-                          <Field
-                            type="number"
-                            name={`shiftSchedulers[${index}].phExtra`}
-                            className="w-full p-1 border border-gray-300 rounded"
-                          />
-                        </td>
-
-
-
 
                         <td className="border px-4 py-2">
                           <Field
@@ -622,42 +623,72 @@ const AddShift = () => {
 
 
 
+
+                        <td className="border px-5 py-2 w-9">
+                          <Field
+                            type="number"
+                            name={`shiftSchedulers[${index}].phHours`}
+                            className=" px-2 w-[80px] mx-1 border border-gray-300 rounded"
+                          />
+                        </td>
                         <td className="border px-4 py-2">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].phMax`}
+                            className="w-full p-1 border border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field
+                            type="number"
+                            name={`shiftSchedulers[${index}].phExtra`}
+                            className="w-full p-1 border border-gray-300 rounded"
+                          />
+                        </td>
+
+
+
+
+                       
+
+
+
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otHour1`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otDeduct1`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otHour2`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otDeduct2`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otHour3`}
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 bg-red-100">
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otDeduct3`}

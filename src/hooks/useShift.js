@@ -22,23 +22,27 @@ const useShift = () => {
         earlyOverTimeRound: 'NEAREST',
         earlyOverTimeRoundValue: '',
         earlyOverTimeMinOT: '',
+
         lunchLateTwoThree: false,
         lunchLateFourFive: false,
         lunchLateSixSeven: false,
+
         dinnerOneLateTwoThree: false,
         dinnerOneLateFourFive: false,
         dinnerOneLateSixSeven: false,
         dinnerTwoLateTwoThree: false,
         dinnerTwoLateFourFive: false,
         dinnerTwoLateSixSeven: false,
+
         isActive: true,
         halfDaySetting: [],
-        shiftSchedulers: Array(6).fill().map(() => ({
-          dayChangeOnSameDay: true,
-          offsetPH: false,
+        dayChangeOnSameDay: true,
+          offsetPH: false, 
+        shiftSchedulers: Array(7).fill().map(() => ({
+          
           weekDay: '',
-          inTime: '',
-          outTime: '',
+          inTime: '00:00:00:PM',
+          outTime: '00:00:00',
           dayChange: '00:00:00',
           lunchOut: '',
           lunchIn: '',
@@ -72,7 +76,7 @@ const useShift = () => {
 
     const { currentUser } = useSelector((state) => state.user);
     const token = currentUser?.token;
-    const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+    const daysOfWeek = ['SUNDAY','MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const handleSubmit = async (values) => {
         console.log(values, "Form values");
         
