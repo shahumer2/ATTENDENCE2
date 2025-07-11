@@ -47,7 +47,7 @@ const AddShift = () => {
         >
           {({ values, setFieldValue }) => (
             <Form>
-              <div className='flex flex-row gap-3 flex-2 mb-3'>
+              <div className='flex flex-row gap-2 flex-2 mb-3'>
                 <div className='w-[300px]'>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Shift Code<span className='text-red-600'>*</span></label>
                   <Field
@@ -72,7 +72,7 @@ const AddShift = () => {
               <div className="flex flex-nowrap overflow-x-auto pb-4 gap-2">
                 {/* Lateness Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Lateness</h2>
                   </div>
                   <div className="p-6">
@@ -112,7 +112,7 @@ const AddShift = () => {
                           type="checkbox"
                           name="excludeGracePeriod"
                           id="excludeGracePeriod"
-                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                          className="h-4 w-4 text-blue-300 focus:ring-blue-500 border-gray-300 rounded"
                         />
                         <label htmlFor="excludeGracePeriod" className="ml-2 block text-sm text-gray-700">
                           Exclude Grace Period
@@ -135,7 +135,7 @@ const AddShift = () => {
 
                 {/* Early Out Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Early Out</h2>
                   </div>
                   <div className="p-6">
@@ -173,7 +173,7 @@ const AddShift = () => {
 
                 {/* Over Time Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Over Time</h2>
                   </div>
                   <div className="p-6">
@@ -214,7 +214,7 @@ const AddShift = () => {
 
                 {/* Early Over Time Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Early Over Time</h2>
                   </div>
                   <div className="p-6">
@@ -255,7 +255,7 @@ const AddShift = () => {
 
                 {/* Lunch/Dinner Late Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Lunch / Dinner Late</h2>
                   </div>
                   <div className="p-6">
@@ -379,7 +379,7 @@ const AddShift = () => {
 
                 {/* Half Day Settings Section */}
                 <div className="w-[180px] bg-white rounded-lg shadow-md overflow-hidden flex-shrink-0">
-                  <div className="bg-blue-600 text-white p-4">
+                  <div className="bg-blue-300 text-white p-4">
                     <h2 className="text-sm font-semibold">Half Day Settings</h2>
                   </div>
                   <div className="p-6">
