@@ -1,9 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { ADD_SHIFT_DATA } from "Constants/utils";
+import { Shift_LIST } from "Constants/utils";
+import { GET_ShiftSearch_URL } from "Constants/utils";
 import { ADD_Shift_DATA } from "Constants/utils";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const useShift = () => {
+    const [shiftSearch, setshiftSearch] = useState([])
 
     const initialValues = {
         shiftCode: '',
@@ -111,14 +117,85 @@ const useShift = () => {
             toast.error('An error occurred. Please try again later.');
         }
     };
+   
+
+    const getShiftSearch = async (page) => {
+        try {
+            const response = await fetch(`${GET_ShiftSearch_URL}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            const data = await response.json();
+            console.log(data, "asd");
+            setshiftSearch(data.content);
+        
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to fetch Voucher");
+        }
+    };
 
     
     
     
 
-    return { initialValues, handleSubmit }
+    return { initialValues, handleSubmit,getShiftSearch,shiftSearch }
 
 }
+
+export const useShiftSearch = (token, page = 1, searchTerm = '') => {
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+  
+    // Debounce search term
+    useEffect(() => {
+      const debouncer = debounce(() => {
+        setDebouncedSearchTerm(searchTerm);
+      }, 300);
+      debouncer();
+      return () => debouncer.cancel();
+    }, [searchTerm]);
+  
+    const fetchShifts = async () => {
+      // If no search term, do a simple GET request for all shifts
+      if (!debouncedSearchTerm) {
+        const response = await fetch(`${Shift_LIST}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) throw new Error('Failed to fetch shifts');
+        return response.json();
+      }
+      
+      // If search term exists, do a POST request with search parameters
+      const response = await fetch(Shift_LIST, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          page: page - 1,
+          size: 10,
+          shiftCode: debouncedSearchTerm,
+          shiftName: debouncedSearchTerm
+        })
+      });
+  
+      if (!response.ok) throw new Error('Failed to search shifts');
+      return response.json();
+    };
+  
+    return useQuery({
+      queryKey: ['shifts', page, debouncedSearchTerm],
+      queryFn: fetchShifts,
+      enabled: !!token, // Always enabled if token exists
+      keepPreviousData: true,
+    });
+  };
 
 
 

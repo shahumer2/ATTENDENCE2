@@ -1,83 +1,128 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { debounce } from 'lodash';
-// import { Shift_ADD, Shift_LIST } from 'Constants/utils';
 import { useNavigate } from 'react-router-dom';
+import { Formik, Form } from 'formik';
+import ReactSelect from 'react-select';
+import { useQuery } from '@tanstack/react-query';
+import { Shift_LIST } from 'Constants/utils';
+import { GET_ShiftSearch_URL } from 'Constants/utils';
 
 const Shift = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
-const navigate = useNavigate()
-  const [showModal, setShowModal] = useState(false);
-  const [companies, setCompanies] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+  const navigate = useNavigate();
 
-
-  // Pagination state
+  const [searchParams, setSearchParams] = useState({
+    shiftCode: null,
+    shiftName: null
+  });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [totalItems, setTotalItems] = useState(0);
 
-  // Fetch companies from API with pagination
-//   const fetchCompanies = useCallback(async (page=0, search = '') => {
-   
-//     try {
+  // Fetch all shifts for dropdown options
+  const { data: shiftOptions, isLoading: optionsLoading } = useQuery({
+    queryKey: ['shiftOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${GET_ShiftSearch_URL}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Raw data from API:', data); // This shows it's an array
+        return data;
+      } catch (error) {
+        console.error('Error fetching shift options:', error);
+        throw error;
+      }
+    },
+    enabled: !!token,
+    select: (data) => {
+      console.log('Data in select function:', data); // Should log the array
       
-//       const url = `${Shift_LIST}?page=${page-1}`;
-//       console.log("url===",url);
-//       const response = await fetch(url, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,   
-//         },
-//       });
+      // Since data is directly the array, we don't need data.content
+      if (!Array.isArray(data)) {
+        console.error('Data is not an array:', data);
+        return {
+          shiftNames: [{ label: 'View All', value: null }],
+          shiftCodes: [{ label: 'View All', value: null }]
+        };
+      }
+  
+      const transformed = {
+        shiftNames: [
+          { label: 'View All', value: null },
+          ...data.map(shift => ({
+            label: shift.shiftName,
+            value: shift.shiftName
+          }))
+        ],
+        shiftCodes: [
+          { label: 'View All', value: null },
+          ...data.map(shift => ({
+            label: shift.shiftCode,
+            value: shift.shiftCode
+          }))
+        ]
+      };
+      
+      console.log('Transformed options:', transformed);
+      return transformed;
+    }
+  });
 
-//       if (!response.ok) throw new Error('Failed to fetch companies');
+  // Fetch filtered shifts based on search params
+// Fetch filtered shifts based on search params
+const { data: shiftData, isLoading, isError, error } = useQuery({
+  queryKey: ['shifts', currentPage, searchParams],
+  queryFn: async () => {
+    const requestBody = {
+      page: currentPage - 1,
+      size: 10,
+      ...(searchParams.shiftCode && { shiftCode: searchParams.shiftCode }),
+      ...(searchParams.shiftName && { shiftName: searchParams.shiftName })
+    };
 
-//       const data = await response.json();
-//       console.log(data,"jamshedd");
-//       setCompanies(data?.content || []);
-//       setTotalItems(data?.totalElements || 0);
-//     } catch (error) {
-//       toast.error('Failed to fetch companies');
-//       console.error(error);
-//     }
-//   }, [token, itemsPerPage]);
+    const response = await fetch(Shift_LIST, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+    
+    if (!response.ok) throw new Error('Failed to fetch shifts');
+    
+    const data = await response.json();
+    console.log('Filtered shift data:', data);
+    return data;
+  },
+  enabled: !!token,
+  keepPreviousData: true
+});
 
-//   useEffect(() => {
-//     fetchCompanies(currentPage, debouncedSearchTerm);
-//   }, [fetchCompanies, currentPage, debouncedSearchTerm]);
+  const handleSearchSubmit = (values) => {
+    console.log('Search form submitted with values:', values);
+    setSearchParams({
+      shiftCode: values.shiftCode,
+      shiftName: values.shiftName
+    });
+    setCurrentPage(1);
+  };
 
-//   // Debounce search input
-//   const debounceSearch = useCallback(
-//     debounce((value) => {
-//       setDebouncedSearchTerm(value);
-//       setCurrentPage(1); // Reset to first page when searching
-//     }, 300),
-//     []
-//   );
+  const totalPages = Math.ceil((shiftData?.totalElements || 0) / 10);
 
-//   const handleSearchChange = (e) => {
-//     const value = e.target.value;
-//     setSearchTerm(value);
-//     debounceSearch(value);
-//   };
-
-  // Handle file uploads
-
-
-
-
- 
-
-
-
-  // Pagination controls
-//   const totalPages = Math.ceil(totalItems / itemsPerPage);
-//   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  if (isError) {
+    toast.error(error.message);
+    return <div>Error loading shifts</div>;
+  }
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
@@ -92,83 +137,141 @@ const navigate = useNavigate()
         </button>
       </div>
 
-      {/* Search */}
-      {/* <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search Shift..."
-          className="w-full md:w-64 px-4 py-2 border rounded"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div> */}
+      {/* Search Form */}
+      <div className='items-center justify-center'>
+        <Formik
+          initialValues={{
+            shiftCode: null,
+            shiftName: null
+          }}
+          onSubmit={handleSearchSubmit}
+        >
+          {({ setFieldValue, values, handleSubmit }) => (
+            <Form>
+              <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
+                <div className="flex-1 min-w-[300px]">
+                  <label className="mb-2.5 block text-black dark:text-white">Shift Code</label>
+                  <ReactSelect
+                    name="shiftCode"
+                    value={shiftOptions?.shiftCodes?.find(option => option.value === values.shiftCode)}
+                    onChange={(option) => {
+                      console.log('Shift Code selected:', option);
+                      setFieldValue('shiftCode', option?.value || null);
+                    }}
+                    options={shiftOptions?.shiftCodes || []}
+                    className="bg-white dark:bg-form-Field"
+                    classNamePrefix="react-select"
+                    placeholder="Select Shift Code"
+                    isClearable
+                    isLoading={optionsLoading}
+                  />
+                </div>
+                <div className="flex-1 min-w-[300px]">
+                  <label className="mb-2.5 block text-black dark:text-white">Shift Name</label>
+                  <ReactSelect
+                    name="shiftName"
+                    value={shiftOptions?.shiftNames?.find(option => option.value === values.shiftName)}
+                    onChange={(option) => {
+                      console.log('Shift Name selected:', option);
+                      setFieldValue('shiftName', option?.value || null);
+                    }}
+                    options={shiftOptions?.shiftNames || []}
+                    className="bg-white dark:bg-form-Field"
+                    classNamePrefix="react-select"
+                    placeholder="Select Shift Name"
+                    isClearable
+                    isLoading={optionsLoading}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  type="submit"
+                  className="flex md:w-[240px] w-[220px] md:h-[37px] h-[40px] pt-2 rounded-lg justify-center bg-primary md:p-2.5 font-medium md:text-sm text-white hover:bg-opacity-90 bg-blue-400 m-5"
+                >
+                  Search
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift Code</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Shift Name</th>
+        {isLoading ? (
+          <div className="p-4 text-center">Loading...</div>
+        ) : (
+          <>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Shift Code
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Shift Name
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {shiftData?.content?.length > 0 ? (
+                  shiftData.content.map((shift) => (
+                    <tr key={shift.id}>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {shift.shiftCode}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {shift.shiftName}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
+                      No shifts found
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
-            </tr>
-          </thead>
-          {/* <tbody className="bg-white divide-y divide-gray-200">
-  {companies.length > 0 ? (
-    companies.map((Shift, index) => (
-      <tr key={index}>
-        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{Shift.ShiftCode}</td>
-        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{Shift.ShiftName}</td>
-        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{Shift.location}</td>
-        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{Shift.city}</td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan={4} className="px-6 py-4 text-sm text-gray-500 text-center">
-        No data found
-      </td>
-    </tr>
-  )}
-</tbody> */}
-
-        </table>
+            {/* Pagination */}
+            {shiftData?.content?.length > 0 && (
+              <div className="flex justify-between items-center mt-4 p-4">
+                <div className="text-sm text-gray-700">
+                  Showing {shiftData.content.length} of {shiftData.totalElements} shifts
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                    <button
+                      key={number}
+                      onClick={() => setCurrentPage(number)}
+                      className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
+                    >
+                      {number}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
-
-      {/* Pagination */}
-      {/* <div className="flex justify-between items-center mt-4">
-        <div className="text-sm text-gray-700">
-          Showing {companies.length} of {totalItems} companies
-        </div>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-            <button
-              key={number}
-              onClick={() => paginate(number)}
-              className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
-            >
-              {number}
-            </button>
-          ))}
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-3 py-1 border rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-      </div> */}
-
-      {/* Add Shift Modal */}
-   
     </div>
   );
 };

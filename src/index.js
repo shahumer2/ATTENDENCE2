@@ -13,11 +13,15 @@ import AdminLayout from './layouts/Admin';  // Your Admin Layout
 import Login from 'components/auth/Login';  // Your Login Component
 import { store, persistor } from './redux/Store.js';
 import PrivateRoute from 'components/auth/PrivateRoute/PrivateRoute';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // ... other imports ...
+
+const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
         <BrowserRouter>
@@ -47,5 +51,6 @@ root.render(
         </BrowserRouter>
       </PersistGate>
     </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
