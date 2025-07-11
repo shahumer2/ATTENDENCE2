@@ -265,7 +265,7 @@ const AddShift = () => {
                         <div className="space-y-2">
                           <div className="flex items-center">
                             <Field
-                              type="checkbox"
+                              type="radio"
                               name="lunchLateTwoThree"
                               id="lunchLateTwoThree"
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -276,7 +276,7 @@ const AddShift = () => {
                           </div>
                           <div className="flex items-center">
                             <Field
-                              type="checkbox"
+                              type="radio"
                               name="lunchLateFourFive"
                               id="lunchLateFourFive"
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
@@ -643,7 +643,7 @@ const AddShift = () => {
                           <Field
                             type="number"
                             name={`shiftSchedulers[${index}].phExtra`}
-                            className="w-full p-1 border border-gray-300 rounded"
+                            className="px-2 w-[80px] mx-1  border border-gray-300 rounded"
                           />
                         </td>
 
@@ -658,6 +658,7 @@ const AddShift = () => {
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otHour1`}
+                      
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
