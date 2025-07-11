@@ -402,8 +402,9 @@ const AddShift = () => {
                   </div>
                 </div>
               </div>
+              {/* Day Change field */}
 
-              <div>
+              {/* <div>
                 <div>
 
                   <Field
@@ -435,12 +436,12 @@ const AddShift = () => {
 
                 </div>
 
-              </div>
+              </div> */}
 
               {/* Shift Schedule Table */}
-              <div className="mt-8 overflow-scroll">
+              <div className="mt-8 overflow-scroll overflow-y-scroll">
                 <h2 className="text-xl font-bold mb-4">Shift Schedule</h2>
-                <table className="min-w-full bg-white border border-gray-200">
+                <table className="min-w-full overflow-y-scroll  bg-white border border-gray-200">
                   <thead>
                     <tr className='bg-blue-100'>
                       {['Day', 'Time In', 'Time Out', 'Day Change', 'Lunch Out', 'Lunch In', 'NRM', 'RES', 'OT', 'Extra', 'E. Rate', 'Max Hr.', 'Lunch Late'].map((heading, index) => (
@@ -491,7 +492,7 @@ const AddShift = () => {
                   </thead>
                   <tbody>
                     {values?.shiftSchedulers.map((day, index) => (
-                      <tr key={index} className='bg-gray-50'>
+                      <tr key={index} className='bg-gray-50 overflow-scroll'>
                         <td className="border px-4 py-2 bg-yellow-100">{daysOfWeek[index].charAt(0) + daysOfWeek[index].slice(1).toLowerCase()}</td>
                         <td className="border px-4 py-2 bg-purple-100">
                           <Field

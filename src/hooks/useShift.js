@@ -41,7 +41,7 @@ const useShift = () => {
         shiftSchedulers: Array(7).fill().map(() => ({
           
           weekDay: '',
-          inTime: '00:00:00:PM',
+          inTime: '00:00:00',
           outTime: '00:00:00',
           dayChange: '00:00:00',
           lunchOut: '',
