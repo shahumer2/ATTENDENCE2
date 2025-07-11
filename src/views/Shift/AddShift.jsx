@@ -265,24 +265,24 @@ const AddShift = () => {
                         <div className="space-y-2">
                           <div className="flex items-center">
                             <Field
-                              type="radio"
+                              type="checkbox"
                               name="lunchLateTwoThree"
                               id="lunchLateTwoThree"
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="lunchLateTwoThree" className="ml-2 block text-sm text-gray-700">
-                              Cik 2 & 3
+                              Clk 2 & 3
                             </label>
                           </div>
                           <div className="flex items-center">
                             <Field
-                              type="radio"
+                              type="checkbox"
                               name="lunchLateFourFive"
                               id="lunchLateFourFive"
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="lunchLateFourFive" className="ml-2 block text-sm text-gray-700">
-                              Cik 4 & 5
+                              Clk 4 & 5
                             </label>
                           </div>
                           <div className="flex items-center">
@@ -293,7 +293,7 @@ const AddShift = () => {
                               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                             />
                             <label htmlFor="lunchLateSixSeven" className="ml-2 block text-sm text-gray-700">
-                              Cik 6 & 7
+                              Clk 6 & 7
                             </label>
                           </div>
                         </div>
