@@ -51,21 +51,21 @@ const Shift = () => {
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
         return {
-          shiftNames: [{ label: 'View All', value: null }],
-          shiftCodes: [{ label: 'View All', value: null }]
+          shiftNames: [{ label: 'Select', value: null }],
+          shiftCodes: [{ label: 'Select', value: null }]
         };
       }
   
       const transformed = {
         shiftNames: [
-          { label: 'View All', value: null },
+          { label: 'Select', value: null },
           ...data.map(shift => ({
             label: shift.shiftName,
             value: shift.shiftName
           }))
         ],
         shiftCodes: [
-          { label: 'View All', value: null },
+          { label: 'Select', value: null },
           ...data.map(shift => ({
             label: shift.shiftCode,
             value: shift.shiftCode
@@ -188,7 +188,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
               <div className="flex justify-center">
                 <button
                   type="submit"
-                  className="flex md:w-[240px] w-[220px] md:h-[37px] h-[40px] pt-2 rounded-lg justify-center bg-primary md:p-2.5 font-medium md:text-sm text-white hover:bg-opacity-90 bg-blue-400 m-5"
+                  className="flex md:w-[240px] w-[220px] md:h-[37px] h-[40px] pt-2 rounded-lg justify-center bg-primary md:p-2.5 font-semibold md:text-sm text-white text-xl hover:bg-opacity-90 bg-blue-500 m-5"
                 >
                   Search
                 </button>
@@ -207,13 +207,13 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
                     Shift Code
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
                     Shift Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
                    Action
                   </th>
                 </tr>
