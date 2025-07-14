@@ -21,10 +21,7 @@ import { useSelector } from 'react-redux';
 
 
 // Update shift
-const updateShift = async ({ id, shiftData }) => {
-  const { data } = await axios.put(`${UPDATE_SHIFT_URL}/${id}`, shiftData);
-  return data;
-};
+
 
 const UpdateShift = () => {
   const { id } = useParams();
@@ -32,6 +29,19 @@ const UpdateShift = () => {
   const queryClient = useQueryClient();
   const { currentUser } = useSelector((state) => state.user);
 const token = currentUser?.token;
+
+const updateShift = async ({ id, shiftData }) => {
+    // Get token from wherever you store it (localStorage, context, etc.)
+     // or your preferred storage method
+    
+    const { data } = await axios.put(`${UPDATE_SHIFT_URL}/${id}`, shiftData, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }
+    });
+    return data;
+  };
 const fetchShiftById = async (id) => {
     try {
         const response = await fetch(`${GET_SHIFTBYID_URL}/${id}`, {
@@ -68,7 +78,7 @@ const fetchShiftById = async (id) => {
     mutationFn: updateShift,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['shift', id] });
-      navigate('/shifts');
+      navigate('/admin/shift/view');
     },
     onError: (error) => {
       console.error('Error updating shift:', error);
