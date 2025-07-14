@@ -10,6 +10,7 @@ import ViewUser from "views/Users/ViewUser";
 import ViewEmployee from "views/Employee/ViewEmployee";
 import Shift from "views/Shift/Shift";
 import AddShift from "views/Shift/AddShift";
+import UpdateShift from "views/Shift/UpdateShift";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -66,6 +67,14 @@ const dashboardRoutes = [
     name: "View Shift", 
     icon: "nc-icon nc-chart-pie-35",
     component :AddShift,
+    layout: "/admin",
+  },
+
+  {
+    path: "/shiftUpdate/:id",
+    name: "View Shift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :UpdateShift,
     layout: "/admin",
   },
   {

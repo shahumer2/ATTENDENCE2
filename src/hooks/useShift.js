@@ -2,14 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { ADD_SHIFT_DATA } from "Constants/utils";
 import { Shift_LIST } from "Constants/utils";
 import { GET_ShiftSearch_URL } from "Constants/utils";
+import { GET_SHIFTBYID_URL } from "Constants/utils";
 import { ADD_Shift_DATA } from "Constants/utils";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const useShift = () => {
+const useShift = (id) => {
+
+  
     const [shiftSearch, setshiftSearch] = useState([])
+    
 
     const initialValues = {
         shiftCode: '',
@@ -117,6 +121,27 @@ const useShift = () => {
             toast.error('An error occurred. Please try again later.');
         }
     };
+
+      
+
+    const getShiftById = async (page) => {
+      try {
+          const response = await fetch(`${GET_SHIFTBYID_URL}/${id}`, {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+              }
+          });
+          const data = await response.json();
+          console.log(data, "asd");
+          setshiftSearch(data.content);
+      
+      } catch (error) {
+          console.error(error);
+          toast.error("Failed to fetch Voucher");
+      }
+  };
    
 
     const getShiftSearch = async (page) => {
