@@ -7,7 +7,8 @@ import ReactSelect from 'react-select';
 import { useQuery } from '@tanstack/react-query';
 import { Shift_LIST } from 'Constants/utils';
 import { GET_ShiftSearch_URL } from 'Constants/utils';
-
+import { CiEdit } from "react-icons/ci";
+import { MdDelete } from "react-icons/md";
 const Shift = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -150,7 +151,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
             <Form>
               <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black dark:text-white">Shift Code</label>
+                  <label className="mb-2.5 block text-black">Shift Code</label>
                   <ReactSelect
                     name="shiftCode"
                     value={shiftOptions?.shiftCodes?.find(option => option.value === values.shiftCode)}
@@ -167,7 +168,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
                   />
                 </div>
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black dark:text-white">Shift Name</label>
+                  <label className="mb-2.5 block text-black ">Shift Name</label>
                   <ReactSelect
                     name="shiftName"
                     value={shiftOptions?.shiftNames?.find(option => option.value === values.shiftName)}
@@ -212,6 +213,9 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Shift Name
                   </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                   Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -223,6 +227,14 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {shift.shiftName}
+                      </td>
+
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <div className='flex flex-row gap-3'>
+                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/ShiftUpdate/${shift.id}`)}/>
+                        <MdDelete color='red' className='cursor-pointer' size={25}/>
+
+                        </div>
                       </td>
                     </tr>
                   ))
