@@ -3,6 +3,24 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const useEmployee = ({startDate,confirmationDate,leaveCalDate,resignationDate,children,profilePic}) => {
+
+
+    const RestDay = [
+        { value: 'Sunday', label: 'Sunday' },
+        { value: 'Monday', label: 'Monday' },
+        { value: 'Tuesday', label: 'Tuesday' },
+        { value: 'Wednesday', label: 'Wednesday' },
+        { value: 'Thursday', label: 'Thursday' },
+        { value: 'Friday', label: 'Friday' },
+        { value: 'Saturday', label: 'Saturday' }
+      ];
+      const rateOptions = [
+        { value: 'Normal', label: 'Normal Rate (1.5,2.0)' },
+        { value: 'flat', label: 'Flat Rate' },
+        { value: 'hourly', label: 'Hourly Rate' },
+        { value: 'Daily', label: 'Daily Rate' },
+        { value: 'Vip', label: 'Vip Rate' }
+      ];
 console.log(profilePic,"profilepic+++++");
     const initialValues = {
         // appAccess: '',
@@ -57,31 +75,31 @@ console.log(profilePic,"profilepic+++++");
     
         console.log('FormData ready for submission');
     
-        try {
-            const response = await fetch(ADD_EMPLOYEE_DATA, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`, // Let the browser set Content-Type (for FormData)
-                },
-                body: formData,
-            });
+        // try {
+        //     const response = await fetch(ADD_EMPLOYEE_DATA, {
+        //         method: 'POST',
+        //         headers: {
+        //             Authorization: `Bearer ${token}`, // Let the browser set Content-Type (for FormData)
+        //         },
+        //         body: formData,
+        //     });
     
-            const data = await response.json();
-            console.log(data, "employee");
+        //     const data = await response.json();
+        //     console.log(data, "employee");
     
-            if (response.ok) {
-                toast.success('Employee Successfully!');
-            } else {
-                toast.error('Error While Adding Employee');
-            }
-        } catch (error) {
-            toast.error('An error occurred. Please try again later.');
-        }
+        //     if (response.ok) {
+        //         toast.success('Employee Successfully!');
+        //     } else {
+        //         toast.error('Error While Adding Employee');
+        //     }
+        // } catch (error) {
+        //     toast.error('An error occurred. Please try again later.');
+        // }
     };
     
     
 
-    return { initialValues, handleSubmit }
+    return { initialValues, handleSubmit,RestDay,rateOptions }
 
 }
 export default useEmployee

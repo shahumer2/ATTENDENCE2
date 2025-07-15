@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useEmployee from 'hooks/useEmployee';
 import { User, Calendar, Briefcase, Users, X } from 'lucide-react';
-
+import ReactSelect from 'react-select';
+import { components } from 'react-select';
+import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { FaInfoCircle } from "react-icons/fa";
 const AddEmployee = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  const token = currentUser?.token;
   const [children, setChildren] = useState([]);
   const [profileImage, setProfileImage] = useState(null);
   const [profilePic, setprofilePic] = useState(null);
@@ -16,14 +22,14 @@ const AddEmployee = () => {
   const [resignationDate, setResignationDate] = useState(null);
 
   // Initial form values
-  const { initialValues, handleSubmit } = useEmployee({ 
-    profilePic, 
-    startDate, 
-    confirmationDate, 
-    leaveCalDate, 
-    resignationDate, 
-    profileImage, 
-    children 
+  const { initialValues, handleSubmit, RestDay, rateOptions } = useEmployee({
+    profilePic,
+    startDate,
+    confirmationDate,
+    leaveCalDate,
+    resignationDate,
+    profileImage,
+    children
   });
 
   // Validation schema
@@ -34,14 +40,126 @@ const AddEmployee = () => {
     phoneNumber: Yup.string().required('Required'),
   });
 
+  //shift tanstack
+
+  const { data: shiftOptions, isLoading: optionsLoading } = useQuery({
+    queryKey: ['shiftOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${GET_ShiftSearch_URL}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Raw data from API:', data); // This shows it's an array
+        return data;
+      } catch (error) {
+        console.error('Error fetching shift options:', error);
+        throw error;
+      }
+    },
+    enabled: !!token,
+    select: (data) => {
+      console.log('Data in select function:', data); // Should log the array
+
+      // Since data is directly the array, we don't need data.content
+      if (!Array.isArray(data)) {
+        console.error('Data is not an array:', data);
+        return {
+          shiftNames: [{ label: 'Select', value: null }],
+          // shiftCodes: [{ label: 'Select', value: null }]
+        };
+      }
+
+      const transformed = {
+        shiftNames: [
+          { label: 'Select', value: null },
+          ...data.map(shift => ({
+            label: shift.shiftName,
+            value: shift.shiftName
+          }))
+        ],
+        // shiftCodes: [
+        //   { label: 'Select', value: null },
+        //   ...data.map(shift => ({
+        //     label: shift.shiftCode,
+        //     value: shift.shiftCode
+        //   }))
+        // ]
+      };
+
+      console.log('Transformed options:', transformed);
+      return transformed;
+    }
+  });
+
+  //app access
+
+  const [selectedApps, setSelectedApps] = useState({
+    'E-TMS': false,
+    'E-payroll': false,
+    'E-LEAVE': false,
+    'MOBILEATTENDENCE': false,
+    'E-HR': false
+  });
+
+  const [appDetails, setAppDetails] = useState({
+    eTMS: {
+      otType: '',
+      flatHourly: 0.0,
+      weeklyOT: false,
+      eligibleWorkingHoursPerWeek: 44.0
+    },
+    ePayroll: {
+      payrollType: '',
+      bankAccount: '',
+      taxNumber: ''
+    },
+    eLeave: {
+      leaveAccrual: '',
+      carryForward: false,
+      maxCarryForwardDays: ''
+    },
+    mobileAttendance: {
+      geoFencing: false,
+      radius: '',
+      checkInMethod: ''
+    },
+    eHR: {
+      accessLevel: '',
+      canViewSalaries: false,
+      canEditEmployees: false
+    }
+  });
+  console.log(appDetails, "appDetails_______-");
+  const [activeTab, setActiveTab] = useState(null);
+  const [activeMainTab, setActiveMainTab] = useState('basic'); // 'basic', 'eTMS', 'ePayroll', etc.
+
+  // Add this effect to set the first available tab as active when apps are selected
+  useEffect(() => {
+    if (!activeTab || !selectedApps[activeTab]) {
+      const firstSelectedApp = Object.keys(selectedApps).find(app => selectedApps[app]);
+      if (firstSelectedApp) {
+        setActiveTab(firstSelectedApp);
+      }
+    }
+  }, [selectedApps]);
+  ///////////////////////////////
+
   // Handle child addition
   const addChild = () => {
-    setChildren([...children, { 
-      name: '', 
-      dob: null, 
-      gender: '', 
-      birthCertificateNo: '', 
-      singaporeCitizen: false 
+    setChildren([...children, {
+      name: '',
+      dob: null,
+      gender: '',
+      birthCertificateNo: '',
+      singaporeCitizen: false
     }]);
   };
 
@@ -72,8 +190,22 @@ const AddEmployee = () => {
     }
   };
 
+  //shift setting 
+  const [selectedSetting, setSelectedSetting] = useState(null);
+  const handleDutyRoasterChange = (option) => {
+    // Handle duty roaster change
+  };
+  
+  const handleAutoShiftChange = (option) => {
+    // Handle auto shift change
+  };
+  
+  const handleScheduleChange = (option) => {
+    // Handle schedule change
+  };
+
   return (
-    <div className="bg-gray-50 min-h-screen p-6">
+    <div className="bg-blue-50 min-h-screen p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Employee Registration</h1>
@@ -87,443 +219,783 @@ const AddEmployee = () => {
           {({ values, setFieldValue }) => (
             <Form>
               {/* Basic Details Section */}
-              <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="bg-blue-600 text-white p-4 flex items-center">
-                  <User className="mr-2" size={20} />
-                  <h2 className="text-lg font-semibold">Basic Details</h2>
-                </div>
-                <div className="p-6">
-                  <div className="flex">
-                    <div className="w-3/4 pr-6">
-                      <div className="grid grid-cols-3 gap-6 mb-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Employee Code*</label>
-                          <Field
-                            name="employeeCode"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter code"
-                          />
-                          <ErrorMessage name="employeeCode" component="div" className="text-red-500 text-xs mt-1" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Employee Name*</label>
-                          <Field
-                            name="employeeName"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter full name"
-                          />
-                          <ErrorMessage name="employeeName" component="div" className="text-red-500 text-xs mt-1" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                          <Field
-                            as="select"
-                            name="gender"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                          >
-                            <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
-                          </Field>
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-6 mb-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
-                          <Field
-                            as="select"
-                            name="martialStatus"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                          >
-                            <option value="">Select Status</option>
-                            <option value="single">Single</option>
-                            <option value="married">Married</option>
-                            <option value="divorced">Divorced</option>
-                            <option value="widowed">Widowed</option>
-                          </Field>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
-                          <Field
-                            name="email"
-                            type="email"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="email@example.com"
-                          />
-                          <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number*</label>
-                          <Field
-                            name="phoneNumber"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter phone number"
-                          />
-                          <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-xs mt-1" />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-6 mb-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Join Date</label>
-                          <DatePicker
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholderText="Select date"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Confirmation Date</label>
-                          <DatePicker
-                            selected={confirmationDate}
-                            onChange={(date) => setConfirmationDate(date)}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholderText="Select date"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Probation Months</label>
-                          <Field
-                            name="probationMonths"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter months"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-3 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Fingerprint ID</label>
-                          <Field
-                            name="fingerPrint"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter ID"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Face ID</label>
-                          <Field
-                            name="faceId"
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Enter ID"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Leave Calculation Date</label>
-                          <DatePicker
-                            selected={leaveCalDate}
-                            onChange={(date) => setleaveCalDate(date)}
-                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            placeholderText="Select date"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="w-1/4 pl-6">
-                      <div className="flex flex-col items-center justify-center">
-                        <div className="w-40 h-40 bg-gray-100 rounded-full mb-4 overflow-hidden border-4 border-gray-200 shadow-md">
-                          {profileImage ? (
-                            <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
-                          ) : (
-                            <div className="w-full h-full flex items-center justify-center text-gray-400">
-                              <User size={64} />
-                            </div>
-                          )}
-                        </div>
-                        <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
-                          Upload Photo
-                          <input
-                            type="file"
-                            accept="image/*"
-                            className="hidden"
-                            onChange={handleImageUpload}
-                          />
-                        </label>
-                        <p className="text-xs text-gray-500 mt-2 text-center">JPEG or PNG, max 1MB</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6 mt-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
-                      <DatePicker
-                        selected={resignationDate}
-                        onChange={(date) => setResignationDate(date)}
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        placeholderText="Select date"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
-                      <Field
-                        name="resignationReason"
-                        type="text"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Enter reason if applicable"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Department Section */}
-              <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="bg-blue-600 text-white p-4 flex items-center">
-                  <Briefcase className="mr-2" size={20} />
-                  <h2 className="text-lg font-semibold">Department Details</h2>
-                </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-4 gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                      <Field
-                        as="select"
-                        name="department"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Department</option>
-                        <option value="hr">HR</option>
-                        <option value="it">IT</option>
-                        <option value="finance">Finance</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Designation</label>
-                      <Field
-                        as="select"
-                        name="designation"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Designation</option>
-                        <option value="manager">Manager</option>
-                        <option value="developer">Developer</option>
-                        <option value="analyst">Analyst</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">AWS</label>
-                      <Field
-                        as="select"
-                        name="aws"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select AWS</option>
-                        <option value="aws1">AWS 1</option>
-                        <option value="aws2">AWS 2</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Holiday Group</label>
-                      <Field
-                        as="select"
-                        name="holidayGroup"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Holiday Group</option>
-                        <option value="group1">Group 1</option>
-                        <option value="group2">Group 2</option>
-                      </Field>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Hours Worked Per Day</label>
-                      <Field
-                        as="select"
-                        name="hoursWorkedPerDay"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Hours</option>
-                        <option value="8">8 Hours</option>
-                        <option value="9">9 Hours</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Days Worked Per Week</label>
-                      <Field
-                        as="select"
-                        name="daysWorkedPerWeek"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Days</option>
-                        <option value="5">5 Days</option>
-                        <option value="6">6 Days</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Hours Worked Per Year</label>
-                      <Field
-                        as="select"
-                        name="hoursWorkedPerYear"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Hours</option>
-                        <option value="2080">2080 Hours</option>
-                        <option value="2340">2340 Hours</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Part Time</label>
-                      <Field
-                        as="select"
-                        name="partTime"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                      </Field>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                      <Field
-                        as="select"
-                        name="category"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Category</option>
-                        <option value="category1">Category 1</option>
-                        <option value="category2">Category 2</option>
-                      </Field>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Leave Category</label>
-                      <Field
-                        as="select"
-                        name="leaveCategory"
-                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="">Select Leave Category</option>
-                        <option value="annual">Annual</option>
-                        <option value="sick">Sick</option>
-                      </Field>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Children Details Section */}
-              <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
-                  <div className="flex items-center">
-                    <Users className="mr-2" size={20} />
-                    <h2 className="text-lg font-semibold">Children Details</h2>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={addChild}
-                    className="bg-white text-blue-600 px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-50 transition duration-150 ease-in-out shadow-sm"
-                  >
-                    Add Child
-                  </button>
-                </div>
-                <div className="p-6">
-                  {children.length === 0 ? (
-                    <div className="text-center py-8 bg-gray-50 rounded-md border border-dashed border-gray-300">
-                      <Users size={48} className="mx-auto text-gray-400 mb-2" />
-                      <p className="text-gray-500">No children added yet</p>
-                      <button 
-                        type="button"
-                        onClick={addChild}
-                        className="mt-4 text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Add a child record
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead>
-                          <tr className="bg-gray-50">
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date of Birth</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Birth Cert No</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SG Citizen</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {children.map((child, index) => (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <input
-                                  type="text"
-                                  value={child.name}
-                                  onChange={(e) => handleChildChange(index, 'name', e.target.value)}
-                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="Child name"
-                                />
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <DatePicker
-                                  selected={child.dob}
-                                  onChange={(date) => handleChildChange(index, 'dob', date.toISOString().split('T')[0] || "")}
-                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                  placeholderText="Select date"
-                                />
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <select
-                                  value={child.gender}
-                                  onChange={(e) => handleChildChange(index, 'gender', e.target.value)}
-                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                >
-                                  <option value="">Select</option>
-                                  <option value="male">Male</option>
-                                  <option value="female">Female</option>
-                                </select>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <input
-                                  type="text"
-                                  value={child.birthCertificateNo}
-                                  onChange={(e) => handleChildChange(index, 'birthCertificateNo', e.target.value)}
-                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="Certificate number"
-                                />
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-center">
+              <div className="  items-center bg-white rounded-lg shadow-md overflow-hidden">
+                <div className='h-[50px] mt-1 mr-1 flex justify-end'>
+                  <ReactSelect
+                    name="appAccess"
+                    className="bg-white dark:bg-form-Field w-64"
+                    classNamePrefix="react-select"
+                    placeholder="Select App Access"
+                    isClearable
+                    components={{
+                      Menu: (props) => (
+                        <components.Menu {...props}>
+                          <div className="p-2">
+                            {Object.keys(selectedApps).map((app) => (
+                              <label key={app} className="flex items-center space-x-2 p-2 hover:bg-gray-100 cursor-pointer">
                                 <input
                                   type="checkbox"
-                                  checked={child.singaporeCitizen}
-                                  onChange={(e) => handleChildChange(index, 'singaporeCitizen', e.target.checked)}
-
-                                  className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                  checked={selectedApps[app]}
+                                  onChange={(e) => setSelectedApps({ ...selectedApps, [app]: e.target.checked })}
+                                  className="form-checkbox h-4 w-4 text-blue-600"
                                 />
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <button
-                                  type="button"
-                                  onClick={() => removeChild(index)}
-                                  className="flex items-center text-red-600 hover:text-red-800"
-                                >
-                                  <X size={16} className="mr-1" /> Remove
-                                </button>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
+                                <span>{app.split(0, 1).join('-')}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </components.Menu>
+                      ),
+                    }}
+                  />
                 </div>
+                {/* <div className="bg-blue-600 text-white p-4 flex items-center">
+                  <User className="mr-2" size={20} />
+                  <h2 className="text-lg font-semibold">Basic Details</h2>
+                </div> */}
+
+                {/* Application Tabs Section */}
+                <div className="flex border-b bg-blue-600 text-white border-gray-200 mb-6">
+                  <button
+                    className={`px-4 py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                    onClick={() => setActiveMainTab('basic')}
+                  >
+                    Basic Details
+                  </button>
+                  {selectedApps['E-TMS'] && (
+                    <button
+                      className={`px-4 py-2 font-xs ${activeMainTab === 'eTMS' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      onClick={() => setActiveMainTab('eTMS')}
+                    >
+                      E-TMS
+                    </button>
+                  )}
+                  {selectedApps['E-payroll'] && (
+                    <button
+                      className={`px-4 py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      onClick={() => setActiveMainTab('ePayroll')}
+                    >
+                      E-Payroll
+                    </button>
+                  )}
+                  {/* Add similar buttons for other apps */}
+                </div>
+
+
+
+
+                {/* /Basic Details */}
+
+                {activeMainTab === 'basic' && (
+                  <>
+                    <div className="p-6">
+                      <div className="flex">
+                        <div className="w-3/4 pr-6">
+                          <div className="grid grid-cols-3 gap-6 mb-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Employee Code*</label>
+                              <Field
+                                name="employeeCode"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter code"
+                              />
+                              <ErrorMessage name="employeeCode" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Employee Name*</label>
+                              <Field
+                                name="employeeName"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter full name"
+                              />
+                              <ErrorMessage name="employeeName" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                              <Field
+                                as="select"
+                                name="gender"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                              >
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                              </Field>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-6 mb-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
+                              <Field
+                                as="select"
+                                name="martialStatus"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                              >
+                                <option value="">Select Status</option>
+                                <option value="single">Single</option>
+                                <option value="married">Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                              </Field>
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Email*</label>
+                              <Field
+                                name="email"
+                                type="email"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="email@example.com"
+                              />
+                              <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number*</label>
+                              <Field
+                                name="phoneNumber"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter phone number"
+                              />
+                              <ErrorMessage name="phoneNumber" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-6 mb-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Join Date</label>
+                              <DatePicker
+                                selected={startDate}
+                                onChange={(date) => setStartDate(date)}
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholderText="Select date"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Confirmation Date</label>
+                              <DatePicker
+                                selected={confirmationDate}
+                                onChange={(date) => setConfirmationDate(date)}
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholderText="Select date"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Probation Months</label>
+                              <Field
+                                name="probationMonths"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter months"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-6">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Fingerprint ID</label>
+                              <Field
+                                name="fingerPrint"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter ID"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Face ID</label>
+                              <Field
+                                name="faceId"
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter ID"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">Leave Calculation Date</label>
+                              <DatePicker
+                                selected={leaveCalDate}
+                                onChange={(date) => setleaveCalDate(date)}
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholderText="Select date"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="w-1/4 pl-6">
+                          <div className="flex flex-col items-center justify-center">
+                            <div className="w-40 h-40 bg-gray-100 rounded-full mb-4 overflow-hidden border-4 border-gray-200 shadow-md">
+                              {profileImage ? (
+                                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                  <User size={64} />
+                                </div>
+                              )}
+                            </div>
+                            <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
+                              Upload Photo
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleImageUpload}
+                              />
+                            </label>
+                            <p className="text-xs text-gray-500 mt-2 text-center">JPEG or PNG, max 1MB</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-6 mt-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
+                          <DatePicker
+                            selected={resignationDate}
+                            onChange={(date) => setResignationDate(date)}
+                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            placeholderText="Select date"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
+                          <Field
+                            name="resignationReason"
+                            type="text"
+                            className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Enter reason if applicable"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {/* Department Section */}
+                    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="bg-blue-600 text-white p-4 flex items-center">
+                        <Briefcase className="mr-2" size={20} />
+                        <h2 className="text-lg font-semibold">Department Details</h2>
+                      </div>
+                      <div className="p-6">
+                        <div className="grid grid-cols-4 gap-6 mb-6">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                            <Field
+                              as="select"
+                              name="department"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Department</option>
+                              <option value="hr">HR</option>
+                              <option value="it">IT</option>
+                              <option value="finance">Finance</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Designation</label>
+                            <Field
+                              as="select"
+                              name="designation"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Designation</option>
+                              <option value="manager">Manager</option>
+                              <option value="developer">Developer</option>
+                              <option value="analyst">Analyst</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">AWS</label>
+                            <Field
+                              as="select"
+                              name="aws"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select AWS</option>
+                              <option value="aws1">AWS 1</option>
+                              <option value="aws2">AWS 2</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Holiday Group</label>
+                            <Field
+                              as="select"
+                              name="holidayGroup"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Holiday Group</option>
+                              <option value="group1">Group 1</option>
+                              <option value="group2">Group 2</option>
+                            </Field>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-4 gap-6 mb-6">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Hours Worked Per Day</label>
+                            <Field
+                              as="select"
+                              name="hoursWorkedPerDay"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Hours</option>
+                              <option value="8">8 Hours</option>
+                              <option value="9">9 Hours</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Days Worked Per Week</label>
+                            <Field
+                              as="select"
+                              name="daysWorkedPerWeek"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Days</option>
+                              <option value="5">5 Days</option>
+                              <option value="6">6 Days</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Hours Worked Per Year</label>
+                            <Field
+                              as="select"
+                              name="hoursWorkedPerYear"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Hours</option>
+                              <option value="2080">2080 Hours</option>
+                              <option value="2340">2340 Hours</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Part Time</label>
+                            <Field
+                              as="select"
+                              name="partTime"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Option</option>
+                              <option value="yes">Yes</option>
+                              <option value="no">No</option>
+                            </Field>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <Field
+                              as="select"
+                              name="category"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Category</option>
+                              <option value="category1">Category 1</option>
+                              <option value="category2">Category 2</option>
+                            </Field>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Leave Category</label>
+                            <Field
+                              as="select"
+                              name="leaveCategory"
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            >
+                              <option value="">Select Leave Category</option>
+                              <option value="annual">Annual</option>
+                              <option value="sick">Sick</option>
+                            </Field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+                    {/* Children Details Section */}
+                    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
+                        <div className="flex items-center">
+                          <Users className="mr-2" size={20} />
+                          <h2 className="text-lg font-semibold">Children Details</h2>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={addChild}
+                          className="bg-white text-blue-600 px-4 py-1 rounded-md text-sm font-medium hover:bg-blue-50 transition duration-150 ease-in-out shadow-sm"
+                        >
+                          Add Child
+                        </button>
+                      </div>
+                      <div className="p-6">
+                        {children.length === 0 ? (
+                          <div className="text-center py-8 bg-gray-50 rounded-md border border-dashed border-gray-300">
+                            <Users size={48} className="mx-auto text-gray-400 mb-2" />
+                            <p className="text-gray-500">No children added yet</p>
+                            <button
+                              type="button"
+                              onClick={addChild}
+                              className="mt-4 text-blue-600 hover:text-blue-800 font-medium"
+                            >
+                              Add a child record
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200">
+                              <thead>
+                                <tr className="bg-gray-50">
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date of Birth</th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gender</th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Birth Cert No</th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SG Citizen</th>
+                                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody className="bg-white divide-y divide-gray-200">
+                                {children.map((child, index) => (
+                                  <tr key={index} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <input
+                                        type="text"
+                                        value={child.name}
+                                        onChange={(e) => handleChildChange(index, 'name', e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Child name"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <DatePicker
+                                        selected={child.dob}
+                                        onChange={(date) => handleChildChange(index, 'dob', date.toISOString().split('T')[0] || "")}
+                                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholderText="Select date"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <select
+                                        value={child.gender}
+                                        onChange={(e) => handleChildChange(index, 'gender', e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                      >
+                                        <option value="">Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                      </select>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <input
+                                        type="text"
+                                        value={child.birthCertificateNo}
+                                        onChange={(e) => handleChildChange(index, 'birthCertificateNo', e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Certificate number"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={child.singaporeCitizen}
+                                        onChange={(e) => handleChildChange(index, 'singaporeCitizen', e.target.checked)}
+
+                                        className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                      />
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                      <button
+                                        type="button"
+                                        onClick={() => removeChild(index)}
+                                        className="flex items-center text-red-600 hover:text-red-800"
+                                      >
+                                        <X size={16} className="mr-1" /> Remove
+                                      </button>
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+
+                )}
+                {activeMainTab === 'eTMS' && selectedApps['E-TMS'] && (
+                  <>
+                    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="bg-blue-600 text-white p-4 flex items-center">
+                        <Briefcase className="mr-2" size={20} />
+                        <h2 className="text-lg font-semibold">E-TMS Details</h2>
+                      </div>
+                      <div className="p-6 ">
+                        <div className="grid grid-cols-3 gap-6 ">
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">OT Type</label>
+                            <ReactSelect
+                              options={rateOptions}
+                              value={rateOptions.find(option => option.value === appDetails?.eTMS?.otType)}
+                              onChange={(option) => setAppDetails({
+                                ...appDetails,
+                                eTMS: {
+                                  ...appDetails.eTMS,
+                                  otType: option.value,
+                                  // Reset hours when changing OT type (optional)
+                                  eligibleWorkingHoursPerWeek: ['flat', 'hourly'].includes(option.value)
+                                    ? appDetails.eTMS.eligibleWorkingHoursPerWeek
+                                    : ''
+                                }
+                              })}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Flat/Hourly</label>
+                            <input
+                              type="number"
+                              value={appDetails.eTMS.flatHourly || ''}
+                              onChange={(e) => setAppDetails({
+                                ...appDetails,
+                                eTMS: { ...appDetails.eTMS, flatHourly: e.target.value }
+                              })}
+                              disabled={!['flat', 'hourly'].includes(appDetails?.eTMS?.otType)}
+                              className={`w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${['flat', 'hourly'].includes(appDetails?.eTMS?.otType)
+                                ? 'border-blue-500 bg-white'  // Highlighted when editable
+                                : 'border-gray-300 bg-gray-100'  // Grayed out when disabled
+                                }`}
+                              placeholder={
+                                ['flat', 'hourly'].includes(appDetails?.eTMS?.otType)
+                                  ? "Enter hours"
+                                  : "Select Flat or Hourly rate first"
+                              }
+                            />
+                          </div>
+
+
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Weekly OT</label>
+                            <div className="flex items-center mt-2">
+                              <label className="inline-flex items-center mr-4">
+                                <input
+                                  type="radio"
+                                  checked={appDetails.eTMS.weeklyOT === true}
+                                  onChange={() => setAppDetails({
+                                    ...appDetails,
+                                    eTMS: { ...appDetails.eTMS, weeklyOT: true }
+                                  })}
+                                  className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span className="ml-2">Yes</span>
+                              </label>
+                              <label className="inline-flex items-center">
+                                <input
+                                  type="radio"
+                                  checked={appDetails.eTMS.weeklyOT === false}
+                                  onChange={() => setAppDetails({
+                                    ...appDetails,
+                                    eTMS: { ...appDetails.eTMS, weeklyOT: false }
+                                  })}
+                                  className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span className="ml-2">No</span>
+                              </label>
+                            </div>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Eligible Working Hours Per Week</label>
+                            <input
+                              type="number"
+                              value={appDetails.eTMS.eligibleWorkingHoursPerWeek}
+                              onChange={(e) => setAppDetails({
+                                ...appDetails,
+                                eTMS: { ...appDetails.eTMS, eligibleWorkingHoursPerWeek: e.target.value || 44.00 }
+                              })}
+                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                              placeholder="Enter hours"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
+                      <div className="bg-blue-600 text-white p-4 flex items-center">
+                        <Briefcase className="mr-2" size={20} />
+                        <h2 className="text-lg font-semibold">Shift /Branch Details</h2>
+                      </div>
+                      <div className="p-6">
+                        <div className="grid grid-cols-3 gap-6">
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Working Hours/Shift</label>
+                            <ReactSelect
+                              name="shiftName"
+                              value={shiftOptions?.shiftNames?.find(option => option.value === values.shiftName)}
+                              onChange={(option) => {
+                                console.log('Shift Name selected:', option);
+                                setFieldValue('shiftName', option?.value || null);
+                              }}
+                              options={shiftOptions?.shiftNames || []}
+                              className="bg-white dark:bg-form-Field z-9999"
+                              classNamePrefix="react-select"
+                              placeholder="Select Shift Name"
+                              isClearable
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              isLoading={optionsLoading}
+                              menuPosition="fixed"
+                            />
+                          </div>
+
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Rest Day</label>
+                            <ReactSelect
+                              options={RestDay}
+                              value={RestDay.find(option => option.value === appDetails?.eTMS?.otType)}
+                              onChange={(option) => setAppDetails({
+                                ...appDetails,
+                                eTMS: {
+                                  ...appDetails.eTMS,
+                                  restDay: option.value,
+                                }
+                              })}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                            />
+                          </div>
+                        </div>
+
+                        <hr className='mb-3 border shadow-2xl'></hr>
+
+                        <div className='p-3 bg-blue-200 text-xs text-blue-800 mb-4'>
+                          <h2 className='flex flex-row gap-3 items-center'><FaInfoCircle /> The 3 Settings Below Are Optional. You Can Choose Only 1 out Of 3 Settings If Applicable</h2>
+                        </div>
+
+                        {/* Radio buttons in one line */}
+                        <div className="flex gap-6 mb-4">
+                          <label className="inline-flex items-center">
+                            <input
+                              type="radio"
+                              name="settingType"
+                              value="dutyRoaster"
+                              checked={selectedSetting === 'dutyRoaster'}
+                              onChange={() => setSelectedSetting('dutyRoaster')}
+                              className="form-radio h-4 w-4 text-blue-600"
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">Duty Roaster/Group</span>
+                          </label>
+
+                          <label className="inline-flex items-center">
+                            <input
+                              type="radio"
+                              name="settingType"
+                              value="autoShift"
+                              checked={selectedSetting === 'autoShift'}
+                              onChange={() => setSelectedSetting('autoShift')}
+                              className="form-radio h-4 w-4 text-blue-600"
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">Auto Shift</span>
+                          </label>
+
+                          <label className="inline-flex items-center">
+                            <input
+                              type="radio"
+                              name="settingType"
+                              value="schedule"
+                              checked={selectedSetting === 'schedule'}
+                              onChange={() => setSelectedSetting('schedule')}
+                              className="form-radio h-4 w-4 text-blue-600"
+                            />
+                            <span className="ml-2 text-sm font-medium text-gray-700">Schedule</span>
+                          </label>
+                        </div>
+
+                        {/* Conditional React Select fields based on radio selection */}
+                        {selectedSetting === 'dutyRoaster' && (
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster/Group</label>
+                            <ReactSelect
+                              // options={dutyRoasterOptions}
+                              onChange={(option) => handleDutyRoasterChange(option)}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              placeholder="Select Duty Roaster/Group"
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                            />
+                          </div>
+                        )}
+
+                        {selectedSetting === 'autoShift' && (
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Auto Shift</label>
+                            <ReactSelect
+                              // options={autoShiftOptions}
+                              onChange={(option) => handleAutoShiftChange(option)}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              placeholder="Select Auto Shift"
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                            />
+                          </div>
+                        )}
+
+                        {selectedSetting === 'schedule' && (
+                          <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Schedule</label>
+                            <ReactSelect
+                              // options={scheduleOptions}
+                              onChange={(option) => handleScheduleChange(option)}
+                              className="react-select-container"
+                              classNamePrefix="react-select"
+                              placeholder="Select Schedule"
+                              styles={{
+                                menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                                menuPortal: base => ({ ...base, zIndex: 9999 })
+                              }}
+                              menuPortalTarget={document.body}
+                              menuPosition="fixed"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+
+                  </>
+
+                )}
               </div>
+
 
               {/* Submit Button */}
               <div className="flex justify-end mt-8">

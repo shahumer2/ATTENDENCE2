@@ -204,7 +204,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
           <div className="p-4 text-center">Loading...</div>
         ) : (
           <>
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full shadow-xl rounded-md border  divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
@@ -221,7 +221,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
               <tbody className="bg-white divide-y divide-gray-200">
                 {shiftData?.content?.length > 0 ? (
                   shiftData.content.map((shift) => (
-                    <tr key={shift.id}>
+                    <tr key={shift.id} className="even:bg-gray-50 hover:bg-gray-100">
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {shift.shiftCode}
                       </td>
