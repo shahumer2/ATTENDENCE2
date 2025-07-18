@@ -9,20 +9,15 @@ import { useSelector } from 'react-redux';
 import { GET_ShiftSearch_URL } from 'Constants/utils';
 
 const AddDutyRoaster = () => {
-  const { 
-    handleSubmit, 
-    initialValues,
-    selectedGroup,
-    setSelectedGroup
-  } = useDutyRoaster();
-console.log(selectedGroup,"kkjjkkjj");
+  const { handleSubmit, initialValues } = useDutyRoaster();
+  
   const [numberOfGroups, setNumberOfGroups] = useState(1);
   const [recurrenceDays, setRecurrenceDays] = useState(1);
-
+  
   const validationSchema = Yup.object().shape({
     DutyRoasterCode: Yup.string().required('Duty Roaster Code is required'),
     DutyRoasterName: Yup.string().required('Duty Roaster Name is required'),
-
+ 
   });
 
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -49,7 +44,7 @@ console.log(selectedGroup,"kkjjkkjj");
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
 
-
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   const { data: groupOptions, isLoading: groupsLoading } = useQuery({
     queryKey: ['groupOptions'],
@@ -65,21 +60,22 @@ console.log(selectedGroup,"kkjjkkjj");
       return response.json();
     }
   });
-  console.log(groupOptions, "jj");
+  console.log(groupOptions,"jj");
   const groupSelectOptions = groupOptions?.map(group => ({
     value: group.id,
-    values: group.numberOfGrps,
+    values:group.numberOfGrps,
 
-
+    
     // Using the group ID as value
     label: group.numberOfGrps
-      ? `${group.numberOfGrps
-      } Group${group.numberOfGrps
-        > 1 ? 's' : ''}` : 'Unnamed Group'
+    ? `${group.numberOfGrps
+    } Group${group.numberOfGrps
+      > 1 ? 's' : ''}` : 'Unnamed Group'
   })) || [];
 
   // query for shift fetch
 
+  const [selectedShift, setSelectedShift] = useState(null);
 
   const { data: ShiftOptions, isLoading: ShiftLoading } = useQuery({
     queryKey: ['shiftOptions'],
@@ -95,15 +91,15 @@ console.log(selectedGroup,"kkjjkkjj");
       return response.json();
     }
   });
-  console.log(ShiftOptions, 'shifttt');
+  console.log(ShiftOptions,'shifttt');
   const shiftOptions = ShiftOptions?.map(shift => ({
     value: shift.id,
     // values:shift.numberOfGrps,
 
-
+    
     // Using the group ID as value
     label: `${shift.shiftName} |     ${shift.shiftCode}`
-
+    
   })) || [];
 
 
@@ -117,7 +113,7 @@ console.log(selectedGroup,"kkjjkkjj");
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          onSubmit={(values, formikHelpers) => handleSubmit(values, formikHelpers)}
+          onSubmit={handleSubmit}
         >
           {({ values, setFieldValue }) => (
             <Form>
@@ -125,22 +121,22 @@ console.log(selectedGroup,"kkjjkkjj");
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Code</label>
-                  <Field
-                    name="DutyRoasterCode"
-                    className="w-full p-2 border border-gray-300 rounded"
+                  <Field 
+                    name="DutyRoasterCode" 
+                    className="w-full p-2 border border-gray-300 rounded" 
                   />
                   <ErrorMessage name="DutyRoasterCode" component="div" className="text-red-500 text-xs" />
                 </div>
-
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Name</label>
-                  <Field
-                    name="DutyRoasterName"
-                    className="w-full p-2 border border-gray-300 rounded"
+                  <Field 
+                    name="DutyRoasterName" 
+                    className="w-full p-2 border border-gray-300 rounded" 
                   />
                   <ErrorMessage name="DutyRoasterName" component="div" className="text-red-500 text-xs" />
                 </div>
-
+                
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Recurrence Days</label>
                   <ReactSelect
@@ -149,15 +145,15 @@ console.log(selectedGroup,"kkjjkkjj");
                       setRecurrenceDays(option.value);
                       setFieldValue('recurrenceDays', option.value);
                     }}
-                    options={Array.from({ length: 42 }, (_, i) => i + 1).map(day => ({
-                      value: day,
-                      label: `${day} Day${day > 1 ? 's' : ''}`
+                    options={Array.from({ length: 42 }, (_, i) => i + 1).map(day => ({ 
+                      value: day, 
+                      label: `${day} Day${day > 1 ? 's' : ''}` 
                     }))}
                     className="basic-select"
                     classNamePrefix="select"
                   />
                 </div>
-
+                
                 {/* <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Number of Groups</label>
                   <ReactSelect
@@ -179,7 +175,7 @@ console.log(selectedGroup,"kkjjkkjj");
                     name="groupId"
                     value={selectedGroup}
                     onChange={(option) => {
-                      setSelectedGroup(option.value);
+                      setSelectedGroup(option);
                       setNumberOfGroups(option.values)
                       setFieldValue('groupId', option.value);
                     }}
@@ -200,17 +196,18 @@ console.log(selectedGroup,"kkjjkkjj");
                     {/* Week 1 */}
                     <div className="border border-gray-200 rounded-lg p-4 bg-blue-50">
                       <h2 className="text-lg font-semibold mb-4 ">Week {week1 + 1}</h2>
-
+                      
                       <div className="overflow-x-auto">
                         <table className="min-w-full border border-gray-200">
                           <thead>
                             <tr>
                               <th className="border border-gray-300 bg-gray-100 px-2 py-1 text-left text-sm">Groups</th>
                               {daysOfWeek.map((day, dayIndex) => (
-                                <th
-                                  key={`day-${dayIndex}`}
-                                  className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : ''
-                                    }`}
+                                <th 
+                                  key={`day-${dayIndex}`} 
+                                  className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${
+                                    shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : ''
+                                  }`}
                                 >
                                   {day}
                                 </th>
@@ -224,10 +221,11 @@ console.log(selectedGroup,"kkjjkkjj");
                                   Group {groupIndex + 1}
                                 </td>
                                 {daysOfWeek.map((_, dayIndex) => (
-                                  <td
+                                  <td 
                                     key={`cell-${dayIndex}`}
-                                    className={`border border-gray-300 px-2 py-1 ${shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
-                                      }`}
+                                    className={`border border-gray-300 px-2 py-1 ${
+                                      shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
+                                    }`}
                                   >
                                     {shouldShowSelect(week1, dayIndex) ? (
                                       <ReactSelect
@@ -244,7 +242,7 @@ console.log(selectedGroup,"kkjjkkjj");
                                         className="basic-select z-100"
                                         classNamePrefix="select"
                                         menuPosition="fixed"
-                                      // menuPlacement="auto"
+                                        // menuPlacement="auto"
                                       />
                                     ) : (
                                       <span className="text-gray-400 text-sm">-</span>
@@ -262,17 +260,18 @@ console.log(selectedGroup,"kkjjkkjj");
                     {week2 < 6 && (
                       <div className="border border-gray-200 rounded-lg p-4 bg-blue-50">
                         <h2 className="text-lg font-semibold mb-4">Week {week2 + 1}</h2>
-
+                        
                         <div className="overflow-x-auto">
                           <table className="min-w-full border border-gray-200">
                             <thead>
                               <tr>
                                 <th className="border border-gray-300 bg-gray-100 px-2 py-1 text-left text-sm">Groups</th>
                                 {daysOfWeek.map((day, dayIndex) => (
-                                  <th
-                                    key={`day-${dayIndex}`}
-                                    className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : ''
-                                      }`}
+                                  <th 
+                                    key={`day-${dayIndex}`} 
+                                    className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${
+                                      shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : ''
+                                    }`}
                                   >
                                     {day}
                                   </th>
@@ -286,10 +285,11 @@ console.log(selectedGroup,"kkjjkkjj");
                                     Group {groupIndex + 1}
                                   </td>
                                   {daysOfWeek.map((_, dayIndex) => (
-                                    <td
+                                    <td 
                                       key={`cell-${dayIndex}`}
-                                      className={`border border-gray-300 px-2 py-1 ${shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
-                                        }`}
+                                      className={`border border-gray-300 px-2 py-1 ${
+                                        shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
+                                      }`}
                                     >
                                       {shouldShowSelect(week2, dayIndex) ? (
                                         <ReactSelect
@@ -325,18 +325,18 @@ console.log(selectedGroup,"kkjjkkjj");
               </div>
 
               {/* Bottom Form Fields */}
-
+              
 
               {/* Buttons */}
               <div className="flex justify-end space-x-4 mt-8">
-                <button
-                  type="button"
+                <button 
+                  type="button" 
                   className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
+                <button 
+                  type="submit" 
                   className="px-6 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
                 >
                   Save Duty Roaster

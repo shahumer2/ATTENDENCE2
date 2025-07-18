@@ -25,12 +25,12 @@ const AutoShift = () => {
 
 
 
-  const totalPages = Math.ceil((AutoShiftData?.totalElements || 0) / 10);
+  // const totalPages = Math.ceil((AutoShiftData?.totalElements || 0) / 10);
 
-  if (isError) {
-    toast.error(error.message);
-    return <div>Error loading AutoShifts</div>;
-  }
+  // if (isError) {
+  //   toast.error(error.message);
+  //   return <div>Error loading AutoShifts</div>;
+  // }
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
@@ -52,9 +52,9 @@ const AutoShift = () => {
 
       {/* Table */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        {isLoading ? (
+        {/* {isLoading ? (
           <div className="p-4 text-center">Loading...</div>
-        ) : (
+        ) : ( */}
           <>
             <table className="min-w-full shadow-xl rounded-md border  divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -78,7 +78,7 @@ const AutoShift = () => {
             {/* Pagination */}
        
           </>
-        )}
+        
       </div>
     </div>
   );

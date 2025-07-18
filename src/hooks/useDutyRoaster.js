@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const useDutyRoaster = (id) => {
-  const [selectedGroup, setSelectedGroup] = useState(null);
+
 
   const [DutyRoasterSearch, setDutyRoasterSearch] = useState([])
   const [numberOfGroups, setNumberOfGroups] = useState(1);
@@ -44,20 +44,14 @@ const useDutyRoaster = (id) => {
   const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
   const handleSubmit = async (values, { resetForm }, selectedGroup) => {
-    console.log(selectedGroup,"jjjj");
     try {
-      if (!selectedGroup) {
-        toast.error('Please select a group');
-        return;
-      }
-  
       // Transform the form data into the required API format
       const requestData = {
         dutyRoasterCode: values.DutyRoasterCode,
         dutyRoasterName: values.DutyRoasterName,
         effectiveFrom: values.effectiveFrom,
         recurrenceDays: values.recurrenceDays,
-        groupInvolved: numberOfGroups,
+        groupInvolved: numberOfGroups, // Use the state value
         weeks: []
       };
   
@@ -86,7 +80,7 @@ const useDutyRoaster = (id) => {
             
             if (shiftId) {
               week.groupShifts.push({
-                groupsId: parseInt(selectedGroup.value),
+                groupsId: parseInt(selectedGroup.value), // Use the selected group ID
                 shiftId: parseInt(shiftId),
                 day: globalDayIndex + 1 // Days are 1-based
               });
@@ -168,15 +162,14 @@ const useDutyRoaster = (id) => {
 
 
 
+
   return { 
-    initialValues,
-    handleSubmit,
-    getDutyRoasterSearch,
-    DutyRoasterSearch,
-    getDutyRoasterById,
-    selectedGroup,
-    setSelectedGroup
-  };
+    initialValues, 
+    handleSubmit: (values, formikHelpers) => handleSubmit(values, formikHelpers, selectedGroup),
+    getDutyRoasterSearch, 
+    DutyRoasterSearch, 
+    getDutyRoasterById 
+  }
 
 }
 
