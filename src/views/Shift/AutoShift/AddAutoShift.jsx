@@ -5,7 +5,7 @@ import ReactSelect from 'react-select';
 import useAutoShift from 'hooks/useAutoShift';
 
 const AddAutoShift = () => {
-  const { handleSubmit, initialValues } = useAutoShift();
+  const {  initialValues,handleSubmit } = useAutoShift();
   
   const [numberOfGroups, setNumberOfGroups] = useState(1);
   const [recurrenceDays, setRecurrenceDays] = useState(1);

@@ -171,7 +171,7 @@ const useAutoShift = (id) => {
 
 
 
-  return { initialValues, handleSubmit, getAutoShiftSearch, AutoShiftSearch, getAutoShiftById }
+  return { initialValues, handleSubmit, AutoShiftSearch, }
 
 }
 
