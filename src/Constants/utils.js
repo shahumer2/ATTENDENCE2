@@ -57,6 +57,32 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  export const GET_ShiftSearch_URL = `${BASE_URL}/api/shifts/getShiftDropdown`;
  export const GET_SHIFTBYID_URL = `${BASE_URL}/api/shifts`;
  export const UPDATE_SHIFT_URL = `${BASE_URL}/api/shifts/updateShift`;
+
+
+
+
+ //Groups
+ export const Groups_LIST = `${BASE_URL}/api/groups/getAll`;
+ export const ADD_Groups_DATA = `${BASE_URL}/api/groups/addGroup`;
+ export const GET_GroupsSearch_URL = `${BASE_URL}/api/roaster/getShiftDropdown`;
+ export const GET_GroupsBYID_URL = `${BASE_URL}/api/roaster`;
+ export const UPDATE_Groups_URL = `${BASE_URL}/api/roaster/updateShift`;
+ export const DELETE_Group = `${BASE_URL}/api/groups/deleteGroup`;
+
+
+  //AutoShift
+  export const AutoShift_LIST = `${BASE_URL}/api/roaster/search`;
+  export const ADD_AutoShift_DATA = `${BASE_URL}/api/roaster/create`;
+  export const GET_AutoShiftSearch_URL = `${BASE_URL}/api/roaster/getShiftDropdown`;
+  export const GET_AutoShift_URL = `${BASE_URL}/api/roaster`;
+  export const UPDATE_AutoShift_URL = `${BASE_URL}/api/roaster/updateShift`;
+
+   //Roaster
+ export const DutyRoaster_LIST = `${BASE_URL}/api/roaster/search`;
+ export const ADD_DutyROASTER_DATA = `${BASE_URL}/api/roaster/create`;
+ export const GET_DutyRoasterSearch_URL = `${BASE_URL}/api/roaster/getShiftDropdown`;
+ export const GET_DutyROASTERBYID_URL = `${BASE_URL}/api/roaster`;
+ export const UPDATE_DutyROASTER_URL = `${BASE_URL}/api/roaster/updateShift`;
  
  
 

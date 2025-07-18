@@ -11,6 +11,12 @@ import ViewEmployee from "views/Employee/ViewEmployee";
 import Shift from "views/Shift/Shift";
 import AddShift from "views/Shift/AddShift";
 import UpdateShift from "views/Shift/UpdateShift";
+import AddDutyRoaster from "views/Roaster/AddDutyRoaster";
+import DutyRoaster from "views/Roaster/DutyRoaster";
+import AutoShift from "views/Shift/AutoShift/AutoShift";
+import AddAutoShift from "views/Shift/AutoShift/AddAutoShift";
+import Group from "views/Shift/Group/Group";
+import AddGroup from "views/Shift/Group/AddGroup";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -77,6 +83,66 @@ const dashboardRoutes = [
     component :UpdateShift,
     layout: "/admin",
   },
+
+  //Roasters
+
+  {
+    path: "/ETMS/DutyRoaster",
+    name: "View DutyRoaster", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :DutyRoaster,
+    layout: "/admin",
+  },
+  {
+    path: "/ETMS/DutyRoaster/add",
+    name: "Add DutyRoaster", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddDutyRoaster,
+    layout: "/admin",
+  },
+
+
+
+
+  // Auto SHift
+  {
+    path: "/ETMS/AutoShift",
+    name: "View AutoShift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AutoShift,
+    layout: "/admin",
+  },
+  {
+    path: "/ETMS/AutoShift/add",
+    name: "Add AutoShift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddAutoShift,
+    layout: "/admin",
+  },
+
+
+  //Group
+
+  {
+    path: "/ETMS/Groups",
+    name: "View Groups", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :Group,
+    layout: "/admin",
+  },
+  {
+    path: "/ETMS/Groups/add",
+    name: "Add Groups", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddGroup,
+    layout: "/admin",
+  },
+
+
+
+
+
+
   {
     path: "/dashboard",
     name: "Dashboard",

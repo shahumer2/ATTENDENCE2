@@ -359,6 +359,39 @@ function Header() {
                 >
                  Shift 
                 </NavLink>
+                <NavLink
+                  to="/admin/ETMS/DutyRoaster"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Duty Roaster
+                </NavLink>
+                <NavLink
+                  to="/admin/ETMS/AutoShift"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Auto Shift
+                </NavLink>
+                <NavLink
+                  to="/admin/ETMS/Groups"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Group
+                </NavLink>
              
               </div>
             )}
