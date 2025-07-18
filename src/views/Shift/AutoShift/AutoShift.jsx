@@ -22,102 +22,8 @@ const AutoShift = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   // Fetch all AutoShifts for dropdown options
-  const { data: AutoShiftOptions, isLoading: optionsLoading } = useQuery({
-    queryKey: ['AutoShiftOptions'],
-    queryFn: async () => {
-      try {
-        const response = await fetch(`${GET_AutoShiftSearch_URL}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        console.log('Raw data from API:', data); // This shows it's an array
-        return data;
-      } catch (error) {
-        console.error('Error fetching AutoShift options:', error);
-        throw error;
-      }
-    },
-    enabled: !!token,
-    select: (data) => {
-      console.log('Data in select function:', data); // Should log the array
-      
-      // Since data is directly the array, we don't need data.content
-      if (!Array.isArray(data)) {
-        console.error('Data is not an array:', data);
-        return {
-          AutoShiftNames: [{ label: 'Select', value: null }],
-          AutoShiftCodes: [{ label: 'Select', value: null }]
-        };
-      }
-  
-      const transformed = {
-        AutoShiftNames: [
-          { label: 'Select', value: null },
-          ...data.map(AutoShift => ({
-            label: AutoShift.AutoShiftName,
-            value: AutoShift.AutoShiftName
-          }))
-        ],
-        AutoShiftCodes: [
-          { label: 'Select', value: null },
-          ...data.map(AutoShift => ({
-            label: AutoShift.AutoShiftCode,
-            value: AutoShift.AutoShiftCode
-          }))
-        ]
-      };
-      
-      console.log('Transformed options:', transformed);
-      return transformed;
-    }
-  });
 
-  // Fetch filtered AutoShifts based on search params
-// Fetch filtered AutoShifts based on search params
-const { data: AutoShiftData, isLoading, isError, error } = useQuery({
-  queryKey: ['AutoShifts', currentPage, searchParams],
-  queryFn: async () => {
-    const requestBody = {
-      page: currentPage - 1,
-      size: 10,
-      ...(searchParams.AutoShiftCode && { AutoShiftCode: searchParams.AutoShiftCode }),
-      ...(searchParams.AutoShiftName && { AutoShiftName: searchParams.AutoShiftName })
-    };
 
-    const response = await fetch(AutoShift_LIST, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) throw new Error('Failed to fetch AutoShifts');
-    
-    const data = await response.json();
-    console.log('Filtered AutoShift data:', data);
-    return data;
-  },
-  enabled: !!token,
-  keepPreviousData: true
-});
-
-  const handleSearchSubmit = (values) => {
-    console.log('Search form submitted with values:', values);
-    setSearchParams({
-      AutoShiftCode: values.AutoShiftCode,
-      AutoShiftName: values.AutoShiftName
-    });
-    setCurrentPage(1);
-  };
 
   const totalPages = Math.ceil((AutoShiftData?.totalElements || 0) / 10);
 
@@ -141,62 +47,7 @@ const { data: AutoShiftData, isLoading, isError, error } = useQuery({
 
       {/* Search Form */}
       <div className='items-center justify-center'>
-        <Formik
-          initialValues={{
-            AutoShiftCode: null,
-            AutoShiftName: null
-          }}
-          onSubmit={handleSearchSubmit}
-        >
-          {({ setFieldValue, values, handleSubmit }) => (
-            <Form>
-              <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
-                <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black">AutoShift Code</label>
-                  <ReactSelect
-                    name="AutoShiftCode"
-                    value={AutoShiftOptions?.AutoShiftCodes?.find(option => option.value === values.AutoShiftCode)}
-                    onChange={(option) => {
-                      console.log('AutoShift Code selected:', option);
-                      setFieldValue('AutoShiftCode', option?.value || null);
-                    }}
-                    options={AutoShiftOptions?.AutoShiftCodes || []}
-                    className="bg-white dark:bg-form-Field"
-                    classNamePrefix="react-select"
-                    placeholder="Select AutoShift Code"
-                    isClearable
-                    isLoading={optionsLoading}
-                  />
-                </div>
-                <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black ">AutoShift Name</label>
-                  <ReactSelect
-                    name="AutoShiftName"
-                    value={AutoShiftOptions?.AutoShiftNames?.find(option => option.value === values.AutoShiftName)}
-                    onChange={(option) => {
-                      console.log('AutoShift Name selected:', option);
-                      setFieldValue('AutoShiftName', option?.value || null);
-                    }}
-                    options={AutoShiftOptions?.AutoShiftNames || []}
-                    className="bg-white dark:bg-form-Field"
-                    classNamePrefix="react-select"
-                    placeholder="Select AutoShift Name"
-                    isClearable
-                    isLoading={optionsLoading}
-                  />
-                </div>
-              </div>
-              <div className="flex justify-center">
-                <button
-                  type="submit"
-                  className="flex md:w-[240px] w-[220px] md:h-[37px] h-[40px] pt-2 rounded-lg justify-center bg-primary md:p-2.5 font-semibold md:text-sm text-white text-xl hover:bg-opacity-90 bg-blue-500 m-5"
-                >
-                  Search
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+        
       </div>
 
       {/* Table */}
