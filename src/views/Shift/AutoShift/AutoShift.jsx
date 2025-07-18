@@ -71,68 +71,12 @@ const AutoShift = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {AutoShiftData?.content?.length > 0 ? (
-                  AutoShiftData.content.map((AutoShift) => (
-                    <tr key={AutoShift.id} className="even:bg-gray-50 hover:bg-gray-100">
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {AutoShift.AutoShiftCode}
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {AutoShift.AutoShiftName}
-                      </td>
-
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        <div className='flex flex-row gap-3'>
-                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/AutoShiftUpdate/${AutoShift.id}`)}/>
-                        <MdDelete color='red' className='cursor-pointer' size={25}/>
-
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
-                      No AutoShifts found
-                    </td>
-                  </tr>
-                )}
+              
               </tbody>
             </table>
 
             {/* Pagination */}
-            {AutoShiftData?.content?.length > 0 && (
-              <div className="flex justify-between items-center mt-4 p-4">
-                <div className="text-sm text-gray-700">
-                  Showing {AutoShiftData.content.length} of {AutoShiftData.totalElements} AutoShifts
-                </div>
-                <div className="flex space-x-2">
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                  >
-                    Previous
-                  </button>
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-                    <button
-                      key={number}
-                      onClick={() => setCurrentPage(number)}
-                      className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
-                    >
-                      {number}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 border rounded disabled:opacity-50"
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            )}
+       
           </>
         )}
       </div>
