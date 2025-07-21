@@ -252,7 +252,7 @@ const AddDutyRoaster = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Group</label>
                     <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Group</label>
+           
               <ReactSelect
                 name="groupId"
                 value={selectedGroup}
