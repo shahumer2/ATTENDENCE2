@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { DutyRoaster_LIST } from "Constants/utils";
 import { GET_DutyRoasterSearch_URL } from "Constants/utils";
-import { GET_DutyROASTERBYID_URL } from "Constants/utils";
+import { GET_DutyRoasterBYID_URL } from "Constants/utils";
 import { ADD_DutyROASTER_DATA } from "Constants/utils";
 
 

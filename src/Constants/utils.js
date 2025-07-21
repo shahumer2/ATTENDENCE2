@@ -82,8 +82,8 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  export const DutyRoaster_LIST = `${BASE_URL}/api/roaster/allRosters`;
  export const ADD_DutyROASTER_DATA = `${BASE_URL}/api/roaster/create`;
  export const GET_DutyRoasterSearch_URL = `${BASE_URL}/api/roaster/search`;
- export const GET_DutyROASTERBYID_URL = `${BASE_URL}/api/roaster`;
- export const UPDATE_DutyROASTER_URL = `${BASE_URL}/api/roaster/updateShift`;
+ export const GET_DutyRoasterBYID_URL = `${BASE_URL}/api/roaster`;
+ export const UPDATE_DutyRoaster_URL = `${BASE_URL}/api/roaster/updateShift`;
  
  
 

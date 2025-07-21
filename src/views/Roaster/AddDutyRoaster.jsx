@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { Groups_LIST, GET_ShiftSearch_URL } from 'Constants/utils';
 import useDutyRoaster from 'hooks/useDutyRoaster';
+import { ADD_DutyROASTER_DATA } from 'Constants/utils';
 
 const AddDutyRoaster = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -160,7 +161,7 @@ const AddDutyRoaster = () => {
                 groupsId: subGroupIds[groupIndex], // Use the fixed group ID
                 shiftId: parseInt(shiftId),
                 day: globalDayIndex + 1,
-                groupNumber: groupIndex + 1
+                // groupNumber: groupIndex + 1
               });
             }
           }
@@ -172,7 +173,24 @@ const AddDutyRoaster = () => {
       }
 
       console.log('Final request data:', JSON.stringify(requestData, null, 2));
-      toast.success('Data prepared successfully! Check console for the structure.');
+     
+       const response = await fetch(ADD_DutyROASTER_DATA, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Duty Roaster Added Successfully!');
+        resetForm();
+      } else {
+        toast.error(data.message || 'Error While Adding Duty Roaster');
+      }
     } catch (error) {
       console.error('Error:', error);
       toast.error('An error occurred. Please try again later.');
