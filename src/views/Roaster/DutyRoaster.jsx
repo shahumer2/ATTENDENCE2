@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { GET_DutyRoasterSearch_URL } from 'Constants/utils';
+import { DutyRoaster_LIST } from 'Constants/utils';
 const DutyRoaster = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -26,7 +27,7 @@ const DutyRoaster = () => {
     queryKey: ['DutyRoasterOptions'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GET_DutyRoasterSearch_URL}`, {
+        const response = await fetch(`${DutyRoaster_LIST}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -38,7 +39,7 @@ const DutyRoaster = () => {
         
         const data = await response.json();
         console.log('Raw data from API:', data); // This shows it's an array
-        return data;
+        return data?.content;
       } catch (error) {
         console.error('Error fetching DutyRoaster options:', error);
         throw error;
@@ -61,15 +62,15 @@ const DutyRoaster = () => {
         DutyRoasterNames: [
           { label: 'Select', value: null },
           ...data.map(DutyRoaster => ({
-            label: DutyRoaster.DutyRoasterName,
-            value: DutyRoaster.DutyRoasterName
+            label: DutyRoaster.dutyRoasterName,
+            value: DutyRoaster.dutyRoasterName
           }))
         ],
         DutyRoasterCodes: [
           { label: 'Select', value: null },
           ...data.map(DutyRoaster => ({
-            label: DutyRoaster.DutyRoasterCode,
-            value: DutyRoaster.DutyRoasterCode
+            label: DutyRoaster.dutyRoasterCode,
+            value: DutyRoaster.dutyRoasterCode
           }))
         ]
       };
@@ -91,7 +92,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
       ...(searchParams.DutyRoasterName && { DutyRoasterName: searchParams.DutyRoasterName })
     };
 
-    const response = await fetch(DutyRoaster_LIST, {
+    const response = await fetch(GET_DutyRoasterSearch_URL, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -125,6 +126,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
     toast.error(error.message);
     return <div>Error loading DutyRoasters</div>;
   }
+  console.log(DutyRoasterData,"jamshed");
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
@@ -224,10 +226,10 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
                   DutyRoasterData.content.map((DutyRoaster) => (
                     <tr key={DutyRoaster.id} className="even:bg-gray-50 hover:bg-gray-100">
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {DutyRoaster.DutyRoasterCode}
+                        {DutyRoaster.dutyRoasterCode}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {DutyRoaster.DutyRoasterName}
+                        {DutyRoaster.dutyRoasterName}
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
