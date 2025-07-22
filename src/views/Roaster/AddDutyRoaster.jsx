@@ -173,7 +173,7 @@ const AddDutyRoaster = () => {
       }
 
       console.log('Final request data:', JSON.stringify(requestData, null, 2));
-     
+      toast.success('Data prepared successfully! Check console for the structure.');
        const response = await fetch(ADD_DutyROASTER_DATA, {
         method: 'POST',
         headers: {

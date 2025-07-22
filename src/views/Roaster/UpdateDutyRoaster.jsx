@@ -65,7 +65,19 @@ const UpdateDutyRoaster = () => {
       toast.error(error.message);
     }
   });
-
+  const { data: groupOptions, isLoading: groupsLoading } = useQuery({
+    queryKey: ['groupOptions'],
+    queryFn: async () => {
+      const response = await fetch(Groups_LIST, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch groups');
+      return response.json();
+    }
+  });
+console.log(dutyRoasterData,"duty,,,");
   // Initialize rosterAssignments with proper structure
   const initializeRosterAssignments = (groups, days, existingData = []) => {
     return Array(days).fill().map((_, dayIndex) => {
@@ -134,19 +146,7 @@ const UpdateDutyRoaster = () => {
   const weekPairs = Array.from({ length: 3 }, (_, i) => [i * 2, i * 2 + 1]);
 
   // Query for groups
-  const { data: groupOptions, isLoading: groupsLoading } = useQuery({
-    queryKey: ['groupOptions'],
-    queryFn: async () => {
-      const response = await fetch(Groups_LIST, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch groups');
-      return response.json();
-    }
-  });
-
+ 
   const groupSelectOptions = groupOptions?.map(group => ({
     value: group.id,
     values: group.numberOfGrps,
