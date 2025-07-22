@@ -15,8 +15,8 @@ const Branch = () => {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useState({
-    BranchCode: null,
-    BranchName: null
+    branchCode: null,
+    branchName: null
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -86,8 +86,8 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
     const requestBody = {
       page: currentPage - 1,
       size: 10,
-      ...(searchParams.BranchCode && { BranchCode: searchParams.BranchCode }),
-      ...(searchParams.BranchName && { BranchName: searchParams.BranchName })
+      ...(searchParams.branchCode && { branchCode: searchParams.branchCode }),
+      ...(searchParams.branchName && { branchName: searchParams.branchName })
     };
 
     const response = await fetch(GET_BranchSearch_URL, {
@@ -112,8 +112,8 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
   const handleSearchSubmit = (values) => {
     console.log('Search form submitted with values:', values);
     setSearchParams({
-      branchCode: values.BranchCode,
-      branchName: values.BranchName
+      branchCode: values.branchCode,
+      branchName: values.branchName
     });
     setCurrentPage(1);
   };
@@ -142,8 +142,8 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
       <div className='items-center justify-center'>
         <Formik
           initialValues={{
-            BranchCode: null,
-            BranchName: null
+            branchCode: null,
+            branchName: null
           }}
           onSubmit={handleSearchSubmit}
         >
@@ -157,7 +157,7 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
                     value={BranchOptions?.BranchCodes?.find(option => option.value === values.BranchCode)}
                     onChange={(option) => {
                       console.log('Branch Code selected:', option);
-                      setFieldValue('BranchCode', option?.value || null);
+                      setFieldValue('branchCode', option?.value || null);
                     }}
                     options={BranchOptions?.BranchCodes || []}
                     className="bg-white dark:bg-form-Field"
@@ -174,7 +174,7 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
                     value={BranchOptions?.BranchNames?.find(option => option.value === values.BranchName)}
                     onChange={(option) => {
                       console.log('Branch Name selected:', option);
-                      setFieldValue('BranchName', option?.value || null);
+                      setFieldValue('branchName', option?.value || null);
                     }}
                     options={BranchOptions?.BranchNames || []}
                     className="bg-white dark:bg-form-Field"
