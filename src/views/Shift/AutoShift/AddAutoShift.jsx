@@ -1,45 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import ReactSelect from 'react-select';
-import useAutoShift from 'hooks/useAutoShift';
 
 const AddAutoShift = () => {
-  const {  initialValues,handleSubmit } = useAutoShift();
-  
-  const [numberOfGroups, setNumberOfGroups] = useState(1);
-  const [recurrenceDays, setRecurrenceDays] = useState(1);
-  
-  const validationSchema = Yup.object().shape({
-    AutoShiftCode: Yup.string().required('Duty Roaster Code is required'),
-    AutoShiftName: Yup.string().required('Duty Roaster Name is required'),
-    lateGracePeriod: Yup.number().required('Grace Period is required'),
-    lateAfterPeriod: Yup.number().required('After Every is required'),
-    latenessDeduct: Yup.number().required('Deduct is required'),
-  });
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const [shiftOptions, setShiftOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
+  const token = currentUser?.token;
 
-  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-  const rosterOptions = [
-    { value: 'Rostering1', label: 'Rostering 1' },
-    { value: 'Rostering2', label: 'Rostering 2' },
-    { value: 'Rostering3', label: 'Rostering 3' },
-    { value: 'Rostering4', label: 'Rostering 4' },
-    { value: 'Rostering5', label: 'Rostering 5' },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:8081/api/shifts/getShiftDropdown", {
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        const data = await res.json();
+        setShiftOptions(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching shift options:", error);
+        setShiftOptions([]);
+      })
+      .finally(() => setLoading(false));
+  }, [token]);
 
-  // Calculate which days should have select boxes based on recurrenceDays
-  const shouldShowSelect = (weekIndex, dayIndex) => {
-    const totalDay = weekIndex * 7 + dayIndex;
-    return totalDay < recurrenceDays;
+  const initialValues = {
+    autoShiftCode: '',
+    autoShiftName: '',
+    shiftSchedulers: Array.from({ length: 10 }, () => ({
+      shiftId: null,
+      shiftLabel: '',
+      fromTime: '00:00',
+      toTime: '00:00',
+    })),
   };
 
-  // Group weeks into pairs for two-column layout
-  const weekPairs = Array.from({ length: 3 }, (_, i) => [i * 2, i * 2 + 1]);
+  const validationSchema = Yup.object().shape({
+    autoShiftCode: Yup.string().required('Auto Shift Code is required'),
+    autoShiftName: Yup.string().required('Auto Shift Name is required'),
+  });
+
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+
+      const payload = {
+        autoShiftCode: values.autoShiftCode,
+        autoShiftName: values.autoShiftName,
+        shiftDurations: values.shiftSchedulers
+          .filter(s => s.shiftId !== null)
+          .map(s => ({
+            shiftId: s.shiftId,
+            startTime: `${today}T${s.fromTime}:00`,
+            endTime: `${today}T${s.toTime}:00`,
+          })),
+      };
+
+      const response = await fetch("http://localhost:8081/api/autoshift/addAutoShift", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+      await response.json();
+      alert("AutoShift saved successfully!");
+      resetForm();
+      navigate('/admin/ETMS/AutoShift');
+    } catch (error) {
+      console.error("Error saving AutoShift:", error);
+      alert("Failed to save AutoShift.");
+    }
+  };
 
   return (
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Duty Roaster</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Shift List</h1>
 
         <Formik
           initialValues={initialValues}
@@ -48,210 +97,133 @@ const AddAutoShift = () => {
         >
           {({ values, setFieldValue }) => (
             <Form>
-              {/* Top Form Fields */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Code</label>
-                  <Field 
-                    name="AutoShiftCode" 
-                    className="w-full p-2 border border-gray-300 rounded" 
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Auto Shift Code
+                  </label>
+                  <Field
+                    name="autoShiftCode"
+                    className="w-full p-2 border border-gray-300 rounded"
                   />
-                  <ErrorMessage name="AutoShiftCode" component="div" className="text-red-500 text-xs" />
+                  <ErrorMessage
+                    name="autoShiftCode"
+                    component="div"
+                    className="text-red-500 text-xs"
+                  />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Name</label>
-                  <Field 
-                    name="AutoShiftName" 
-                    className="w-full p-2 border border-gray-300 rounded" 
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Auto Shift Name
+                  </label>
+                  <Field
+                    name="autoShiftName"
+                    className="w-full p-2 border border-gray-300 rounded"
                   />
-                  <ErrorMessage name="AutoShiftName" component="div" className="text-red-500 text-xs" />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Recurrence Days</label>
-                  <ReactSelect
-                    value={{ value: recurrenceDays, label: `${recurrenceDays} Days` }}
-                    onChange={(option) => {
-                      setRecurrenceDays(option.value);
-                      setFieldValue('recurrenceDays', option.value);
-                    }}
-                    options={Array.from({ length: 42 }, (_, i) => i + 1).map(day => ({ 
-                      value: day, 
-                      label: `${day} Day${day > 1 ? 's' : ''}` 
-                    }))}
-                    className="basic-select"
-                    classNamePrefix="select"
+                  <ErrorMessage
+                    name="autoShiftName"
+                    component="div"
+                    className="text-red-500 text-xs"
                   />
                 </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Number of Groups</label>
-                  <ReactSelect
-                    value={{ value: numberOfGroups, label: `${numberOfGroups} Group${numberOfGroups > 1 ? 's' : ''}` }}
-                    onChange={(option) => setNumberOfGroups(option.value)}
-                    options={[1, 2, 3, 4, 5, 6].map(group => ({ 
-                      value: group, 
-                      label: `${group} Group${group > 1 ? 's' : ''}` 
-                    }))}
-                    className="basic-select"
-                    classNamePrefix="select"
-                  />
-                </div>
-                
               </div>
 
-              {/* Weeks Section - Two weeks per row */}
-              <div className="space-y-6">
-                {weekPairs.map(([week1, week2]) => (
-                  <div key={`week-pair-${week1}-${week2}`} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Week 1 */}
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h2 className="text-lg font-semibold mb-4">Week {week1 + 1}</h2>
-                      
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full border border-gray-200">
-                          <thead>
-                            <tr>
-                              <th className="border border-gray-300 bg-gray-100 px-2 py-1 text-left text-sm">Groups</th>
-                              {daysOfWeek.map((day, dayIndex) => (
-                                <th 
-                                  key={`day-${dayIndex}`} 
-                                  className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${
-                                    shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : ''
-                                  }`}
-                                >
-                                  {day}
-                                </th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Array.from({ length: numberOfGroups }, (_, groupIndex) => (
-                              <tr key={`group-${groupIndex}`}>
-                                <td className="border border-gray-300 px-2 py-1 bg-gray-50 font-medium text-sm">
-                                  Group {groupIndex + 1}
-                                </td>
-                                {daysOfWeek.map((_, dayIndex) => (
-                                  <td 
-                                    key={`cell-${dayIndex}`}
-                                    className={`border border-gray-300 px-2 py-1 ${
-                                      shouldShowSelect(week1, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
-                                    }`}
-                                  >
-                                    {shouldShowSelect(week1, dayIndex) ? (
-                                      <ReactSelect
-                                        name={`week${week1}_group${groupIndex}_day${dayIndex}`}
-                                        options={rosterOptions}
-                                        onChange={(selectedOption) => {
-                                          const totalDay = week1 * 7 + dayIndex;
+              <div className="overflow-x-auto mt-6">
+                <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">From</th>
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">To</th>
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px]">Assigned Shift</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {values.shiftSchedulers.map((scheduler, index) => (
+                      <tr key={index}>
+                        <td className="border px-4 py-2">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].fromTime`}
+                            className="px-0 w-[80px] mx-1 border border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="border px-4 py-2">
+                          <Field
+                            type="time"
+                            name={`shiftSchedulers[${index}].toTime`}
+                            className="px-0 w-[80px] mx-1 border border-gray-300 rounded"
+                          />
+                        </td>
+                        <td className="border px-4 py-2 relative w-[350px]">
+                          <div
+                            title={scheduler.shiftLabel}
+                            className="cursor-pointer bg-gray-100 p-1 rounded border border-gray-300 w-full truncate"
+                            onClick={() =>
+                              !loading && setOpenDropdownIndex(openDropdownIndex === index ? null : index)
+                            }
+                          >
+                            {scheduler.shiftLabel || 'Select Shift'}
+                          </div>
+                          {openDropdownIndex === index && (
+                            <div className="absolute z-10 mt-1 bg-white border border-gray-300 shadow-md w-[350px] max-h-60 overflow-y-auto">
+                              <table className="min-w-[350px] text-sm">
+                                <thead className="bg-gray-200">
+                                  <tr>
+                                    <th className="p-2 text-left border-b">Shift Code</th>
+                                    <th className="p-2 text-left border-b">Shift Name</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {loading ? (
+                                    <tr>
+                                      <td colSpan={2} className="p-2 text-center text-gray-500">
+                                        Loading...
+                                      </td>
+                                    </tr>
+                                  ) : (
+                                    shiftOptions.map((shift, idx) => (
+                                      <tr
+                                        key={idx}
+                                        className="hover:bg-blue-100 cursor-pointer"
+                                        onClick={() => {
+                                          setFieldValue(`shiftSchedulers[${index}].shiftId`, shift.id);
                                           setFieldValue(
-                                            `rosterAssignments[${totalDay}].group${groupIndex}`,
-                                            selectedOption.value
+                                            `shiftSchedulers[${index}].shiftLabel`,
+                                            `${shift.shiftCode} - ${shift.shiftName}`
                                           );
+                                          setOpenDropdownIndex(null);
                                         }}
-                                        placeholder="Select"
-                                        className="basic-select z-100"
-                                        classNamePrefix="select"
-                                        menuPosition="fixed"
-                                        // menuPlacement="auto"
-                                      />
-                                    ) : (
-                                      <span className="text-gray-400 text-sm">-</span>
-                                    )}
-                                  </td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    {/* Week 2 */}
-                    {week2 < 6 && (
-                      <div className="border border-gray-200 rounded-lg p-4">
-                        <h2 className="text-lg font-semibold mb-4">Week {week2 + 1}</h2>
-                        
-                        <div className="overflow-x-auto">
-                          <table className="min-w-full border border-gray-200">
-                            <thead>
-                              <tr>
-                                <th className="border border-gray-300 bg-gray-100 px-2 py-1 text-left text-sm">Groups</th>
-                                {daysOfWeek.map((day, dayIndex) => (
-                                  <th 
-                                    key={`day-${dayIndex}`} 
-                                    className={`border border-gray-300 bg-gray-100 px-2 py-1 text-sm ${
-                                      shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : ''
-                                    }`}
-                                  >
-                                    {day}
-                                  </th>
-                                ))}
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {Array.from({ length: numberOfGroups }, (_, groupIndex) => (
-                                <tr key={`group-${groupIndex}`}>
-                                  <td className="border border-gray-300 px-2 py-1 bg-gray-50 font-medium text-sm">
-                                    Group {groupIndex + 1}
-                                  </td>
-                                  {daysOfWeek.map((_, dayIndex) => (
-                                    <td 
-                                      key={`cell-${dayIndex}`}
-                                      className={`border border-gray-300 px-2 py-1 ${
-                                        shouldShowSelect(week2, dayIndex) ? 'bg-blue-50' : 'bg-gray-50'
-                                      }`}
-                                    >
-                                      {shouldShowSelect(week2, dayIndex) ? (
-                                        <ReactSelect
-                                          name={`week${week2}_group${groupIndex}_day${dayIndex}`}
-                                          options={rosterOptions}
-                                          onChange={(selectedOption) => {
-                                            const totalDay = week2 * 7 + dayIndex;
-                                            setFieldValue(
-                                              `rosterAssignments[${totalDay}].group${groupIndex}`,
-                                              selectedOption.value
-                                            );
-                                          }}
-                                          placeholder="Select"
-                                          className="basic-select"
-                                          classNamePrefix="select"
-                                          menuPlacement="auto"
-                                          menuPosition="fixed"
-                                        />
-                                      ) : (
-                                        <span className="text-gray-400 text-sm">-</span>
-                                      )}
-                                    </td>
-                                  ))}
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                                      >
+                                        <td className="p-2 border-b">{shift.shiftCode}</td>
+                                        <td className="p-2 border-b">{shift.shiftName}</td>
+                                      </tr>
+                                    ))
+                                  )}
+                                </tbody>
+                              </table>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
-              {/* Bottom Form Fields */}
-              
-
-              {/* Buttons */}
               <div className="flex justify-end space-x-4 mt-8">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
+                  onClick={() => navigate('/admin/ETMS/AutoShift')}
                   className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="px-6 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
                 >
-                  Save Duty Roaster
+                  Save
                 </button>
               </div>
             </Form>

@@ -17,6 +17,7 @@ import AutoShift from "views/Shift/AutoShift/AutoShift";
 import AddAutoShift from "views/Shift/AutoShift/AddAutoShift";
 import Group from "views/Shift/Group/Group";
 import AddGroup from "views/Shift/Group/AddGroup";
+import UpdateAutoShift from "views/Shift/AutoShift/UpdateAutoShift";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -117,6 +118,13 @@ const dashboardRoutes = [
     name: "Add AutoShift", 
     icon: "nc-icon nc-chart-pie-35",
     component :AddAutoShift,
+    layout: "/admin",
+  },
+   {
+    path: "/ETMS/AutoShift/edit/:id",
+    name: "Update AutoShift", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :UpdateAutoShift,
     layout: "/admin",
   },
 
