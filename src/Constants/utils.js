@@ -72,6 +72,8 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 
   //AutoShift
   export const AutoShift_LIST = `${BASE_URL}/api/roaster/search`;
+  export const AutoShift_VIEW = `${BASE_URL}/api/autoshift/viewAll`;
+
   export const ADD_AutoShift_DATA = `${BASE_URL}/api/roaster/create`;
   export const GET_AutoShiftSearch_URL = `${BASE_URL}/api/roaster/getShiftDropdown`;
   export const GET_AutoShift_URL = `${BASE_URL}/api/roaster`;

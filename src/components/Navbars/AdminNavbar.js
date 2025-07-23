@@ -243,6 +243,17 @@ function Header() {
                 >
                   Designation
                 </NavLink>
+                <NavLink
+                  to="/admin/Epayroll/Race"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Additional Master Setup
+                </NavLink>
                 {/* <NavLink
                   to="/admin/designation"
                   className={({ isActive }) =>

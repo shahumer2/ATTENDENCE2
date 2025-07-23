@@ -10,6 +10,10 @@ import { components } from 'react-select';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { FaInfoCircle } from "react-icons/fa";
+import { DutyRoaster_LIST } from 'Constants/utils';
+import { GET_ShiftSearch_URL } from 'Constants/utils';
+import { AutoShift_VIEW } from 'Constants/utils';
+import EPayrollTabs from './EPayrollTabs';
 const AddEmployee = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -83,6 +87,117 @@ const AddEmployee = () => {
           ...data.map(shift => ({
             label: shift.shiftName,
             value: shift.shiftName
+          }))
+        ],
+        // shiftCodes: [
+        //   { label: 'Select', value: null },
+        //   ...data.map(shift => ({
+        //     label: shift.shiftCode,
+        //     value: shift.shiftCode
+        //   }))
+        // ]
+      };
+
+      console.log('Transformed options:', transformed);
+      return transformed;
+    }
+  });
+
+  //duty roster
+  const { data: dutyRoster, isLoading: optionLoading } = useQuery({
+    queryKey: ['dutyRosterOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${DutyRoaster_LIST}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        return data; // Return the entire response object
+      } catch (error) {
+        console.error('Error fetching shift options:', error);
+        throw error;
+      }
+    },
+    enabled: !!token,
+    select: (data) => {
+
+
+      if (!Array.isArray(data.content)) {
+        console.error('Data content is not an array:', data);
+        return {
+          dutyRoasteroption: [{ label: 'Select', value: null, id: null }],
+        };
+      }
+
+      const transformed = {
+        dutyRoasteroption: [
+          { label: 'Select', value: null, id: null },  // here ... becuase we are combining two arrays
+          ...data?.content?.map(roster => ({
+            label: roster.dutyRoasterName,
+            value: roster.dutyRoasterCode,
+            id: roster.id // Include the id in each option
+          }))
+        ],
+      };
+
+
+      return transformed;
+    }
+  });
+
+
+  // autoshft
+
+  const { data: autoShift, isLoading: optionssLoading } = useQuery({
+    queryKey: ['autoShiftOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${AutoShift_VIEW}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Raw data from autoshift:', data); // This shows it's an array
+        return data;
+      } catch (error) {
+        console.error('Error fetching shift options:', error);
+        throw error;
+      }
+    },
+    enabled: !!token,
+    select: (data) => {
+      console.log('Data in select function:', data); // Should log the array
+
+      // Since data is directly the array, we don't need data.content
+      if (!Array.isArray(data.content)) {
+        console.error('Data is not an array:', data);
+        return {
+          AutoSHift: [{ label: 'Select', value: null }],
+          // shiftCodes: [{ label: 'Select', value: null }]
+        };
+      }
+
+      const transformed = {
+        AutoSHift: [
+          { label: 'Select', value: null },
+          ...data.content.map(autoShift => ({
+            label: autoShift.autoShiftCode,
+            value: autoShift.autoShiftCode,
+            id: autoShift.id
           }))
         ],
         // shiftCodes: [
@@ -195,11 +310,11 @@ const AddEmployee = () => {
   const handleDutyRoasterChange = (option) => {
     // Handle duty roaster change
   };
-  
+
   const handleAutoShiftChange = (option) => {
     // Handle auto shift change
   };
-  
+
   const handleScheduleChange = (option) => {
     // Handle schedule change
   };
@@ -933,9 +1048,9 @@ const AddEmployee = () => {
                         {/* Conditional React Select fields based on radio selection */}
                         {selectedSetting === 'dutyRoaster' && (
                           <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster/Group</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roster/Group</label>
                             <ReactSelect
-                              // options={dutyRoasterOptions}
+                              options={dutyRoster.dutyRoasteroption}
                               onChange={(option) => handleDutyRoasterChange(option)}
                               className="react-select-container"
                               classNamePrefix="react-select"
@@ -954,7 +1069,7 @@ const AddEmployee = () => {
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Auto Shift</label>
                             <ReactSelect
-                              // options={autoShiftOptions}
+                              options={autoShift.AutoSHift}
                               onChange={(option) => handleAutoShiftChange(option)}
                               className="react-select-container"
                               classNamePrefix="react-select"
@@ -994,6 +1109,18 @@ const AddEmployee = () => {
                   </>
 
                 )}
+
+                {activeMainTab === 'ePayroll' && selectedApps['E-payroll'] && (
+                  <EPayrollTabs values={values} setFieldValue={setFieldValue} />
+                )}
+
+
+
+
+
+
+
+
               </div>
 
 
