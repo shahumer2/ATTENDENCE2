@@ -132,12 +132,12 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
       {/* Header + Add Button */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">DutyRoaster List</h2>
+        <h2 className="text-xl font-semibold">DutyRoster List</h2>
         <button
           onClick={() => navigate("/admin/ETMS/DutyRoaster/add")}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Add DutyRoaster
+          Add DutyRoster
         </button>
       </div>
 
@@ -154,7 +154,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
             <Form>
               <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black">DutyRoaster Code</label>
+                  <label className="mb-2.5 block text-black">DutyRoster Code</label>
                   <ReactSelect
                     name="DutyRoasterCode"
                     value={DutyRoasterOptions?.DutyRoasterCodes?.find(option => option.value === values.DutyRoasterCode)}
@@ -171,7 +171,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
                   />
                 </div>
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black ">DutyRoaster Name</label>
+                  <label className="mb-2.5 block text-black ">DutyRoster Name</label>
                   <ReactSelect
                     name="DutyRoasterName"
                     value={DutyRoasterOptions?.DutyRoasterNames?.find(option => option.value === values.DutyRoasterName)}
@@ -211,10 +211,10 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    DutyRoaster Code
+                    DutyRoster Code
                   </th>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    DutyRoaster Name
+                    DutyRoster Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
                    Action
@@ -244,7 +244,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
                 ) : (
                   <tr>
                     <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
-                      No DutyRoasters found
+                      No DutyRosters found
                     </td>
                   </tr>
                 )}
@@ -255,7 +255,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
             {DutyRoasterData?.content?.length > 0 && (
               <div className="flex justify-between items-center mt-4 p-4">
                 <div className="text-sm text-gray-700">
-                  Showing {DutyRoasterData.content.length} of {DutyRoasterData.totalElements} DutyRoasters
+                  Showing {DutyRoasterData.content.length} of {DutyRoasterData.totalElements} DutyRosters
                 </div>
                 <div className="flex space-x-2">
                   <button

@@ -200,7 +200,7 @@ const AddDutyRoaster = () => {
   return (
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Duty Roaster</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Duty Roster</h1>
 
         <Formik
           initialValues={initialValues}
@@ -223,7 +223,7 @@ const AddDutyRoaster = () => {
                 {/* Top Form Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Code</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roster Code</label>
                     <Field
                       name="DutyRoasterCode"
                       className="w-full p-2 border border-gray-300 rounded"
@@ -232,7 +232,7 @@ const AddDutyRoaster = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roaster Name</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Duty Roster Name</label>
                     <Field
                       name="DutyRoasterName"
                       className="w-full p-2 border border-gray-300 rounded"
@@ -430,7 +430,7 @@ const AddDutyRoaster = () => {
                     type="submit"
                     className="px-6 py-2 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
                   >
-                    Save Duty Roaster
+                    Save Duty Roster
                   </button>
                 </div>
               </Form>

@@ -231,7 +231,7 @@ const { data: BranchData, isLoading, isError, error } = useQuery({
 
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         <div className='flex flex-row gap-3'>
-                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/BranchUpdate/${Branch.id}`)}/>
+                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/ETMS/BranchUpdate/${Branch.id}`)}/>
                         <MdDelete color='red' className='cursor-pointer' size={25}/>
 
                         </div>

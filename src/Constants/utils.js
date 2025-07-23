@@ -90,8 +90,8 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;
  export const ADD_Branch_DATA = `${BASE_URL}/api/branches/addBranch`;
  export const GET_BranchSearch_URL = `${BASE_URL}/api/branches/search`;
- export const GET_BranchBYID_URL = `${BASE_URL}/api/Branch/getRoster`;
- export const UPDATE_Branch_URL = `${BASE_URL}/api/Branch/updateShift`;
+ export const GET_BranchBYID_URL = `${BASE_URL}/api/branches/getBy`;
+ export const UPDATE_Branch_URL = `${BASE_URL}/api/branches/updateBranch`;
  
  
 
