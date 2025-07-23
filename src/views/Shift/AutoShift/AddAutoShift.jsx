@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ const AddAutoShift = () => {
   const [shiftOptions, setShiftOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
 
@@ -31,6 +32,20 @@ const AddAutoShift = () => {
       })
       .finally(() => setLoading(false));
   }, [token]);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdownIndex(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const initialValues = {
     autoShiftCode: '',
@@ -88,7 +103,7 @@ const AddAutoShift = () => {
   return (
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Shift List</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Auto Shift</h1>
 
         <Formik
           initialValues={initialValues}
@@ -100,7 +115,7 @@ const AddAutoShift = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Auto Shift Code
+                    Auto Shift Code<span className="text-red-600">*</span>
                   </label>
                   <Field
                     name="autoShiftCode"
@@ -115,7 +130,7 @@ const AddAutoShift = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Auto Shift Name
+                    Auto Shift Name<span className="text-red-600">*</span>
                   </label>
                   <Field
                     name="autoShiftName"
@@ -155,18 +170,22 @@ const AddAutoShift = () => {
                             className="px-0 w-[80px] mx-1 border border-gray-300 rounded"
                           />
                         </td>
-                        <td className="border px-4 py-2 relative w-[350px]">
+                        <td className="border px-4 py-2 relative min-w-[350px] max-w-[350px] w-[350px]">
                           <div
                             title={scheduler.shiftLabel}
-                            className="cursor-pointer bg-gray-100 p-1 rounded border border-gray-300 w-full truncate"
+                            className="cursor-pointer bg-gray-100 p-1 rounded border border-gray-300 w-full truncate overflow-hidden whitespace-nowrap"
                             onClick={() =>
                               !loading && setOpenDropdownIndex(openDropdownIndex === index ? null : index)
                             }
                           >
                             {scheduler.shiftLabel || 'Select Shift'}
                           </div>
+
                           {openDropdownIndex === index && (
-                            <div className="absolute z-10 mt-1 bg-white border border-gray-300 shadow-md w-[350px] max-h-60 overflow-y-auto">
+                            <div
+                              ref={dropdownRef}
+                              className="absolute z-10 mt-1 bg-white border border-gray-300 shadow-md w-[350px] max-h-60 overflow-y-auto"
+                            >
                               <table className="min-w-[350px] text-sm">
                                 <thead className="bg-gray-200">
                                   <tr>
@@ -182,23 +201,37 @@ const AddAutoShift = () => {
                                       </td>
                                     </tr>
                                   ) : (
-                                    shiftOptions.map((shift, idx) => (
+                                    <>
                                       <tr
-                                        key={idx}
-                                        className="hover:bg-blue-100 cursor-pointer"
+                                        className="hover:bg-red-100 cursor-pointer"
                                         onClick={() => {
-                                          setFieldValue(`shiftSchedulers[${index}].shiftId`, shift.id);
-                                          setFieldValue(
-                                            `shiftSchedulers[${index}].shiftLabel`,
-                                            `${shift.shiftCode} - ${shift.shiftName}`
-                                          );
+                                          setFieldValue(`shiftSchedulers[${index}].shiftId`, null);
+                                          setFieldValue(`shiftSchedulers[${index}].shiftLabel`, '');
                                           setOpenDropdownIndex(null);
                                         }}
                                       >
-                                        <td className="p-2 border-b">{shift.shiftCode}</td>
-                                        <td className="p-2 border-b">{shift.shiftName}</td>
+                                        <td className="p-2 border-b text-black-600 font-semibold">Select Shift</td>
+                                        <td className="p-2 border-b"></td>
                                       </tr>
-                                    ))
+
+                                      {shiftOptions.map((shift, idx) => (
+                                        <tr
+                                          key={idx}
+                                          className="hover:bg-blue-100 cursor-pointer"
+                                          onClick={() => {
+                                            setFieldValue(`shiftSchedulers[${index}].shiftId`, shift.id);
+                                            setFieldValue(
+                                              `shiftSchedulers[${index}].shiftLabel`,
+                                              `${shift.shiftCode} - ${shift.shiftName}`
+                                            );
+                                            setOpenDropdownIndex(null);
+                                          }}
+                                        >
+                                          <td className="p-2 border-b">{shift.shiftCode}</td>
+                                          <td className="p-2 border-b">{shift.shiftName}</td>
+                                        </tr>
+                                      ))}
+                                    </>
                                   )}
                                 </tbody>
                               </table>
