@@ -94,6 +94,15 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  export const GET_BranchSearch_URL = `${BASE_URL}/api/branches/search`;
  export const GET_BranchBYID_URL = `${BASE_URL}/api/branches/getBy`;
  export const UPDATE_Branch_URL = `${BASE_URL}/api/branches/updateBranch`;
+
+
+ //FWL
+
+ export const Fwl_LIST = `${BASE_URL}/api/fwl/getAll`;
+ export const ADD_Fwl_DATA = `${BASE_URL}/api/fwl/addFwl`;
+ export const GET_FwlSearch_URL = `${BASE_URL}/api/fwl/search`;
+ export const GET_FwlhBYID_URL = `${BASE_URL}/api/branches/getBy`;
+ export const UPDATE_Fwl_URL = `${BASE_URL}/api/branches/updateBranch`;
  
  
 

@@ -1,25 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import ReactSelect from 'react-select';
-import { useQuery, useMutation, QueryClient, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import { ADD_Fwl_DATA } from 'Constants/utils';
+import { GET_FwlSearch_URL } from 'Constants/utils';
+import { Fwl_LIST } from 'Constants/utils';
 
-// API endpoints (replace with your actual endpoints)
-const API_ENDPOINTS = {
-  RACE: '/api/races',
-  RELIGION: '/api/religions',
-  NATIONALITY: '/api/nationalities',
-  EDUCATION: '/api/educations',
-  FUND: '/api/funds',
-  FWL: '/api/fwls',
-  DAILY: '/api/dailies',
-  BANK: '/api/banks',
-  COMPONENT: '/api/components',
-  CAREER: '/api/careers'
+// API endpoints configuration
+const API_CONFIG = {
+  RACE: {
+    BASE: '/api/races',
+    ADD: '/api/races/addRace',
+    SEARCH: '/api/races/search'
+  },
+  RELIGION: {
+    BASE: '/api/religions',
+    ADD: '/api/religions/addReligion',
+    SEARCH: '/api/religions/search'
+  },
+  NATIONALITY: {
+    BASE: '/api/nationalities',
+    ADD: '/api/nationalities/addNationality',
+    SEARCH: '/api/nationalities/search'
+  },
+  EDUCATION: {
+    BASE: '/api/educations',
+    ADD: '/api/educations/addEducation',
+    SEARCH: '/api/educations/search'
+  },
+  FUND: {
+    BASE: '/api/funds',
+    ADD: '/api/funds/addFund',
+    SEARCH: '/api/funds/search'
+  },
+  FWL: {
+    BASE: Fwl_LIST,
+    ADD: ADD_Fwl_DATA,
+    SEARCH: GET_FwlSearch_URL
+  },
+  DAILY: {
+    BASE: '/api/dailies',
+    ADD: '/api/dailies/addDaily',
+    SEARCH: '/api/dailies/search'
+  },
+  BANK: {
+    BASE: '/api/banks',
+    ADD: '/api/banks/addBank',
+    SEARCH: '/api/banks/search'
+  },
+  COMPONENT: {
+    BASE: '/api/components',
+    ADD: '/api/components/addComponent',
+    SEARCH: '/api/components/search'
+  },
+  CAREER: {
+    BASE: '/api/careers',
+    ADD: '/api/careers/addCareer',
+    SEARCH: '/api/careers/search'
+  }
 };
 
 const Race = () => {
@@ -32,6 +75,9 @@ const Race = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
+  // Get API endpoints for current tab
+  const currentApi = API_CONFIG[activeTab.toUpperCase()];
 
   // Define columns and form fields for each tab
   const TAB_CONFIG = {
@@ -99,13 +145,17 @@ const Race = () => {
       label: 'FWL',
       columns: [
         { header: 'FWL Code', key: 'fwlCode' },
-        { header: 'FWL Name', key: 'fwlName' }
+        { header: 'FWL Name', key: 'fwlName' },
+        { header: 'Daily', key: 'daily' },
+        { header: 'Max /Month', key: 'maxPerMonth' }
       ],
       fields: [
         { name: 'fwlCode', label: 'FWL Code', type: 'text', required: true },
-        { name: 'fwlName', label: 'FWL Name', type: 'text', required: true }
+        { name: 'fwlName', label: 'FWL Name', type: 'text', required: true },
+        { name: 'maxPerMonth', label: 'Max Per Month', type: 'number', required: false },
+        { name: 'daily', label: 'Daily', type: 'number', required: false }
       ],
-      initialValues: { fwlCode: '', fwlName: '' }
+      initialValues: { fwlCode: '', fwlName: '', maxPerMonth: 0, daily: 0 }
     },
     daily: {
       label: 'Daily',
@@ -162,7 +212,7 @@ const Race = () => {
     queryKey: ['dropdownOptions', activeTab],
     queryFn: async () => {
       try {
-        const response = await fetch(API_ENDPOINTS[activeTab.toUpperCase()], {
+        const response = await fetch(currentApi.BASE, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -171,7 +221,7 @@ const Race = () => {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         
         const data = await response.json();
-        return data?.content || [];
+        return data || [];
       } catch (error) {
         console.error(`Error fetching ${activeTab} options:`, error);
         throw error;
@@ -185,7 +235,7 @@ const Race = () => {
       return {
         codes: [
           { label: 'Select', value: null },
-          ...data.map(item => ({
+          ...data.content.map(item => ({
             label: item[codeKey],
             value: item[codeKey]
           }))
@@ -211,7 +261,7 @@ const Race = () => {
         ...searchParams
       };
 
-      const response = await fetch(`${API_ENDPOINTS[activeTab.toUpperCase()]}/search`, {
+      const response = await fetch(currentApi.SEARCH, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -233,8 +283,8 @@ const Race = () => {
   const mutation = useMutation({
     mutationFn: async (values) => {
       const url = editingId 
-        ? `${API_ENDPOINTS[activeTab.toUpperCase()]}/${editingId}`
-        : API_ENDPOINTS[activeTab.toUpperCase()];
+        ? `${currentApi.BASE}/${editingId}`
+        : currentApi.ADD;
       
       const method = editingId ? 'PUT' : 'POST';
       
@@ -247,7 +297,10 @@ const Race = () => {
         body: JSON.stringify(values)
       });
       
-      if (!response.ok) throw new Error(editingId ? 'Update failed' : 'Create failed');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || (editingId ? 'Update failed' : 'Create failed'));
+      }
       
       return response.json();
     },
@@ -280,7 +333,7 @@ const Race = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this record?')) {
       try {
-        const response = await fetch(`${API_ENDPOINTS[activeTab.toUpperCase()]}/${id}`, {
+        const response = await fetch(`${currentApi.BASE}/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
