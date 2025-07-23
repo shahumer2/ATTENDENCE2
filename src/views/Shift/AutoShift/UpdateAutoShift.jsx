@@ -1,22 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useNavigate } from "react-router-dom";
-
 import * as Yup from 'yup';
+import { MdDelete } from 'react-icons/md';
 
 const UpdateAutoShift = () => {
   const [shiftOptions, setShiftOptions] = useState([]);
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const [initialValues, setInitialValues] = useState(null);
   const [loading, setLoading] = useState(true);
-const navigate = useNavigate();
-
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
 
-  const { id } = useParams();
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setOpenDropdownIndex(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fetch shift options
   useEffect(() => {
@@ -34,7 +44,7 @@ const navigate = useNavigate();
       });
   }, [token]);
 
-  // Fetch AutoShift data by ID
+  // Fetch AutoShift by ID
   useEffect(() => {
     if (!id) return;
 
@@ -49,7 +59,6 @@ const navigate = useNavigate();
 
         if (!response.ok) throw new Error(`HTTP error ${response.status}`);
         const data = await response.json();
-
         const shiftDurations = data.shiftDurations || [];
 
         const enrichedShifts = await Promise.all(
@@ -72,7 +81,6 @@ const navigate = useNavigate();
                 toTime: shift.endTime?.split('T')[1]?.substring(0, 5) || '00:00',
               };
             } catch (error) {
-              console.warn(`Failed to load shift ${shift.shiftId}:`, error);
               return {
                 shiftId: shift.shiftId,
                 shiftLabel: 'Unknown Shift',
@@ -83,20 +91,14 @@ const navigate = useNavigate();
           })
         );
 
-        while (enrichedShifts.length < 10) {
-          enrichedShifts.push({
-            shiftId: null,
-            shiftLabel: '',
-            fromTime: '00:00',
-            toTime: '00:00',
-          });
-        }
-
         setInitialValues({
           autoShiftCode: data.autoShiftCode || '',
           autoShiftName: data.autoShiftName || '',
-          shiftSchedulers: enrichedShifts,
+          shiftSchedulers: enrichedShifts.filter(
+            (s) => s.shiftId || s.fromTime !== '00:00' || s.toTime !== '00:00'
+          ),
         });
+
         setLoading(false);
       } catch (err) {
         console.error("Error fetching AutoShift or shift details:", err);
@@ -142,9 +144,8 @@ const navigate = useNavigate();
 
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      const result = await response.json();
       alert("AutoShift updated successfully!");
-       navigate("/admin/ETMS/AutoShift"); 
+      navigate("/admin/ETMS/AutoShift");
       resetForm();
     } catch (error) {
       console.error("Error updating AutoShift:", error);
@@ -200,13 +201,14 @@ const navigate = useNavigate();
                 </div>
               </div>
 
-              <div className="overflow-x-auto mt-6">
+              <div className="overflow-x-auto mt-6" ref={dropdownRef}>
                 <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                   <thead className="bg-gray-100">
                     <tr>
                       <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">From</th>
                       <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">To</th>
                       <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">Assigned Shift</th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -251,10 +253,7 @@ const navigate = useNavigate();
                                       className="hover:bg-blue-100 cursor-pointer"
                                       onClick={() => {
                                         setFieldValue(`shiftSchedulers[${index}].shiftId`, shift.id);
-                                        setFieldValue(
-                                          `shiftSchedulers[${index}].shiftLabel`,
-                                          `${shift.shiftCode} - ${shift.shiftName}`
-                                        );
+                                        setFieldValue(`shiftSchedulers[${index}].shiftLabel`, `${shift.shiftCode} - ${shift.shiftName}`);
                                         setOpenDropdownIndex(null);
                                       }}
                                     >
@@ -267,10 +266,44 @@ const navigate = useNavigate();
                             </div>
                           )}
                         </td>
+                        <td className="border px-4 py-2 text-center">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updatedList = [...values.shiftSchedulers];
+                              updatedList.splice(index, 1);
+                              setFieldValue('shiftSchedulers', updatedList);
+                            }}
+                            className="text-red-600 hover:underline"
+                          >
+                            <MdDelete size={20} />
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+
+                {/* Add Row Button */}
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setFieldValue('shiftSchedulers', [
+                        ...values.shiftSchedulers,
+                        {
+                          shiftId: null,
+                          shiftLabel: '',
+                          fromTime: '00:00',
+                          toTime: '00:00',
+                        },
+                      ])
+                    }
+                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                  >
+                    + Add Row
+                  </button>
+                </div>
               </div>
 
               <div className="flex justify-end space-x-4 mt-8">
