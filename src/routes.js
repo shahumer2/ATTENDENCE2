@@ -21,6 +21,7 @@ import UpdateAutoShift from "views/Shift/AutoShift/UpdateAutoShift";
 import UpdateDutyRoaster from "views/Roaster/UpdateDutyRoaster";
 import Branch from "views/Shift/Branch/Branch";
 import AddBranch from "views/Shift/Branch/AddBranch";
+import UpdateBranch from "views/Shift/Branch/UpdateBranch";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -129,10 +130,10 @@ const dashboardRoutes = [
   layout: "/admin",
 },
 {
-  path: "/ETMS/DutyRoasterUpdate/:id",
+  path: "/ETMS/BranchUpdate/:id",
   name: "Add DutyRoaster", 
   icon: "nc-icon nc-chart-pie-35",
-  component :UpdateDutyRoaster,
+  component :UpdateBranch,
   layout: "/admin",
 },
 
