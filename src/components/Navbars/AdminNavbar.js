@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setSelectedCompany } from "../../redux/Slice/CompanySlice"; // Adjust import path
 import pay from "../../assets/img/pay.png";
 import { PiDotsNineBold } from "react-icons/pi";
-import { BsBuildings, BsChevronDown, BsChevronUp } from "react-icons/bs";
+import { BsBuildings, BsChevronDown, BsChevronRight, BsChevronUp } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { AiOutlineQuestionCircle, AiOutlinePoweroff } from "react-icons/ai";
 
@@ -12,7 +12,7 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const selectedCompany = useSelector((state) => state.company.selectedCompany);
-
+  const [branchSetupHover, setBranchSetupHover] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [employeeDropdownOpen, setEmployeeDropdownOpen] = useState(false);
@@ -23,7 +23,7 @@ function Header() {
   const masterDropdownTimeoutRef = useRef(null);
   const employeeDropdownTimeoutRef = useRef(null);
   const ShiftDropdownTimeoutRef = useRef(null);
-  
+
   const companyDropdownTimeoutRef = useRef(null);
 
   // Sample companies data
@@ -204,7 +204,7 @@ function Header() {
           >
             Home
           </NavLink>
-          
+
           {/* master */}
 
           <div
@@ -321,18 +321,18 @@ function Header() {
               </div>
             )}
           </div>
-{/* 
+          {/* 
           Shift */}
 
-<div
+          <div
             className="relative"
             onMouseEnter={handleShiftMouseEnter}
             onMouseLeave={handleShiftMouseLeave}
           >
             <button
               className={`flex items-center text-sm font-bold transition ${ShiftDropdownOpen || window.location.pathname.includes('/admin/shift')
-                  ? "text-[#FFD700]"
-                  : "text-slate-300 hover:text-[#FFD700]"
+                ? "text-[#FFD700]"
+                : "text-slate-300 hover:text-[#FFD700]"
                 }`}
             >
               Shift
@@ -357,7 +357,7 @@ function Header() {
                     }`
                   }
                 >
-                 Shift 
+                  Shift
                 </NavLink>
                 <NavLink
                   to="/admin/ETMS/DutyRoaster"
@@ -368,8 +368,10 @@ function Header() {
                     }`
                   }
                 >
-                 Duty Roaster
+                  Duty Roaster
                 </NavLink>
+
+
                 <NavLink
                   to="/admin/ETMS/AutoShift"
                   className={({ isActive }) =>
@@ -379,8 +381,69 @@ function Header() {
                     }`
                   }
                 >
-                 Auto Shift
+                  Auto Shift
                 </NavLink>
+
+                <div className="relative group" onMouseEnter={() => setBranchSetupHover(true)}
+                  onMouseLeave={() => setBranchSetupHover(false)}>
+                  <div className="flex justify-between items-center px-4 py-2 text-sm text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]">
+                    Branch Setup
+                    <BsChevronRight className="ml-1 text-xs" />
+                  </div>
+
+                  {/* Branch Setup Submenu */}
+
+                  {branchSetupHover && (
+                    <div
+                     
+                      onMouseEnter={() => setBranchSetupHover(true)}
+                      onMouseLeave={() => setBranchSetupHover(false)}
+                    >
+                      <div className="absolute left-full top-0 ml-1 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-20">
+                        <NavLink
+                          to="/admin/ETMS/Branch"
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-sm ${isActive
+                              ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                            }`
+                          }
+                        >
+                          Branch
+                        </NavLink>
+                        <NavLink
+                          to="/admin/ETMS/BranchEmployeeAllocation"
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-sm ${isActive
+                              ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                            }`
+                          }
+                        >
+                          Employee Allocation
+                        </NavLink>
+                        <NavLink
+                          to="/admin/ETMS/BranchSchedule"
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-sm ${isActive
+                              ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                            }`
+                          }
+                        >
+                          Branch Schedule
+                        </NavLink>
+                      </div>
+
+                    </div>
+                  )}
+
+
+                </div>
+
+
+
+
                 <NavLink
                   to="/admin/ETMS/Groups"
                   className={({ isActive }) =>
@@ -390,9 +453,9 @@ function Header() {
                     }`
                   }
                 >
-                 Group
+                  Group
                 </NavLink>
-             
+
               </div>
             )}
           </div>
@@ -416,8 +479,8 @@ function Header() {
           >
             <button
               className={`flex items-center text-sm font-bold transition ${employeeDropdownOpen || window.location.pathname.includes('/admin/employee/add')
-                  ? "text-[#FFD700]"
-                  : "text-slate-300 hover:text-[#FFD700]"
+                ? "text-[#FFD700]"
+                : "text-slate-300 hover:text-[#FFD700]"
                 }`}
             >
               Employee

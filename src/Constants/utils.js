@@ -78,11 +78,20 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
   export const UPDATE_AutoShift_URL = `${BASE_URL}/api/roaster/updateShift`;
 
    //Roaster
- export const DutyRoaster_LIST = `${BASE_URL}/api/roaster/search`;
+
+ export const DutyRoaster_LIST = `${BASE_URL}/api/roaster/allRosters`;
  export const ADD_DutyROASTER_DATA = `${BASE_URL}/api/roaster/create`;
- export const GET_DutyRoasterSearch_URL = `${BASE_URL}/api/roaster/getShiftDropdown`;
- export const GET_DutyROASTERBYID_URL = `${BASE_URL}/api/roaster`;
- export const UPDATE_DutyROASTER_URL = `${BASE_URL}/api/roaster/updateShift`;
+ export const GET_DutyRoasterSearch_URL = `${BASE_URL}/api/roaster/search`;
+ export const GET_DutyRoasterBYID_URL = `${BASE_URL}/api/roaster/getRoster`;
+ export const UPDATE_DutyRoaster_URL = `${BASE_URL}/api/roaster/updateShift`;
+
+ //Branch
+
+ export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;
+ export const ADD_Branch_DATA = `${BASE_URL}/api/branches/addBranch`;
+ export const GET_BranchSearch_URL = `${BASE_URL}/api/branches/search`;
+ export const GET_BranchBYID_URL = `${BASE_URL}/api/Branch/getRoster`;
+ export const UPDATE_Branch_URL = `${BASE_URL}/api/Branch/updateShift`;
  
  
 

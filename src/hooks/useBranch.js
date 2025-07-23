@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { DutyRoaster_LIST } from "Constants/utils";
-import { GET_DutyRoasterSearch_URL } from "Constants/utils";
-import { GET_DutyRoasterBYID_URL } from "Constants/utils";
-import { ADD_DutyROASTER_DATA } from "Constants/utils";
+import { Branch_LIST } from "Constants/utils";
+import { GET_BranchSearch_URL } from "Constants/utils";
+import { GET_BranchBYID_URL } from "Constants/utils";
+import { ADD_Branch_DATA } from "Constants/utils";
 
 
 import { debounce } from "lodash";
@@ -11,10 +11,14 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const useDutyRoaster = (id) => {
+const useBranch = (selectedShifts,id) => {
+
+  console.log(selectedShifts,"from use ");
 
 
-  const [DutyRoasterSearch, setDutyRoasterSearch] = useState([]);
+
+
+  const [BranchSearch, setBranchSearch] = useState([]);
   const [numberOfGroups, setNumberOfGroups] = useState(1);
   const [recurrenceDays, setRecurrenceDays] = useState(1);
   const [selectedGroup, setSelectedGroup] = useState(null);
@@ -32,8 +36,8 @@ const useDutyRoaster = (id) => {
   };
 
   const initialValues = {
-    DutyRoasterCode: '',
-    DutyRoasterName: '',
+    BranchCode: '',
+    BranchName: '',
     effectiveFrom: new Date().toISOString().split('T')[0],
     recurrenceDays: 0,
     groupId: '',
@@ -42,16 +46,16 @@ const useDutyRoaster = (id) => {
 
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
-  const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
-  // const handleSubmit = async (values, { resetForm }) => {
+
+
 
   //   console.log(values,"jj______");
   //   try {
   //     // Transform the form data into the required API format
   //     const requestData = {
-  //       dutyRoasterCode: values.DutyRoasterCode,
-  //       dutyRoasterName: values.DutyRoasterName,
+  //       BranchCode: values.BranchCode,
+  //       BranchName: values.BranchName,
   //       effectiveFrom: values.effectiveFrom,
   //       recurrenceDays: values.recurrenceDays,
   //       groupInvolved: numberOfGroups,
@@ -98,7 +102,7 @@ const useDutyRoaster = (id) => {
 
   //     console.log('Final request data:', JSON.stringify(requestData, null, 2));
 
-  //     // const response = await fetch(ADD_DutyROASTER_DATA, {
+  //     // const response = await fetch(ADD_Branch_DATA, {
   //     //   method: 'POST',
   //     //   headers: {
   //     //     'Authorization': `Bearer ${token}`,
@@ -122,72 +126,37 @@ const useDutyRoaster = (id) => {
   // };
 
   const handleSubmit = async (values) => {
-    console.log(values,"lklk");
     try {
       const requestData = {
-        dutyRoasterCode: values.DutyRoasterCode,
-        dutyRoasterName: values.DutyRoasterName,
-        effectiveFrom: values.effectiveFrom,
-        recurrenceDays: values.recurrenceDays,
-        groupInvolved: numberOfGroups,
-        weeks: []
+        branchCode: values.BranchCode,
+        branchName: values.BranchName,
+        shiftIds:[...selectedShifts]
       };
-
-      const numberOfWeeks = Math.ceil(values.recurrenceDays / 7);
       
-      for (let weekIndex = 0; weekIndex < numberOfWeeks; weekIndex++) {
-        const week = {
-          weekName: `Week ${weekIndex + 1}`,
-          groupShifts: []
-        };
+      console.log(requestData,"branch");
+     
 
-        const daysInThisWeek = weekIndex === numberOfWeeks - 1 
-          ? values.recurrenceDays % 7 || 7
-          : 7;
+ 
 
-        for (let dayIndex = 0; dayIndex < daysInThisWeek; dayIndex++) {
-          const globalDayIndex = weekIndex * 7 + dayIndex;
-          
-          for (let groupIndex = 0; groupIndex < numberOfGroups; groupIndex++) {
-            const groupKey = `group${groupIndex}`;
-            const shiftId = values.rosterAssignments[globalDayIndex]?.[groupKey];
-            
-            if (shiftId) {
-              week.groupShifts.push({
-                groupsId: groupIndex + 1,
-                shiftId: parseInt(shiftId),
-                day: globalDayIndex + 1
-              });
-            }
-          }
-        }
+ const response = await fetch(ADD_Branch_DATA, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
 
-        if (week.groupShifts.length > 0) {
-          requestData.weeks.push(week);
-        }
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Branch Added Successfully!');
+      
+      } else {
+        toast.error(data.message || 'Error While Adding Branch');
       }
-
-      console.log('Final request data:', JSON.stringify(requestData, null, 2));
-
-//  const response = await fetch(ADD_DutyROASTER_DATA, {
-//         method: 'POST',
-//         headers: {
-//           'Authorization': `Bearer ${token}`,
-//           'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify(requestData)
-//       });
-
-//       const data = await response.json();
-
-//       if (response.ok) {
-//         toast.success('Duty Roaster Added Successfully!');
-//         resetForm();
-//       } else {
-//         toast.error(data.message || 'Error While Adding Duty Roaster');
-//       }
       
-      toast.success('Data prepared successfully! Check console for the structure.');
+    
     } catch (error) {
       console.error('Error:', error);
       toast.error('An error occurred. Please try again later.');
@@ -198,9 +167,9 @@ const useDutyRoaster = (id) => {
 
 
 
-  const getDutyRoasterById = async (page) => {
+  const getBranchById = async (page) => {
     try {
-      const response = await fetch(`${GET_DutyROASTERBYID_URL}/${id}`, {
+      const response = await fetch(`${GET_BranchBYID_URL}/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -209,7 +178,7 @@ const useDutyRoaster = (id) => {
       });
       const data = await response.json();
       console.log(data, "asd");
-      setDutyRoasterSearch(data.content);
+      setBranchSearch(data.content);
 
     } catch (error) {
       console.error(error);
@@ -218,9 +187,9 @@ const useDutyRoaster = (id) => {
   };
 
 
-  const getDutyRoasterSearch = async (page) => {
+  const getBranchSearch = async (page) => {
     try {
-      const response = await fetch(`${GET_DutyRoasterSearch_URL}`, {
+      const response = await fetch(`${GET_BranchSearch_URL}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -229,7 +198,7 @@ const useDutyRoaster = (id) => {
       });
       const data = await response.json();
       console.log(data, "asd");
-      setDutyRoasterSearch(data.content);
+      setBranchSearch(data.content);
 
     } catch (error) {
       console.error(error);
@@ -245,9 +214,9 @@ const useDutyRoaster = (id) => {
   return { 
     initialValues, 
     handleSubmit,
-    getDutyRoasterSearch, 
-    DutyRoasterSearch, 
-    getDutyRoasterById,
+    getBranchSearch, 
+    BranchSearch, 
+    getBranchById,
     setSelectedGroup,
     setNumberOfGroups,
     setRecurrenceDays
@@ -256,7 +225,7 @@ const useDutyRoaster = (id) => {
 
 }
 
-export const useDutyRoasterSearch = (token, page = 1, searchTerm = '') => {
+export const useBranchSearch = (token, page = 1, searchTerm = '') => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
   // Debounce search term
@@ -268,20 +237,20 @@ export const useDutyRoasterSearch = (token, page = 1, searchTerm = '') => {
     return () => debouncer.cancel();
   }, [searchTerm]);
 
-  const fetchDutyRoasters = async () => {
-    // If no search term, do a simple GET request for all DutyRoasters
+  const fetchBranchs = async () => {
+    // If no search term, do a simple GET request for all Branchs
     if (!debouncedSearchTerm) {
-      const response = await fetch(`${DutyRoaster_LIST}`, {
+      const response = await fetch(`${Branch_LIST}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      if (!response.ok) throw new Error('Failed to fetch DutyRoasters');
+      if (!response.ok) throw new Error('Failed to fetch Branchs');
       return response.json();
     }
 
     // If search term exists, do a POST request with search parameters
-    const response = await fetch(DutyRoaster_LIST, {
+    const response = await fetch(Branch_LIST, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -290,18 +259,18 @@ export const useDutyRoasterSearch = (token, page = 1, searchTerm = '') => {
       body: JSON.stringify({
         page: page - 1,
         size: 10,
-        DutyRoasterCode: debouncedSearchTerm,
-        DutyRoasterName: debouncedSearchTerm
+        BranchCode: debouncedSearchTerm,
+        BranchName: debouncedSearchTerm
       })
     });
 
-    if (!response.ok) throw new Error('Failed to search DutyRoasters');
+    if (!response.ok) throw new Error('Failed to search Branchs');
     return response.json();
   };
 
   return useQuery({
-    queryKey: ['DutyRoasters', page, debouncedSearchTerm],
-    queryFn: fetchDutyRoasters,
+    queryKey: ['Branchs', page, debouncedSearchTerm],
+    queryFn: fetchBranchs,
     enabled: !!token, // Always enabled if token exists
     keepPreviousData: true,
   });
@@ -309,4 +278,4 @@ export const useDutyRoasterSearch = (token, page = 1, searchTerm = '') => {
 
 
 
-export default useDutyRoaster
+export default useBranch

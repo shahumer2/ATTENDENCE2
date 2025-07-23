@@ -5,29 +5,27 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import ReactSelect from 'react-select';
 import { useQuery } from '@tanstack/react-query';
-
-
+import { Branch_LIST } from 'Constants/utils';
+import { GET_BranchSearch_URL } from 'Constants/utils';
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
-import { GET_DutyRoasterSearch_URL } from 'Constants/utils';
-import { DutyRoaster_LIST } from 'Constants/utils';
-const DutyRoaster = () => {
+const Branch = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useState({
-    DutyRoasterCode: null,
-    DutyRoasterName: null
+    branchCode: null,
+    branchName: null
   });
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch all DutyRoasters for dropdown options
-  const { data: DutyRoasterOptions, isLoading: optionsLoading } = useQuery({
-    queryKey: ['DutyRoasterOptions'],
+  // Fetch all Branchs for dropdown options
+  const { data: BranchOptions, isLoading: optionsLoading } = useQuery({
+    queryKey: ['BranchOptions'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${DutyRoaster_LIST}`, {
+        const response = await fetch(`${Branch_LIST}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -41,7 +39,7 @@ const DutyRoaster = () => {
         console.log('Raw data from API:', data); // This shows it's an array
         return data?.content;
       } catch (error) {
-        console.error('Error fetching DutyRoaster options:', error);
+        console.error('Error fetching Branch options:', error);
         throw error;
       }
     },
@@ -53,24 +51,24 @@ const DutyRoaster = () => {
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
         return {
-          DutyRoasterNames: [{ label: 'Select', value: null }],
-          DutyRoasterCodes: [{ label: 'Select', value: null }]
+          BranchNames: [{ label: 'Select', value: null }],
+          BranchCodes: [{ label: 'Select', value: null }]
         };
       }
   
       const transformed = {
-        DutyRoasterNames: [
+        BranchNames: [
           { label: 'Select', value: null },
-          ...data.map(DutyRoaster => ({
-            label: DutyRoaster.dutyRoasterName,
-            value: DutyRoaster.dutyRoasterName
+          ...data.map(Branch => ({
+            label: Branch.branchName,
+            value: Branch.branchName
           }))
         ],
-        DutyRoasterCodes: [
+        BranchCodes: [
           { label: 'Select', value: null },
-          ...data.map(DutyRoaster => ({
-            label: DutyRoaster.dutyRoasterCode,
-            value: DutyRoaster.dutyRoasterCode
+          ...data.map(Branch => ({
+            label: Branch.branchCode,
+            value: Branch.branchCode
           }))
         ]
       };
@@ -80,19 +78,19 @@ const DutyRoaster = () => {
     }
   });
 
-  // Fetch filtered DutyRoasters based on search params
-// Fetch filtered DutyRoasters based on search params
-const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
-  queryKey: ['DutyRoasters', currentPage, searchParams],
+  // Fetch filtered Branchs based on search params
+// Fetch filtered Branchs based on search params
+const { data: BranchData, isLoading, isError, error } = useQuery({
+  queryKey: ['Branchs', currentPage, searchParams],
   queryFn: async () => {
     const requestBody = {
       page: currentPage - 1,
       size: 10,
-      ...(searchParams.DutyRoasterCode && { DutyRoasterCode: searchParams.DutyRoasterCode }),
-      ...(searchParams.DutyRoasterName && { DutyRoasterName: searchParams.DutyRoasterName })
+      ...(searchParams.branchCode && { branchCode: searchParams.branchCode }),
+      ...(searchParams.branchName && { branchName: searchParams.branchName })
     };
 
-    const response = await fetch(GET_DutyRoasterSearch_URL, {
+    const response = await fetch(GET_BranchSearch_URL, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -101,10 +99,10 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
       body: JSON.stringify(requestBody)
     });
     
-    if (!response.ok) throw new Error('Failed to fetch DutyRoasters');
+    if (!response.ok) throw new Error('Failed to fetch Branchs');
     
     const data = await response.json();
-    console.log('Filtered DutyRoaster data:', data);
+    console.log('Filtered Branch data:', data);
     return data;
   },
   enabled: !!token,
@@ -114,30 +112,29 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
   const handleSearchSubmit = (values) => {
     console.log('Search form submitted with values:', values);
     setSearchParams({
-      DutyRoasterCode: values.DutyRoasterCode,
-      DutyRoasterName: values.DutyRoasterName
+      branchCode: values.branchCode,
+      branchName: values.branchName
     });
     setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil((DutyRoasterData?.totalElements || 0) / 10);
+  const totalPages = Math.ceil((BranchData?.totalElements || 0) / 10);
 
   if (isError) {
     toast.error(error.message);
-    return <div>Error loading DutyRoasters</div>;
+    return <div>Error loading Branchs</div>;
   }
-  console.log(DutyRoasterData,"jamshed");
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
       {/* Header + Add Button */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">DutyRoaster List</h2>
+        <h2 className="text-xl font-semibold">Branch List</h2>
         <button
-          onClick={() => navigate("/admin/ETMS/DutyRoaster/add")}
+          onClick={() => navigate("/admin/ETMS/Branch/add")}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Add DutyRoaster
+          Add Branch
         </button>
       </div>
 
@@ -145,8 +142,8 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
       <div className='items-center justify-center'>
         <Formik
           initialValues={{
-            DutyRoasterCode: null,
-            DutyRoasterName: null
+            branchCode: null,
+            branchName: null
           }}
           onSubmit={handleSearchSubmit}
         >
@@ -154,35 +151,35 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
             <Form>
               <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black">DutyRoaster Code</label>
+                  <label className="mb-2.5 block text-black">Branch Code</label>
                   <ReactSelect
-                    name="DutyRoasterCode"
-                    value={DutyRoasterOptions?.DutyRoasterCodes?.find(option => option.value === values.DutyRoasterCode)}
+                    name="BranchCode"
+                    value={BranchOptions?.BranchCodes?.find(option => option.value === values.BranchCode)}
                     onChange={(option) => {
-                      console.log('DutyRoaster Code selected:', option);
-                      setFieldValue('DutyRoasterCode', option?.value || null);
+                      console.log('Branch Code selected:', option);
+                      setFieldValue('branchCode', option?.value || null);
                     }}
-                    options={DutyRoasterOptions?.DutyRoasterCodes || []}
+                    options={BranchOptions?.BranchCodes || []}
                     className="bg-white dark:bg-form-Field"
                     classNamePrefix="react-select"
-                    placeholder="Select DutyRoaster Code"
+                    placeholder="Select Branch Code"
                     isClearable
                     isLoading={optionsLoading}
                   />
                 </div>
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black ">DutyRoaster Name</label>
+                  <label className="mb-2.5 block text-black ">Branch Name</label>
                   <ReactSelect
-                    name="DutyRoasterName"
-                    value={DutyRoasterOptions?.DutyRoasterNames?.find(option => option.value === values.DutyRoasterName)}
+                    name="BranchName"
+                    value={BranchOptions?.BranchNames?.find(option => option.value === values.BranchName)}
                     onChange={(option) => {
-                      console.log('DutyRoaster Name selected:', option);
-                      setFieldValue('DutyRoasterName', option?.value || null);
+                      console.log('Branch Name selected:', option);
+                      setFieldValue('branchName', option?.value || null);
                     }}
-                    options={DutyRoasterOptions?.DutyRoasterNames || []}
+                    options={BranchOptions?.BranchNames || []}
                     className="bg-white dark:bg-form-Field"
                     classNamePrefix="react-select"
-                    placeholder="Select DutyRoaster Name"
+                    placeholder="Select Branch Name"
                     isClearable
                     isLoading={optionsLoading}
                   />
@@ -211,10 +208,10 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    DutyRoaster Code
+                    Branch Code
                   </th>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    DutyRoaster Name
+                    Branch Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
                    Action
@@ -222,19 +219,19 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {DutyRoasterData?.content?.length > 0 ? (
-                  DutyRoasterData.content.map((DutyRoaster) => (
-                    <tr key={DutyRoaster.id} className="even:bg-gray-50 hover:bg-gray-100">
+                {BranchData?.content?.length > 0 ? (
+                  BranchData.content.map((Branch) => (
+                    <tr key={Branch.id} className="even:bg-gray-50 hover:bg-gray-100">
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {DutyRoaster.dutyRoasterCode}
+                        {Branch.branchCode}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {DutyRoaster.dutyRoasterName}
+                        {Branch.branchName}
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         <div className='flex flex-row gap-3'>
-                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/ETMS/DutyRoasterUpdate/${DutyRoaster.id}`)}/>
+                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/BranchUpdate/${Branch.id}`)}/>
                         <MdDelete color='red' className='cursor-pointer' size={25}/>
 
                         </div>
@@ -244,7 +241,7 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
                 ) : (
                   <tr>
                     <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
-                      No DutyRoasters found
+                      No Branchs found
                     </td>
                   </tr>
                 )}
@@ -252,10 +249,10 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
             </table>
 
             {/* Pagination */}
-            {DutyRoasterData?.content?.length > 0 && (
+            {BranchData?.content?.length > 0 && (
               <div className="flex justify-between items-center mt-4 p-4">
                 <div className="text-sm text-gray-700">
-                  Showing {DutyRoasterData.content.length} of {DutyRoasterData.totalElements} DutyRoasters
+                  Showing {BranchData.content.length} of {BranchData.totalElements} Branchs
                 </div>
                 <div className="flex space-x-2">
                   <button
@@ -291,4 +288,4 @@ const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
   );
 };
 
-export default DutyRoaster;
+export default Branch;
