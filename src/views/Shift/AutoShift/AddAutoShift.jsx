@@ -16,7 +16,14 @@ const AddAutoShift = () => {
   const initialValues = {
     autoShiftCode: '',
     autoShiftName: '',
-    shiftSchedulers: [],
+    shiftSchedulers: [
+      {
+        shiftId: null,
+        shiftLabel: '',
+        fromTime: '00:00',
+        toTime: '00:00',
+      },
+    ],
   };
 
   const validationSchema = Yup.object().shape({
@@ -151,10 +158,11 @@ const AddAutoShift = () => {
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">From</th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">To</th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px]">Assigned Shift</th>
+                        <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Action</th>
                       </tr>
                     </thead>
                     <FieldArray name="shiftSchedulers">
-                      {({ push }) => (
+                      {({ push, remove }) => (
                         <>
                           <tbody className="bg-white divide-y divide-gray-200">
                             {values.shiftSchedulers.map((scheduler, index) => (
@@ -246,13 +254,25 @@ const AddAutoShift = () => {
                                     </div>
                                   )}
                                 </td>
+
+                                {/* 🗑 DELETE BUTTON */}
+                                <td className="border px-4 py-2 text-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => remove(index)}
+                                    className="text-red-600 font-bold hover:text-red-800"
+                                    title="Delete Row"
+                                  >
+                                    🗑
+                                  </button>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
 
                           <tfoot>
                             <tr>
-                              <td colSpan="3" className="text-right px-4 py-2">
+                              <td colSpan="4" className="text-right px-4 py-2">
                                 <button
                                   type="button"
                                   onClick={() =>
