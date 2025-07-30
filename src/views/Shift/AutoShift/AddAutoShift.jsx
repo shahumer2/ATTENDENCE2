@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddAutoShift = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
@@ -95,12 +97,15 @@ const AddAutoShift = () => {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       await response.json();
-      alert("AutoShift saved successfully!");
+      toast.success("AutoShift saved successfully!");
       resetForm();
-      navigate('/admin/ETMS/AutoShift');
+
+      setTimeout(() => {
+        navigate('/admin/ETMS/AutoShift');
+      }, 1500);
     } catch (error) {
       console.error("Error saving AutoShift:", error);
-      alert("Failed to save AutoShift.");
+      toast.error("Failed to save AutoShift.");
     }
   };
 
@@ -255,7 +260,6 @@ const AddAutoShift = () => {
                                   )}
                                 </td>
 
-                                {/* 🗑 DELETE BUTTON */}
                                 <td className="border px-4 py-2 text-center">
                                   <button
                                     type="button"
@@ -316,6 +320,9 @@ const AddAutoShift = () => {
             );
           }}
         </Formik>
+
+        {/* Toast container for showing notifications */}
+        <ToastContainer position="top-right" autoClose={2000} />
       </div>
     </div>
   );
