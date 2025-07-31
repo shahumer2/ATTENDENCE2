@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CiEdit } from "react-icons/ci";
@@ -14,12 +15,10 @@ const fetchAllAutoShifts = async (token) => {
       Authorization: `Bearer ${token}`
     }
   });
-
-  console.log("Fetched AutoShifts:", response.data);
   return response.data;
 };
 
-// Delete AutoShift by ID (fixed endpoint with slash)
+// Delete AutoShift by ID
 const deleteAutoShift = async ({ id, token }) => {
   return axios.delete(`http://localhost:8081/api/autoshift/delete/${id}`, {
     headers: {
@@ -46,14 +45,14 @@ const AutoShift = () => {
     enabled: !!token,
   });
 
-  // Handle error toast
+  // Show error toast if data fetch fails
   useEffect(() => {
     if (isError) {
       toast.error(error?.message || "Failed to load AutoShifts");
     }
   }, [isError, error]);
 
-  // Delete mutation
+  // Delete mutation with toast
   const { mutate: deleteShift, isLoading: isDeleting } = useMutation({
     mutationFn: ({ id }) => deleteAutoShift({ id, token }),
     onSuccess: () => {
@@ -67,6 +66,7 @@ const AutoShift = () => {
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">AutoShift List</h2>
         <button

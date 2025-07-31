@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddAutoShift = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
@@ -16,7 +18,14 @@ const AddAutoShift = () => {
   const initialValues = {
     autoShiftCode: '',
     autoShiftName: '',
-    shiftSchedulers: [],
+    shiftSchedulers: [
+      {
+        shiftId: null,
+        shiftLabel: '',
+        fromTime: '00:00',
+        toTime: '00:00',
+      },
+    ],
   };
 
   const validationSchema = Yup.object().shape({
@@ -88,12 +97,15 @@ const AddAutoShift = () => {
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       await response.json();
-      alert("AutoShift saved successfully!");
+      toast.success("AutoShift saved successfully!");
       resetForm();
-      navigate('/admin/ETMS/AutoShift');
+
+      setTimeout(() => {
+        navigate('/admin/ETMS/AutoShift');
+      }, 1500);
     } catch (error) {
       console.error("Error saving AutoShift:", error);
-      alert("Failed to save AutoShift.");
+      toast.error("Failed to save AutoShift.");
     }
   };
 
@@ -151,10 +163,11 @@ const AddAutoShift = () => {
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">From</th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">To</th>
                         <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px]">Assigned Shift</th>
+                        <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Action</th>
                       </tr>
                     </thead>
                     <FieldArray name="shiftSchedulers">
-                      {({ push }) => (
+                      {({ push, remove }) => (
                         <>
                           <tbody className="bg-white divide-y divide-gray-200">
                             {values.shiftSchedulers.map((scheduler, index) => (
@@ -246,13 +259,24 @@ const AddAutoShift = () => {
                                     </div>
                                   )}
                                 </td>
+
+                                <td className="border px-4 py-2 text-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => remove(index)}
+                                    className="text-red-600 font-bold hover:text-red-800"
+                                    title="Delete Row"
+                                  >
+                                    🗑
+                                  </button>
+                                </td>
                               </tr>
                             ))}
                           </tbody>
 
                           <tfoot>
                             <tr>
-                              <td colSpan="3" className="text-right px-4 py-2">
+                              <td colSpan="4" className="text-right px-4 py-2">
                                 <button
                                   type="button"
                                   onClick={() =>
@@ -296,6 +320,9 @@ const AddAutoShift = () => {
             );
           }}
         </Formik>
+
+        {/* Toast container for showing notifications */}
+        <ToastContainer position="top-right" autoClose={2000} />
       </div>
     </div>
   );
