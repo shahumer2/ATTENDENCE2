@@ -42,7 +42,7 @@ const ELeaveTabs = ({values, setFieldValue, appDetails, setAppDetails}) => {
                                     ...appDetails,
                                     eLeaveDTO: {
                                         ...appDetails.eLeaveDTO,
-                                        defaultReplacementStaffId: option?.value || null
+                                        defaultReplacementStaffId: option?.id || null
                                     }
                                 })}
                                 options={EmployeeOptions}
