@@ -1,8 +1,23 @@
+import { useQuery } from "@tanstack/react-query";
+import { Race_LIST } from "Constants/utils";
+import { Nationality_LIST } from "Constants/utils";
+import { GET_EMPLOYEEDROPDOWN_DATA } from "Constants/utils";
+import { Religion_LIST } from "Constants/utils";
 import { ADD_EMPLOYEE_DATA } from "Constants/utils";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-const useEmployee = ({startDate,confirmationDate,leaveCalDate,resignationDate,children,profilePic}) => {
+const useEmployee = (params = {}) => {
+  const {
+    startDate = null,
+    confirmationDate = null,
+    leaveCalDate = null,
+    resignationDate = null,
+    children = null,
+    profilePic = null,
+    appDetails = null,
+    setAppDetails = () => {}
+  } = params;
 
 
     const RestDay = [
@@ -14,6 +29,30 @@ const useEmployee = ({startDate,confirmationDate,leaveCalDate,resignationDate,ch
         { value: 'Friday', label: 'Friday' },
         { value: 'Saturday', label: 'Saturday' }
       ];
+      const bloodTypeOptions = [
+        { value: 'A+', label: 'A+' },
+        { value: 'A-', label: 'A-' },
+        { value: 'B+', label: 'B+' },
+        { value: 'B-', label: 'B-' },
+        { value: 'AB+', label: 'AB+' },
+        { value: 'AB-', label: 'AB-' },
+        { value: 'O+', label: 'O+' },
+        { value: 'O-', label: 'O-' },
+        { value: 'Unknown', label: 'Unknown' } // Optional
+      ];
+
+      const applyOptions = [
+        { value: 'END', label: 'END' },
+        { value: 'MID', label: 'MID' },
+        { value: 'END&MID', label: 'END & MID' },
+      
+      ];
+      const periodOptions = [
+        { value: 'PERMANENT', label: 'PERMANENT' },
+        { value: 'TEMPORARY', label: 'TEMPORARY' },
+      
+      
+      ];
       const rateOptions = [
         { value: 'Normal', label: 'Normal Rate (1.5,2.0)' },
         { value: 'flat', label: 'Flat Rate' },
@@ -21,6 +60,14 @@ const useEmployee = ({startDate,confirmationDate,leaveCalDate,resignationDate,ch
         { value: 'Daily', label: 'Daily Rate' },
         { value: 'Vip', label: 'Vip Rate' }
       ];
+//e-leave
+const excludeDaysOptions = [
+    { value: '5WorkingDaysPerWeek', label: '5 Working Days Per Week' },
+    { value: '5.5WorkingDaysPerWeek', label: '5.5 Working Days Per Week' },
+    { value: 'Shift Worker', label: 'ShiftWorker' },
+  
+  ];
+      
 console.log(profilePic,"profilepic+++++");
     const initialValues = {
         // appAccess: '',
@@ -50,56 +97,220 @@ console.log(profilePic,"profilepic+++++");
     const token = currentUser?.token;
 
     const handleSubmit = async (values) => {
-        console.log(values, "jjjjj");
-    
-        // Format your dates first
+        console.log(appDetails, "ePayroll details"); 
+        
+        // Combine form values with appDetails
         const formattedEmployee = {
-            ...values,
-            joinDate: startDate?.toISOString().split('T')[0] || "",
-            confirmationDate: confirmationDate?.toISOString().split('T')[0] || "",
-            leaveCalDate: leaveCalDate?.toISOString().split('T')[0] || "",
-            resignationDate: resignationDate?.toISOString().split('T')[0] || "",
-            childrenDetails: children
+          ...values,
+          ...appDetails
         };
-    
-        // Create a new FormData object
+        console.log(formattedEmployee, "*****");
+        
+        // Create FormData object
         const formData = new FormData();
-    
-        // Append the full employee object as a JSON string
+        
+        // Append the employee data as JSON string
         formData.append("employee", JSON.stringify(formattedEmployee));
-    
-        // Append the profile picture (if present)
+        
+        // Append profile picture if exists
         if (profilePic) {
-            formData.append("profilePic", profilePic);
+          formData.append("profilePic", profilePic);
         }
-    
-        console.log('FormData ready for submission');
-    
-        // try {
-        //     const response = await fetch(ADD_EMPLOYEE_DATA, {
-        //         method: 'POST',
-        //         headers: {
-        //             Authorization: `Bearer ${token}`, // Let the browser set Content-Type (for FormData)
-        //         },
-        //         body: formData,
-        //     });
-    
-        //     const data = await response.json();
-        //     console.log(data, "employee");
-    
-        //     if (response.ok) {
-        //         toast.success('Employee Successfully!');
-        //     } else {
-        //         toast.error('Error While Adding Employee');
-        //     }
-        // } catch (error) {
-        //     toast.error('An error occurred. Please try again later.');
-        // }
-    };
-    
+        
+        // For debugging - convert FormData to plain object for console logging
+        console.log('FormData ready for submission', Object.fromEntries(formData.entries()));
+        
+        // Uncomment this when ready to send
+        try {
+          const response = await fetch(ADD_EMPLOYEE_DATA, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              // Don't set Content-Type - let the browser set it with the boundary
+            },
+            body: formData,
+          });
+          
+          const data = await response.json();
+          console.log(data, "employee response");
+          
+          if (response.ok) {
+            toast.success('Employee Added Successfully!');
+          } else {
+            toast.error('Error While Adding Employee');
+          }
+        } catch (error) {
+          console.error('Submission error:', error);
+          toast.error('An error occurred. Please try again later.');
+        }
+      };
+
+      const { data: RaceOption, isLoading: optionsLoading } = useQuery({
+        queryKey: ['RaceOption'],
+        queryFn: async () => {
+            try {
+                const response = await fetch(`${Race_LIST}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Error fetching FWL options:', error);
+                throw error;
+            }
+        },
+        enabled: !!token,
+        select: (data) => {
+            if (!Array.isArray(data.content)) {
+                console.error('Data is not an array:', data);
+                return [
+                    { label: 'Select', value: null, id: null }
+                ];
+            }
+
+            return [
+                { label: 'Select', value: null, id: null },
+                ...data.content.map(race => ({
+                    label: race.raceName,
+                    value: race.raceName,  // You can use fwl.id as value if preferred
+                    id: race.id
+                }))
+            ];
+        }
+    });
+
+    const { data: religionOptions, isLoading: optionssLoading } = useQuery({
+      queryKey: ['religionOptions'],
+      queryFn: async () => {
+          try {
+              const response = await fetch(`${Religion_LIST}`, {
+                  headers: {
+                      'Authorization': `Bearer ${token}`
+                  }
+              });
+
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const data = await response.json();
+              return data;
+          } catch (error) {
+              console.error('Error fetching FWL options:', error);
+              throw error;
+          }
+      },
+      enabled: !!token,
+      select: (data) => {
+          if (!Array.isArray(data.content)) {
+              console.error('Data is not an array:', data);
+              return [
+                  { label: 'Select', value: null, id: null }
+              ];
+          }
+
+          return [
+              { label: 'Select', value: null, id: null },
+              ...data.content.map(religion => ({
+                  label: religion.religionName,
+                  value: religion.religionName,  // You can use fwl.id as value if preferred
+                  id: religion.id
+              }))
+          ];
+      }
+  });
+  const { data: nationalityOptions, isLoading: optionsssLoading } = useQuery({
+    queryKey: ['nationalityOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${Nationality_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data.content)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.content.map(nationality => ({
+                label: nationality.nationName,
+                value: nationality.nationName,  // You can use fwl.id as value if preferred
+                id: nationality.id
+            }))
+        ];
+    }
+});
+
+const { data: EmployeeOptions, isLoading: optionssssLoading } = useQuery({
+    queryKey: ['EmployeeOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${GET_EMPLOYEEDROPDOWN_DATA}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log(data,"))))))))))");
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.map(emp => ({
+                label: emp.employeeName,
+                value: emp.employeeName,  // You can use fwl.id as value if preferred
+                id: emp.id
+            }))
+        ];
+    }
+});
     
 
-    return { initialValues, handleSubmit,RestDay,rateOptions }
+    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions }
 
 }
 export default useEmployee

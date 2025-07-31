@@ -14,6 +14,7 @@ import { DutyRoaster_LIST } from 'Constants/utils';
 import { GET_ShiftSearch_URL } from 'Constants/utils';
 import { AutoShift_VIEW } from 'Constants/utils';
 import EPayrollTabs from './EPayrollTabs';
+import ELeaveTabs from './ELeaveTabs';
 const AddEmployee = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -24,6 +25,183 @@ const AddEmployee = () => {
   const [confirmationDate, setConfirmationDate] = useState(null);
   const [leaveCalDate, setleaveCalDate] = useState(null);
   const [resignationDate, setResignationDate] = useState(null);
+  const [appDetails, setAppDetails] = useState({
+    etmsDetailsDto: {
+      otType: '', // Default value
+      flatHourlyRate: 0.0, // Changed from flatHourly to flatHourlyRate
+      eligibleWorkingHourPerWeek: 44.0, // Changed from eligibleWorkingHoursPerWeek
+      restDay: '', // New field
+      shiftId: null, // New field
+      dutyRosterId: null, // New field
+      autoShiftId: null, // New field
+      branchId: null // New field
+    },
+    ePayrollDTO: {
+      shortName: '',
+      birthDate: '',
+      prApprovalDate: '',
+      payDayGroup: '',
+      lastPayDate: '',
+      monthlyRate: false,
+      vip: false,
+      otRateCapped: false,
+      basicSalary: 0,
+      increment: 0,
+      incrementDate: '',
+      flatRate: 0,
+      hourlyRate: 0,
+      dailyRate: 0,
+      totalSalary: 0,
+      onceMonth: false,
+      twiceMonth: false,
+      endMonthPay: 0,
+      midMonthPay: 0,
+      fixedAmount: 0,
+      employeerCPF: '',
+      idType: '',
+      nircWorkPermitFin: '',
+      employeeTypeId: null,
+      fwlId: null,
+      salaryPayMode: [
+        { mode: 'CASH', bankName: '', branchId: '', accountNo: '', percentage: 100 },
+        { mode: 'BANK GIRO 1', bankName: '', branchId: '', accountNo: '', percentage: 0 },
+        { mode: 'BANK GIRO 2', bankName: '', branchId: '', accountNo: '', percentage: 0 },
+        { mode: 'CHEQUE 1', bankName: '', branchId: '', accountNo: '', percentage: 0 },
+        { mode: 'CHEQUE 2', bankName: '', branchId: '', accountNo: '', percentage: 0 }
+      ],
+
+      additionalEmployee: {
+        nationalityId: null,
+        religionId: null,
+        raceId: null,
+        forignIdNO: '',
+        passportNumber: '',
+        pssportExpiry: '',
+        bloodType: '',
+        workPermitNumber: '',
+        issueDate: '',
+        expiryDate: '',
+        extensionDate: null,
+        allowanceEmp: {
+          code: '',
+          name: '',
+          amount: 0,
+          apply: '',
+          period: '',
+          fromDate: '',
+          toDate: null,
+          cpf: ''
+        },
+        otherReminder: [{
+          referenceNumber: '',
+          expiryDate: '',
+          description: ''
+        }
+      ],
+        fundEmployee: []
+      },
+
+      personalSection: {
+        homePhone: "",
+        address1: "",
+        address2: "",
+        address3: "",
+        postalCode: "",
+        cityCountry: "",
+        foriegnAddress1: "",
+        foriegnAddress2: "",
+        foriegnAddress3: "",
+        foriegnCity: "",
+        foriegnState: "",
+        foriegnPostalCode: "",
+        foriegnCountry: "",
+        spouseName: "",
+        spouseDobDate: null,
+        spouseOccupation: "",
+        spousePhone: "",
+        emergencyContactPerson: "",
+        empergencyRelation: "",
+        emergencyPhone: "",
+        remark1: "",
+        remark2: "",
+        remark3: "",
+        nsStatus: "",
+        nsRank: ""
+      },
+
+
+      employeeEducation: [
+        {
+            institutionName: "",
+            academicFromTo: "",
+            eductaionName: "",
+            country: "",
+            gpaGradePoint: 0.0,
+            majorCourse: "",
+            highestQualification: true
+        }
+    ],
+
+  customFieldEmployeeDTO: {
+      customFieldListId: null,
+      expiryDate: null,
+      remarks: '',
+      yesNo: ""
+  },
+
+  momIntegrationDTO: {
+    premiseType: "",
+    postalCode: "",
+    streetName: "",
+    typeOfEmployee: "",
+    modeOfPayment: "",
+    ocupationGroup: "",
+    pnJOBLevel: "",
+    isHrRole: "",
+    primaryHRFunction: "",
+    secondaryHRFunction: "",
+    hrJobLevelHeld: "",
+    sceniority: "",
+    businessArea: "",
+    geoGraphocalCoverage: "",
+    mainJobDuties: ""
+}
+
+
+    
+    },
+  
+
+
+
+
+
+    eLeaveDTO: {
+      shortName: "",
+      defaultReplacementStaffId: null,
+      excludeDays: "",
+      homePhone: "",
+      alternateEmail: "",
+      lApproverFinalId: null,
+      lApproverSecondId: null,
+      lApproverFirstId: null,
+      fwaApproverFinalId: null,
+      fwaApproverSecondId: null,
+      fwaApproverFirstId: null
+    },
+
+
+    // mobileAttendance: {
+    //   geoFencing: false,
+    //   radius: '',
+    //   checkInMethod: ''
+    // },
+    // eHR: {
+    //   accessLevel: '',
+    //   canViewSalaries: false,
+    //   canEditEmployees: false
+    // }
+  });
 
   // Initial form values
   const { initialValues, handleSubmit, RestDay, rateOptions } = useEmployee({
@@ -33,15 +211,17 @@ const AddEmployee = () => {
     leaveCalDate,
     resignationDate,
     profileImage,
-    children
+    children,
+    appDetails, // Add this
+    setAppDetails
   });
 
   // Validation schema
   const validationSchema = Yup.object().shape({
-    employeeCode: Yup.string().required('Required'),
-    employeeName: Yup.string().required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
-    phoneNumber: Yup.string().required('Required'),
+    // employeeCode: Yup.string().required('Required'),
+    // employeeName: Yup.string().required('Required'),
+    // email: Yup.string().email('Invalid email').required('Required'),
+    // phoneNumber: Yup.string().required('Required'),
   });
 
   //shift tanstack
@@ -86,7 +266,8 @@ const AddEmployee = () => {
           { label: 'Select', value: null },
           ...data.map(shift => ({
             label: shift.shiftName,
-            value: shift.shiftName
+            value: shift.shiftName,
+            id: shift.id
           }))
         ],
         // shiftCodes: [
@@ -224,37 +405,9 @@ const AddEmployee = () => {
     'E-HR': false
   });
 
-  const [appDetails, setAppDetails] = useState({
-    eTMS: {
-      otType: '',
-      flatHourly: 0.0,
-      weeklyOT: false,
-      eligibleWorkingHoursPerWeek: 44.0
-    },
-    ePayroll: {
-      payrollType: '',
-      bankAccount: '',
-      taxNumber: ''
-    },
-    eLeave: {
-      leaveAccrual: '',
-      carryForward: false,
-      maxCarryForwardDays: ''
-    },
-    mobileAttendance: {
-      geoFencing: false,
-      radius: '',
-      checkInMethod: ''
-    },
-    eHR: {
-      accessLevel: '',
-      canViewSalaries: false,
-      canEditEmployees: false
-    }
-  });
-  console.log(appDetails, "appDetails_______-");
+
   const [activeTab, setActiveTab] = useState(null);
-  const [activeMainTab, setActiveMainTab] = useState('basic'); // 'basic', 'eTMS', 'ePayroll', etc.
+  const [activeMainTab, setActiveMainTab] = useState('basic'); // 'basic', 'etmsDetailsDto', 'ePayroll', etc.
 
   // Add this effect to set the first available tab as active when apps are selected
   useEffect(() => {
@@ -308,15 +461,38 @@ const AddEmployee = () => {
   //shift setting 
   const [selectedSetting, setSelectedSetting] = useState(null);
   const handleDutyRoasterChange = (option) => {
-    // Handle duty roaster change
-  };
+    setAppDetails({
+      ...appDetails,
+      etmsDetailsDto: {
+        ...appDetails.etmsDetailsDto,
+        dutyRosterId: option?.id || null // Also save to appDetails.etmsDetailsDto
+      }
+    });
+  }
+
+  // Handle duty roaster change
+
+
+
 
   const handleAutoShiftChange = (option) => {
-    // Handle auto shift change
+    setAppDetails({
+      ...appDetails,
+      etmsDetailsDto: {
+        ...appDetails.etmsDetailsDto,
+        autoShiftId: option?.id || null // Also save to appDetails.etmsDetailsDto
+      }
+    });
   };
 
   const handleScheduleChange = (option) => {
-    // Handle schedule change
+    setAppDetails({
+      ...appDetails,
+      etmsDetailsDto: {
+        ...appDetails.etmsDetailsDto,
+        branchId: option?.id || null // Also save to appDetails.etmsDetailsDto
+      }
+    });
   };
 
   return (
@@ -372,24 +548,56 @@ const AddEmployee = () => {
                 <div className="flex border-b bg-blue-600 text-white border-gray-200 mb-6">
                   <button
                     className={`px-4 py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                    onClick={() => setActiveMainTab('basic')}
+                    onClick={(e) =>{
+
+                      e.preventDefault();
+                       setActiveMainTab('basic')
+                    }
+                    
+                    }
                   >
                     Basic Details
                   </button>
                   {selectedApps['E-TMS'] && (
                     <button
-                      className={`px-4 py-2 font-xs ${activeMainTab === 'eTMS' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                      onClick={() => setActiveMainTab('eTMS')}
+                      className={`px-4 py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      onClick={(e) =>{
+                        e.preventDefault()
+                       setActiveMainTab('etmsDetailsDto')}}
+                        
                     >
                       E-TMS
                     </button>
                   )}
+
+
+
+
                   {selectedApps['E-payroll'] && (
                     <button
                       className={`px-4 py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                      onClick={() => setActiveMainTab('ePayroll')}
+                      onClick={(e) => {
+                        e.preventDefault()
+
+                        setActiveMainTab('ePayroll')}
+                      }
+                        
                     >
                       E-Payroll
+                    </button>
+                  )}
+                  {selectedApps['E-LEAVE'] && (
+                    <button
+                      className={`px-4 py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      onClick={(e) => 
+                        {
+                          e.preventDefault();
+                          setActiveMainTab('eLeave')}
+
+                        }
+                        
+                    >
+                      E-LEAVE
                     </button>
                   )}
                   {/* Add similar buttons for other apps */}
@@ -838,7 +1046,7 @@ const AddEmployee = () => {
                   </>
 
                 )}
-                {activeMainTab === 'eTMS' && selectedApps['E-TMS'] && (
+                {activeMainTab === 'etmsDetailsDto' && selectedApps['E-TMS'] && (
                   <>
                     <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">
                       <div className="bg-blue-600 text-white p-4 flex items-center">
@@ -851,15 +1059,15 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">OT Type</label>
                             <ReactSelect
                               options={rateOptions}
-                              value={rateOptions.find(option => option.value === appDetails?.eTMS?.otType)}
+                              value={rateOptions.find(option => option.value === appDetails?.etmsDetailsDto?.otType)}
                               onChange={(option) => setAppDetails({
                                 ...appDetails,
-                                eTMS: {
-                                  ...appDetails.eTMS,
+                                etmsDetailsDto: {
+                                  ...appDetails.etmsDetailsDto,
                                   otType: option.value,
                                   // Reset hours when changing OT type (optional)
                                   eligibleWorkingHoursPerWeek: ['flat', 'hourly'].includes(option.value)
-                                    ? appDetails.eTMS.eligibleWorkingHoursPerWeek
+                                    ? appDetails.etmsDetailsDto.eligibleWorkingHoursPerWeek
                                     : ''
                                 }
                               })}
@@ -878,18 +1086,18 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Flat/Hourly</label>
                             <input
                               type="number"
-                              value={appDetails.eTMS.flatHourly || ''}
+                              value={appDetails.etmsDetailsDto.flatHourly || ''}
                               onChange={(e) => setAppDetails({
                                 ...appDetails,
-                                eTMS: { ...appDetails.eTMS, flatHourly: e.target.value }
+                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, flatHourly: e.target.value }
                               })}
-                              disabled={!['flat', 'hourly'].includes(appDetails?.eTMS?.otType)}
-                              className={`w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${['flat', 'hourly'].includes(appDetails?.eTMS?.otType)
+                              disabled={!['flat', 'hourly'].includes(appDetails?.etmsDetailsDto?.otType)}
+                              className={`w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${['flat', 'hourly'].includes(appDetails?.etmsDetailsDto?.otType)
                                 ? 'border-blue-500 bg-white'  // Highlighted when editable
                                 : 'border-gray-300 bg-gray-100'  // Grayed out when disabled
                                 }`}
                               placeholder={
-                                ['flat', 'hourly'].includes(appDetails?.eTMS?.otType)
+                                ['flat', 'hourly'].includes(appDetails?.etmsDetailsDto?.otType)
                                   ? "Enter hours"
                                   : "Select Flat or Hourly rate first"
                               }
@@ -904,10 +1112,10 @@ const AddEmployee = () => {
                               <label className="inline-flex items-center mr-4">
                                 <input
                                   type="radio"
-                                  checked={appDetails.eTMS.weeklyOT === true}
+                                  checked={appDetails.etmsDetailsDto.weeklyOT === true}
                                   onChange={() => setAppDetails({
                                     ...appDetails,
-                                    eTMS: { ...appDetails.eTMS, weeklyOT: true }
+                                    etmsDetailsDto: { ...appDetails.etmsDetailsDto, weeklyOT: true }
                                   })}
                                   className="form-radio h-4 w-4 text-blue-600"
                                 />
@@ -916,10 +1124,10 @@ const AddEmployee = () => {
                               <label className="inline-flex items-center">
                                 <input
                                   type="radio"
-                                  checked={appDetails.eTMS.weeklyOT === false}
+                                  checked={appDetails.etmsDetailsDto.weeklyOT === false}
                                   onChange={() => setAppDetails({
                                     ...appDetails,
-                                    eTMS: { ...appDetails.eTMS, weeklyOT: false }
+                                    etmsDetailsDto: { ...appDetails.etmsDetailsDto, weeklyOT: false }
                                   })}
                                   className="form-radio h-4 w-4 text-blue-600"
                                 />
@@ -931,10 +1139,10 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Eligible Working Hours Per Week</label>
                             <input
                               type="number"
-                              value={appDetails.eTMS.eligibleWorkingHoursPerWeek}
+                              value={appDetails.etmsDetailsDto.eligibleWorkingHoursPerWeek}
                               onChange={(e) => setAppDetails({
                                 ...appDetails,
-                                eTMS: { ...appDetails.eTMS, eligibleWorkingHoursPerWeek: e.target.value || 44.00 }
+                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, eligibleWorkingHoursPerWeek: e.target.value || 44.00 }
                               })}
                               className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                               placeholder="Enter hours"
@@ -956,11 +1164,18 @@ const AddEmployee = () => {
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">Working Hours/Shift</label>
                             <ReactSelect
-                              name="shiftName"
+                              name="shiftId"
                               value={shiftOptions?.shiftNames?.find(option => option.value === values.shiftName)}
                               onChange={(option) => {
                                 console.log('Shift Name selected:', option);
-                                setFieldValue('shiftName', option?.value || null);
+                                setAppDetails({
+                                  ...appDetails,
+                                  etmsDetailsDto: {
+                                    ...appDetails.etmsDetailsDto,
+                                    shiftId: option?.id || null // Also save to appDetails.etmsDetailsDto
+                                  }
+                                });
+
                               }}
                               options={shiftOptions?.shiftNames || []}
                               className="bg-white dark:bg-form-Field z-9999"
@@ -980,11 +1195,11 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Rest Day</label>
                             <ReactSelect
                               options={RestDay}
-                              value={RestDay.find(option => option.value === appDetails?.eTMS?.otType)}
+                              value={RestDay.find(option => option.value === appDetails?.etmsDetailsDto?.otType)}
                               onChange={(option) => setAppDetails({
                                 ...appDetails,
-                                eTMS: {
-                                  ...appDetails.eTMS,
+                                etmsDetailsDto: {
+                                  ...appDetails.etmsDetailsDto,
                                   restDay: option.value,
                                 }
                               })}
@@ -1110,8 +1325,18 @@ const AddEmployee = () => {
 
                 )}
 
+
+
+
+
                 {activeMainTab === 'ePayroll' && selectedApps['E-payroll'] && (
-                  <EPayrollTabs values={values} setFieldValue={setFieldValue} />
+                  <EPayrollTabs values={values} setFieldValue={setFieldValue}  appDetails={appDetails}
+                  setAppDetails={setAppDetails}/>
+                )}
+
+                {activeMainTab === 'eLeave' && selectedApps['E-LEAVE'] && (
+                  <ELeaveTabs values={values} setFieldValue={setFieldValue}  appDetails={appDetails}
+                  setAppDetails={setAppDetails}/>
                 )}
 
 

@@ -13,6 +13,8 @@ export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
 
 
 
+
+
 //designations
 export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
@@ -44,7 +46,7 @@ export const GET_INACTIVEUSERS = `${BASE_URL}/api/user/inactive`;
 export const ADD_EMPLOYEE_DATA = `${BASE_URL}/employee/addEmployee`;
 export const GET_ALL_EMPLOYEE_DATA = `${BASE_URL}/employee/getAllEmployee`;
 export const GET_EMPLOYEE_DATA = `${BASE_URL}/employee/getAll-Employees`;
-
+export const GET_EMPLOYEEDROPDOWN_DATA = `${BASE_URL}/employee/getEmployeeDropdown`;
 
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
@@ -103,6 +105,63 @@ export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
  export const GET_FwlSearch_URL = `${BASE_URL}/api/fwl/search`;
  export const GET_FwlhBYID_URL = `${BASE_URL}/api/branches/getBy`;
  export const UPDATE_Fwl_URL = `${BASE_URL}/api/branches/updateBranch`;
+
+  //Religion
+
+  export const Religion_LIST = `${BASE_URL}/api/religion/getAll`;
+  export const ADD_Religion_DATA = `${BASE_URL}/api/religion/addReligion`;
+  export const GET_ReligionSearch_URL = `${BASE_URL}/api/religion/search`;
+  export const GET_ReligionhBYID_URL = `${BASE_URL}/api/religion/getBy`;
+  export const UPDATE_Religion_URL = `${BASE_URL}/api/religion/update`;
+
+    //Race
+
+    export const Race_LIST = `${BASE_URL}/api/race/getAll`;
+    export const ADD_Race_DATA = `${BASE_URL}/api/race/create`;
+    export const GET_RaceSearch_URL = `${BASE_URL}/api/race/search`;
+    export const GET_RaceBYID_URL = `${BASE_URL}/api/race/getBy`;
+    export const UPDATE_Race_URL = `${BASE_URL}/api/race/update`;
+        //NATIONALITY
+
+        export const Nationality_LIST = `${BASE_URL}/api/nationality/getAll`;
+        export const ADD_Nationality_DATA = `${BASE_URL}/api/nationality/addNationality`;
+        export const GET_NationalitySearch_URL = `${BASE_URL}/api/nationality/search`;
+        export const GET_NationalityBYID_URL = `${BASE_URL}/api/nationality/getBy`;
+        export const UPDATE_Nationality_URL = `${BASE_URL}/api/nationality/update`;
+
+         //Education
+
+         export const Education_LIST = `${BASE_URL}/api/education/getAll`
+         export const ADD_Education_DATA = `${BASE_URL}/api/education/addEducation`;
+         export const GET_EducationSearch_URL = `${BASE_URL}/api/education/search`;
+         export const GET_EducationBYID_URL = `${BASE_URL}/api/education/getBy`;
+         export const UPDATE_Education_URL = `${BASE_URL}/api/education/update`;
+         
+         //Bank
+
+         export const Bank_LIST = `${BASE_URL}/api/bank/getAll`
+         export const ADD_Bank_DATA = `${BASE_URL}/api/bank/addBank`;
+         export const GET_BankSearch_URL = `${BASE_URL}/api/bank/search`;
+         export const GET_BankBYID_URL = `${BASE_URL}/api/bank/getBy`;
+         export const UPDATE_Bank_URL = `${BASE_URL}/api/bank/update`;
+         
+         //Career
+
+         export const Career_LIST = `${BASE_URL}/api/career/getAll`
+         export const ADD_Career_DATA = `${BASE_URL}/api/career/add`;
+         export const GET_CareerSearch_URL = `${BASE_URL}/api/career/search`;
+         export const GET_CareerBYID_URL = `${BASE_URL}/api/career/getBy`;
+         export const UPDATE_Career_URL = `${BASE_URL}/api/career/update`;
+
+
+ //custom filds
+
+ export const CustomField_LIST = `${BASE_URL}/api/customfield/getAll`;
+ export const ADD_CustomField_DATA = `${BASE_URL}/api/customfield/add`;
+ 
+ export const GET_CustomFieldSearch_URL = `${BASE_URL}/api/fwl/search`;
+ export const GET_CustomFieldhBYID_URL = `${BASE_URL}/api/branches/getBy`;
+ export const UPDATE_CustomField_URL = `${BASE_URL}/api/branches/updateBranch`;
  
  
 

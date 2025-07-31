@@ -10,28 +10,56 @@ import { IoClose } from "react-icons/io5";
 import { ADD_Fwl_DATA } from 'Constants/utils';
 import { GET_FwlSearch_URL } from 'Constants/utils';
 import { Fwl_LIST } from 'Constants/utils';
+import { ADD_Religion_DATA } from 'Constants/utils';
+import { GET_ReligionSearch_URL } from 'Constants/utils';
+import { Religion_LIST } from 'Constants/utils';
+import { UPDATE_Religion_URL } from 'Constants/utils';
+import { UPDATE_Race_URL } from 'Constants/utils';
+import { GET_RaceSearch_URL } from 'Constants/utils';
+import { ADD_Race_DATA } from 'Constants/utils';
+import { Race_LIST } from 'Constants/utils';
+import { Nationality_LIST } from 'Constants/utils';
+import { ADD_Nationality_DATA } from 'Constants/utils';
+import { GET_NationalitySearch_URL } from 'Constants/utils';
+import { UPDATE_Nationality_URL } from 'Constants/utils';
+import { Education_LIST } from 'Constants/utils';
+import { ADD_Education_DATA } from 'Constants/utils';
+import { GET_EducationSearch_URL } from 'Constants/utils';
+import { UPDATE_Education_URL } from 'Constants/utils';
+import { Bank_LIST } from 'Constants/utils';
+import { ADD_Bank_DATA } from 'Constants/utils';
+import { GET_BankSearch_URL } from 'Constants/utils';
+import { UPDATE_Bank_URL } from 'Constants/utils';
+import { Career_LIST } from 'Constants/utils';
+import { ADD_Career_DATA } from 'Constants/utils';
+import { GET_CareerSearch_URL } from 'Constants/utils';
+import { UPDATE_Career_URL } from 'Constants/utils';
 
 // API endpoints configuration
 const API_CONFIG = {
   RACE: {
-    BASE: '/api/races',
-    ADD: '/api/races/addRace',
-    SEARCH: '/api/races/search'
+    BASE: Race_LIST,
+    ADD: ADD_Race_DATA,
+    SEARCH: GET_RaceSearch_URL,
+    UPDATE:UPDATE_Race_URL
   },
   RELIGION: {
-    BASE: '/api/religions',
-    ADD: '/api/religions/addReligion',
-    SEARCH: '/api/religions/search'
+    BASE: Religion_LIST,
+    ADD: ADD_Religion_DATA,
+    SEARCH: GET_ReligionSearch_URL,
+    UPDATE:UPDATE_Religion_URL
   },
   NATIONALITY: {
-    BASE: '/api/nationalities',
-    ADD: '/api/nationalities/addNationality',
-    SEARCH: '/api/nationalities/search'
+    BASE: Nationality_LIST,
+    ADD: ADD_Nationality_DATA,
+    SEARCH: GET_NationalitySearch_URL,
+    UPDATE:UPDATE_Nationality_URL
   },
   EDUCATION: {
-    BASE: '/api/educations',
-    ADD: '/api/educations/addEducation',
-    SEARCH: '/api/educations/search'
+    BASE: Education_LIST,
+    ADD: ADD_Education_DATA,
+    SEARCH: GET_EducationSearch_URL,
+    UPDATE:UPDATE_Education_URL
   },
   FUND: {
     BASE: '/api/funds',
@@ -49,9 +77,10 @@ const API_CONFIG = {
     SEARCH: '/api/dailies/search'
   },
   BANK: {
-    BASE: '/api/banks',
-    ADD: '/api/banks/addBank',
-    SEARCH: '/api/banks/search'
+    BASE: Bank_LIST,
+    ADD: ADD_Bank_DATA,
+    SEARCH: GET_BankSearch_URL,
+    UPDATE:UPDATE_Bank_URL
   },
   COMPONENT: {
     BASE: '/api/components',
@@ -59,9 +88,10 @@ const API_CONFIG = {
     SEARCH: '/api/components/search'
   },
   CAREER: {
-    BASE: '/api/careers',
-    ADD: '/api/careers/addCareer',
-    SEARCH: '/api/careers/search'
+    BASE: Career_LIST,
+    ADD: ADD_Career_DATA,
+    SEARCH: GET_CareerSearch_URL,
+    UPDATE:UPDATE_Career_URL
   }
 };
 
@@ -108,26 +138,32 @@ const Race = () => {
     nationality: {
       label: 'Nationality',
       columns: [
-        { header: 'Nationality Code', key: 'nationalityCode' },
-        { header: 'Nationality Name', key: 'nationalityName' }
+        { header: 'Nationality Code', key: 'nationCode' },
+        { header: 'Nationality Name', key: 'nationName' },
+        { header: 'ir8A Nation Name', key: 'ir8ANationName' }
       ],
       fields: [
-        { name: 'nationalityCode', label: 'Nationality Code', type: 'text', required: true },
-        { name: 'nationalityName', label: 'Nationality Name', type: 'text', required: true }
+        { name: 'nationCode', label: 'Nationality Code', type: 'text', required: true },
+        { name: 'nationName', label: 'Nationality Name', type: 'text', required: true },
+        { name: 'ir8ANationName', label: 'ir8A Nation Name', type: 'text', required: true }
       ],
-      initialValues: { nationalityCode: '', nationalityName: '' }
+      initialValues: { nationCode: '', nationName: '',ir8ANationName:"" }
     },
     education: {
       label: 'Education',
       columns: [
         { header: 'Education Code', key: 'educationCode' },
-        { header: 'Education Name', key: 'educationName' }
+        { header: 'Education Name', key: 'educationName' },
+        { header: 'education Group', key: 'educationGroup' },
+        { header: 'education SubGroup', key: 'educationSubGroup' }
       ],
       fields: [
         { name: 'educationCode', label: 'Education Code', type: 'text', required: true },
-        { name: 'educationName', label: 'Education Name', type: 'text', required: true }
+        { name: 'educationName', label: 'Education Name', type: 'text', required: true },
+        { name: 'educationGroup', label: 'education Group', type: 'text', required: true },
+        { name: 'educationSubGroup', label: 'education SubGroup', type: 'text', required: true }
       ],
-      initialValues: { educationCode: '', educationName: '' }
+      initialValues: { educationCode: '', educationName: '',educationGroup:"",educationSubGroup:"" }
     },
     fund: {
       label: 'Fund',
@@ -232,7 +268,7 @@ const Race = () => {
       const codeKey = `${activeTab}Code`;
       const nameKey = `${activeTab}Name`;
       
-      return {
+      return { 
         codes: [
           { label: 'Select', value: null },
           ...data.content.map(item => ({
@@ -283,7 +319,7 @@ const Race = () => {
   const mutation = useMutation({
     mutationFn: async (values) => {
       const url = editingId 
-        ? `${currentApi.BASE}/${editingId}`
+        ? `${currentApi.UPDATE}/${editingId}`
         : currentApi.ADD;
       
       const method = editingId ? 'PUT' : 'POST';
