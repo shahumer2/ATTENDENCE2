@@ -215,7 +215,7 @@ const AddEmployee = () => {
     appDetails, // Add this
     setAppDetails
   });
-  console.log(categoryOptions, "---------------------------");
+  console.log(children, "---------------------------");
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -424,7 +424,7 @@ const AddEmployee = () => {
   // Handle child addition
   const addChild = () => {
     setChildren([...children, {
-      name: '',
+      childName: '',
       dob: null,
       gender: '',
       birthCertificateNo: '',
@@ -1007,8 +1007,8 @@ const AddEmployee = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                       <input
                                         type="text"
-                                        value={child.name}
-                                        onChange={(e) => handleChildChange(index, 'name', e.target.value)}
+                                        value={child.childName}
+                                        onChange={(e) => handleChildChange(index, 'childName', e.target.value)}
                                         className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="Child name"
                                       />

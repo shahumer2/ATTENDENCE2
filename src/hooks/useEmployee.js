@@ -100,8 +100,9 @@ console.log(profilePic,"profilepic+++++");
         partTime: '',
         categoryId: '',
         leaveCategory: '',
+        childrenDetails:[...children],
     };
-
+console.log(children,"00000000000000000");
     const { currentUser } = useSelector((state) => state.user);
     const token = currentUser?.token;
 
@@ -111,6 +112,7 @@ console.log(profilePic,"profilepic+++++");
         // Combine form values with appDetails
         const formattedEmployee = {
           ...values,
+          childrenDetails: children,
           ...appDetails
         };
         console.log(formattedEmployee, "*****");
@@ -120,7 +122,7 @@ console.log(profilePic,"profilepic+++++");
         
         // Append the employee data as JSON string
         formData.append("employee", JSON.stringify(formattedEmployee));
-        
+        formData.append("employee", JSON.stringify(formattedEmployee));
         // Append profile picture if exists
         if (profilePic) {
           formData.append("profilePic", profilePic);
