@@ -63,11 +63,11 @@ const AddEmployee = () => {
       employeeTypeId: null,
       fwlId: null,
       salaryPayMode: [
-        { mode: 'CASH', bankName: '', branchId: '', accountNo: '', percentage: 100 },
-        { mode: 'BANK GIRO 1', bankName: '', branchId: '', accountNo: '', percentage: 0 },
-        { mode: 'BANK GIRO 2', bankName: '', branchId: '', accountNo: '', percentage: 0 },
-        { mode: 'CHEQUE 1', bankName: '', branchId: '', accountNo: '', percentage: 0 },
-        { mode: 'CHEQUE 2', bankName: '', branchId: '', accountNo: '', percentage: 0 }
+        { mode: 'CASH', bankId: '', branchId: '', accountNumber: '', percentage: 100 },
+        { mode: 'BANK GIRO 1', bankId: '', branchId: '', accountNumber: '', percentage: 0 },
+        { mode: 'BANK GIRO 2', bankId: '', branchId: '', accountNumber: '', percentage: 0 },
+        { mode: 'CHEQUE 1', bankId: '', branchId: '', accountNumber: '', percentage: 0 },
+        { mode: 'CHEQUE 2', bankId: '', branchId: '', accountNumber: '', percentage: 0 }
       ],
 
       addtionalEmployee: {

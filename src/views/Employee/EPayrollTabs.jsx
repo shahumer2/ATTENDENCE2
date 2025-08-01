@@ -17,50 +17,50 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
     const token = currentUser?.token;
     const [activeTab, setActiveTab] = useState('basic');
     // for salary 
-    const { RaceOption, bloodTypeOptions, applyOptions, periodOptions, religionOptions, nationalityOptions,EmployeeTypeOptions } = useEmployee()
+    const { RaceOption, bloodTypeOptions, applyOptions, periodOptions, religionOptions, nationalityOptions,EmployeeTypeOptions,bankOptions } = useEmployee()
 
 
     console.log(EmployeeTypeOptions, "gggggggggggggggggggggggggggggggggggg");
     const [rows, setRows] = useState([{
         mode: 'CASH',
-        bankName: '',
+        bankId: '',
         branchId: '',
-        accountNo: '',
+        accountNumber: '',
         percentage: 100,
     }, {
         mode: 'BANK GIRO 1',
-        bankName: '',
+        bankId: '',
         branchId: '',
-        accountNo: '',
+        accountNumber: '',
         percentage: 0,
     }, {
         mode: 'BANK GIRO 2',
-        bankName: '',
+        bankId: '',
         branchId: '',
-        accountNo: '',
+        accountNumber: '',
         percentage: 0,
     }, {
         mode: 'CHEQUE 1',
-        bankName: '',
+        bankId: '',
         branchId: '',
-        accountNo: '',
+        accountNumber: '',
         percentage: 0,
     }, {
         mode: 'CHEQUE 2',
-        bankName: '',
+        bankId: '',
         branchId: '',
-        accountNo: '',
+        accountNumber: '',
         percentage: 0,
     }]);
-    const bankOptions = [
-        { value: 'CITIBANK', label: 'CITIBANK N.A.' },
-        { value: 'STANDARD_CHARTERED', label: 'Standard Chartered Bank (Singapore) Ltd.' },
-        // Add more bank options as needed
-    ];
+    // const bankOptions = [
+    //     { value: 'CITIBANK', label: 'CITIBANK N.A.' },
+    //     { value: 'STANDARD_CHARTERED', label: 'Standard Chartered Bank (Singapore) Ltd.' },
+    //     // Add more bank options as needed
+    // ];
 
     const handleBankChange = (index, selectedOption) => {
         const newRows = [...rows];
-        newRows[index].bankName = selectedOption ? selectedOption.label : '';
+        newRows[index].bankId = selectedOption ? selectedOption.label : '';
         setRows(newRows);
     };
 
@@ -959,11 +959,11 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{row.mode}</td>
                                                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                                                     <ReactSelect
-                                                     value={bankOptions.find(opt => opt.label === appDetails.ePayrollDTO.salaryPayMode[index].bankName) || null}
+                                                     value={bankOptions.find(opt => opt.id === appDetails.ePayrollDTO.salaryPayMode[index].bankId) || null}
                                                         options={bankOptions}
                                                         onChange={(option) => {
                                                             const updatedPayModes = [...appDetails.ePayrollDTO.salaryPayMode];
-                                                            updatedPayModes[index].bankName = option?.label || '';
+                                                            updatedPayModes[index].bankId = option?.id || '';
                                                             setAppDetails({
                                                                 ...appDetails,
                                                                 ePayrollDTO: {
@@ -996,10 +996,10 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                                                     <input
                                                         type="text"
-                                                        value={row.accountNo}
+                                                        value={row.accountNumber}
                                                         onChange={(e) => {
                                                             const updatedPayModes = [...appDetails.ePayrollDTO.salaryPayMode];
-                                                            updatedPayModes[index].accountNo = e.target.value;
+                                                            updatedPayModes[index].accountNumber = e.target.value;
                                                             setAppDetails({
                                                                 ...appDetails,
                                                                 ePayrollDTO: {
