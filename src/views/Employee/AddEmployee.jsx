@@ -28,8 +28,8 @@ const AddEmployee = () => {
   const [appDetails, setAppDetails] = useState({
     etmsDetailsDto: {
       otType: '', // Default value
-      flatHourlyRate: 0.0, // Changed from flatHourly to flatHourlyRate
-      eligibleWorkingHourPerWeek: 44.0, // Changed from eligibleWorkingHoursPerWeek
+      flatHourlyRate: 0.0, // Changed from flatHourlyRate to flatHourlyRateRate
+      eligibleWorkingHourPerWeek: 0, // Changed from eligibleWorkingHoursPerWeek
       restDay: '', // New field
       shiftId: null, // New field
       dutyRosterId: null, // New field
@@ -1086,10 +1086,10 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Flat/Hourly</label>
                             <input
                               type="number"
-                              value={appDetails.etmsDetailsDto.flatHourly || ''}
+                              value={appDetails.etmsDetailsDto.flatHourlyRate || ''}
                               onChange={(e) => setAppDetails({
                                 ...appDetails,
-                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, flatHourly: e.target.value }
+                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, flatHourlyRate: e.target.value }
                               })}
                               disabled={!['flat', 'hourly'].includes(appDetails?.etmsDetailsDto?.otType)}
                               className={`w-full p-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 ${['flat', 'hourly'].includes(appDetails?.etmsDetailsDto?.otType)
@@ -1139,10 +1139,10 @@ const AddEmployee = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-1">Eligible Working Hours Per Week</label>
                             <input
                               type="number"
-                              value={appDetails.etmsDetailsDto.eligibleWorkingHoursPerWeek}
+                              value={appDetails.etmsDetailsDto.eligibleWorkingHourPerWeek}
                               onChange={(e) => setAppDetails({
                                 ...appDetails,
-                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, eligibleWorkingHoursPerWeek: e.target.value || 44.00 }
+                                etmsDetailsDto: { ...appDetails.etmsDetailsDto, eligibleWorkingHourPerWeek: e.target.value || 44.00 }
                               })}
                               className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                               placeholder="Enter hours"
