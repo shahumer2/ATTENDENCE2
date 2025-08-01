@@ -1489,8 +1489,8 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 ...appDetails.ePayrollDTO,
                                                 additionalEmployee: {
                                                     ...appDetails.ePayrollDTO.additionalEmployee,
-                                                    otherReminders: [
-                                                        ...(appDetails.ePayrollDTO.additionalEmployee.otherReminders || []),
+                                                    otherReminder: [
+                                                        ...(appDetails.ePayrollDTO.additionalEmployee.otherReminder || []),
                                                         {
                                                             referenceNumber: '',
                                                             expiryDate: '',
@@ -1508,7 +1508,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                             </div>
                             <hr className='border border-gray-300 mb-2' />
                             <div className='space-y-4'>
-                                {(appDetails.ePayrollDTO.additionalEmployee.otherReminders || []).map((reminder, index) => (
+                                {(appDetails.ePayrollDTO.additionalEmployee.otherReminder || []).map((reminder, index) => (
                                     <div key={index} className='grid grid-cols-12 gap-4 items-end'>
                                         <div className='col-span-3'>
                                             <label className='block text-sm font-medium text-gray-700 mb-1'>Ref. Nos*</label>
@@ -1516,7 +1516,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='text'
                                                 value={reminder.referenceNumber}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminders];
+                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
                                                     newReminders[index].referenceNumber = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
@@ -1524,7 +1524,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                             ...appDetails.ePayrollDTO,
                                                             additionalEmployee: {
                                                                 ...appDetails.ePayrollDTO.additionalEmployee,
-                                                                otherReminders: newReminders
+                                                                otherReminder: newReminders
                                                             }
                                                         }
                                                     });
@@ -1538,7 +1538,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='date'
                                                 value={reminder.expiryDate}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminders];
+                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
                                                     newReminders[index].expiryDate = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
@@ -1546,7 +1546,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                             ...appDetails.ePayrollDTO,
                                                             additionalEmployee: {
                                                                 ...appDetails.ePayrollDTO.additionalEmployee,
-                                                                otherReminders: newReminders
+                                                                otherReminder: newReminders
                                                             }
                                                         }
                                                     });
@@ -1560,7 +1560,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='text'
                                                 value={reminder.description}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminders];
+                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
                                                     newReminders[index].description = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
@@ -1568,7 +1568,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                             ...appDetails.ePayrollDTO,
                                                             additionalEmployee: {
                                                                 ...appDetails.ePayrollDTO.additionalEmployee,
-                                                                otherReminders: newReminders
+                                                                otherReminder: newReminders
                                                             }
                                                         }
                                                     });
@@ -1580,7 +1580,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminders];
+                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
                                                     newReminders.splice(index, 1);
                                                     setAppDetails({
                                                         ...appDetails,
@@ -1588,7 +1588,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                             ...appDetails.ePayrollDTO,
                                                             additionalEmployee: {
                                                                 ...appDetails.ePayrollDTO.additionalEmployee,
-                                                                otherReminders: newReminders
+                                                                otherReminder: newReminders
                                                             }
                                                         }
                                                     });
