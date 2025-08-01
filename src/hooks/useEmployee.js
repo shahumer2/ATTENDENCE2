@@ -4,6 +4,7 @@ import { Nationality_LIST } from "Constants/utils";
 import { GET_ALL_EMPLOYEETYPE_DATA } from "Constants/utils";
 import { DEPARTMENT_LIST } from "Constants/utils";
 import { DESIGNATIONS_LIST } from "Constants/utils";
+import { Category_LIST } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
 import { Aws_LIST } from "Constants/utils";
 import { Bank_LIST } from "Constants/utils";
@@ -97,7 +98,7 @@ console.log(profilePic,"profilepic+++++");
         daysWorkedPerWeek: '',
         hoursWorkedPerYear: '',
         partTime: '',
-        category: '',
+        categoryId: '',
         leaveCategory: '',
     };
 
@@ -529,9 +530,51 @@ const { data: designationOptions, isLoading: optionssdzLoading } = useQuery({
         ];
     }
 });
-    
 
-    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions,designationOptions,awsOptions,depOptions }
+//category
+
+const { data: categoryOptions, isLoading: optionssxsdzLoading } = useQuery({
+    queryKey: ['categoryOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${Category_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+    
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data.content)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.content.map(cat => ({
+                label: cat.categoryName,
+                value: cat.categoryName,  // You can use fwl.id as value if preferred
+                id: cat.id
+            }))
+        ];
+    }
+});
+    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions,designationOptions,awsOptions,depOptions,categoryOptions }
 
 }
 export default useEmployee

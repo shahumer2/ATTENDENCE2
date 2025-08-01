@@ -150,6 +150,14 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const GET_EducationSearch_URL = `${BASE_URL}/api/education/search`;
          export const GET_EducationBYID_URL = `${BASE_URL}/api/education/getBy`;
          export const UPDATE_Education_URL = `${BASE_URL}/api/education/update`;
+
+           //Category
+
+           export const Category_LIST = `${BASE_URL}/api/category/getAll`
+           export const ADD_Category_DATA = `${BASE_URL}/api/category/add`;
+           export const GET_CategorySearch_URL = `${BASE_URL}/api/category/search`;
+           export const GET_CategoryBYID_URL = `${BASE_URL}/api/category/getBy`;
+           export const UPDATE_Category_URL = `${BASE_URL}/api/category/update`;
          
          //Bank
 

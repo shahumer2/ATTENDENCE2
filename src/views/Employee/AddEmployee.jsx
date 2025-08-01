@@ -204,7 +204,7 @@ const AddEmployee = () => {
   });
 
   // Initial form values
-  const { initialValues, handleSubmit, RestDay, rateOptions, designationOptions, awsOptions, depOptions } = useEmployee({
+  const { initialValues, handleSubmit, RestDay, rateOptions, designationOptions, awsOptions, depOptions,categoryOptions } = useEmployee({
     profilePic,
     startDate,
     confirmationDate,
@@ -215,7 +215,7 @@ const AddEmployee = () => {
     appDetails, // Add this
     setAppDetails
   });
-  console.log(designationOptions, awsOptions, depOptions, "---------------------------");
+  console.log(categoryOptions, "---------------------------");
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -928,15 +928,18 @@ const AddEmployee = () => {
                         <div className="grid grid-cols-2 gap-6">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <Field
-                              as="select"
-                              name="category"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            >
-                              <option value="">Select Category</option>
-                              <option value="category1">Category 1</option>
-                              <option value="category2">Category 2</option>
-                            </Field>
+                            <ReactSelect
+                              value={categoryOptions?.find(option => option.id === values.categoryId) || null}
+                              onChange={(option) => setFieldValue("categoryId", option?.id || null)}
+                              options={categoryOptions || []}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) => option.label || option.name}  // Use appropriate property for display
+                              className="bg-white dark:bg-form-Field"
+                              classNamePrefix="react-select"
+                              placeholder="Select"
+                              isClearable
+                              menuPosition='fixed'
+                            />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Leave Category</label>
