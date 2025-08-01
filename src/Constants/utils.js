@@ -18,6 +18,7 @@ export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
 //designations
 export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
+export const DESIGNATIONS_LIST = `${BASE_URL}/api/designations/viewAll`;
 export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
 
 
@@ -102,6 +103,13 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const GET_BranchSearch_URL = `${BASE_URL}/api/branches/search`;
  export const GET_BranchBYID_URL = `${BASE_URL}/api/branches/getBy`;
  export const UPDATE_Branch_URL = `${BASE_URL}/api/branches/updateBranch`;
+ //aws
+
+ export const Aws_LIST = `${BASE_URL}/api/aws/getAll`;
+ export const ADD_Aws_DATA = `${BASE_URL}/api/aws/add`;
+ export const GET_AwsSearch_URL = `${BASE_URL}/api/aws/search`;
+ export const GET_AwsBYID_URL = `${BASE_URL}/api/aws/getBy`;
+ export const UPDATE_Aws_URL = `${BASE_URL}/api/aws/updateBranch`;
 
 
  //FWL

@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Race_LIST } from "Constants/utils";
 import { Nationality_LIST } from "Constants/utils";
 import { GET_ALL_EMPLOYEETYPE_DATA } from "Constants/utils";
+import { DEPARTMENT_LIST } from "Constants/utils";
+import { DESIGNATIONS_LIST } from "Constants/utils";
+import { GET_DEPARTMENT_LIST } from "Constants/utils";
+import { Aws_LIST } from "Constants/utils";
 import { Bank_LIST } from "Constants/utils";
 import { GET_EMPLOYEEDROPDOWN_DATA } from "Constants/utils";
 import { Religion_LIST } from "Constants/utils";
@@ -85,9 +89,9 @@ console.log(profilePic,"profilepic+++++");
         joinDate:'',
         leaveCalDate:'',
         resignationReason: '',
-        department: '',
-        designation: '',
-        aws: '',
+        departmentId: '',
+        designationId: '',
+        awsId: '',
         holidayGroup: '',
         hoursWorkedPerDay: '',
         daysWorkedPerWeek: '',
@@ -398,9 +402,136 @@ const { data: bankOptions, isLoading: optionssssdzLoading } = useQuery({
         ];
     }
 });
+
+//dep
+const { data: depOptions, isLoading: optionsdzLoading } = useQuery({
+    queryKey: ['depOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${GET_DEPARTMENT_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+   
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.map(dep => ({
+                label: dep.departmentName,
+                value: dep.departmentName,  // You can use fwl.id as value if preferred
+                id: dep.id
+            }))
+        ];
+    }
+});
+//aws
+const { data: awsOptions, isLoading: optionsssdzLoading } = useQuery({
+    queryKey: ['awsOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${Aws_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+    
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data.content)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.content.map(aws => ({
+                label: aws.awsName,
+                value: aws.awsName,  // You can use fwl.id as value if preferred
+                id: aws.id
+            }))
+        ];
+    }
+});
+//designato
+const { data: designationOptions, isLoading: optionssdzLoading } = useQuery({
+    queryKey: ['designationOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${DESIGNATIONS_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+         console.log(data,"type_________________");
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.map(desig => ({
+                label: desig.designationName,
+                value: desig.designationName,  // You can use fwl.id as value if preferred
+                id: desig.id
+            }))
+        ];
+    }
+});
     
 
-    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions }
+    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions,designationOptions,awsOptions,depOptions }
 
 }
 export default useEmployee

@@ -204,7 +204,7 @@ const AddEmployee = () => {
   });
 
   // Initial form values
-  const { initialValues, handleSubmit, RestDay, rateOptions } = useEmployee({
+  const { initialValues, handleSubmit, RestDay, rateOptions, designationOptions, awsOptions, depOptions } = useEmployee({
     profilePic,
     startDate,
     confirmationDate,
@@ -215,6 +215,7 @@ const AddEmployee = () => {
     appDetails, // Add this
     setAppDetails
   });
+  console.log(designationOptions, awsOptions, depOptions, "---------------------------");
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -818,41 +819,46 @@ const AddEmployee = () => {
                         <div className="grid grid-cols-4 gap-6 mb-6">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                            <Field
-                              as="select"
-                              name="department"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            >
-                              <option value="">Select Department</option>
-                              <option value="hr">HR</option>
-                              <option value="it">IT</option>
-                              <option value="finance">Finance</option>
-                            </Field>
+                            <ReactSelect
+                              value={depOptions?.find(option => option.id === values.departmentId) || null}
+                              onChange={(option) => setFieldValue("departmentId", option?.id || null)}
+                              options={depOptions || []}
+                              getOptionValue={(option) => option.id}
+                              getOptionLabel={(option) => option.label || option.name}  // Use appropriate property for display
+                              className="bg-white dark:bg-form-Field"
+                              classNamePrefix="react-select"
+                              placeholder="Select"
+                              isClearable
+                            />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Designation</label>
-                            <Field
-                              as="select"
-                              name="designation"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            >
-                              <option value="">Select Designation</option>
-                              <option value="manager">Manager</option>
-                              <option value="developer">Developer</option>
-                              <option value="analyst">Analyst</option>
-                            </Field>
+                            <ReactSelect
+                             value={designationOptions?.find(option => option.id === values.designationId) || null}
+                            
+                              onChange={(option) => setFieldValue("designationId", option?.id || null)}
+                              options={designationOptions || []}
+                              getOptionValue={(option) => option.id}  // This tells ReactSelect to use the id for value comparison
+                              className="bg-white dark:bg-form-Field"
+                              classNamePrefix="react-select"
+                              placeholder="Select"
+                              isClearable
+                            />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">AWS</label>
-                            <Field
-                              as="select"
-                              name="aws"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            >
-                              <option value="">Select AWS</option>
-                              <option value="aws1">AWS 1</option>
-                              <option value="aws2">AWS 2</option>
-                            </Field>
+                            <ReactSelect
+                        
+                              value={awsOptions?.find(option => option.id === values.awsId) || null}
+                            
+                              onChange={(option) => setFieldValue("awsId", option?.id || null)}
+                              options={awsOptions || []}
+                              getOptionValue={(option) => option.id}  // This tells ReactSelect to use the id for value comparison
+                              className="bg-white dark:bg-form-Field"
+                              classNamePrefix="react-select"
+                              placeholder="Select"
+                              isClearable
+                            />
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Holiday Group</label>
