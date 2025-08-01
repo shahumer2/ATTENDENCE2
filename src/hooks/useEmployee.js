@@ -82,6 +82,8 @@ console.log(profilePic,"profilepic+++++");
         probationMonths: '',
         fingerPrint: '',
         faceId: '',
+        joinDate:'',
+        leaveCalDate:'',
         resignationReason: '',
         department: '',
         designation: '',

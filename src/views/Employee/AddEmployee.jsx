@@ -97,7 +97,7 @@ const AddEmployee = () => {
           expiryDate: '',
           description: ''
         }
-      ],
+        ],
         fundEmployee: []
       },
 
@@ -132,45 +132,45 @@ const AddEmployee = () => {
 
       employeeEducation: [
         {
-            institutionName: "",
-            academicFromTo: "",
-            eductaionName: "",
-            country: "",
-            gpaGradePoint: 0.0,
-            majorCourse: "",
-            highestQualification: true
+          institutionName: "",
+          academicFromTo: "",
+          eductaionName: "",
+          country: "",
+          gpaGradePoint: 0.0,
+          majorCourse: "",
+          highestQualification: true
         }
-    ],
+      ],
 
-  customFieldEmployeeDTO: {
-      customFieldListId: null,
-      expiryDate: null,
-      remarks: '',
-      yesNo: ""
-  },
+      customFieldEmployeeDTO: {
+        customFieldListId: null,
+        expiryDate: null,
+        remarks: '',
+        yesNo: ""
+      },
 
-  momIntegrationDTO: {
-    premiseType: "",
-    postalCode: "",
-    streetName: "",
-    typeOfEmployee: "",
-    modeOfPayment: "",
-    ocupationGroup: "",
-    pnJOBLevel: "",
-    isHrRole: "",
-    primaryHRFunction: "",
-    secondaryHRFunction: "",
-    hrJobLevelHeld: "",
-    sceniority: "",
-    businessArea: "",
-    geoGraphocalCoverage: "",
-    mainJobDuties: ""
-}
+      momIntegrationDTO: {
+        premiseType: "",
+        postalCode: "",
+        streetName: "",
+        typeOfEmployee: "",
+        modeOfPayment: "",
+        ocupationGroup: "",
+        pnJOBLevel: "",
+        isHrRole: "",
+        primaryHRFunction: "",
+        secondaryHRFunction: "",
+        hrJobLevelHeld: "",
+        sceniority: "",
+        businessArea: "",
+        geoGraphocalCoverage: "",
+        mainJobDuties: ""
+      }
 
 
-    
+
     },
-  
+
 
 
 
@@ -548,12 +548,12 @@ const AddEmployee = () => {
                 <div className="flex border-b bg-blue-600 text-white border-gray-200 mb-6">
                   <button
                     className={`px-4 py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                    onClick={(e) =>{
+                    onClick={(e) => {
 
                       e.preventDefault();
-                       setActiveMainTab('basic')
+                      setActiveMainTab('basic')
                     }
-                    
+
                     }
                   >
                     Basic Details
@@ -561,10 +561,11 @@ const AddEmployee = () => {
                   {selectedApps['E-TMS'] && (
                     <button
                       className={`px-4 py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                      onClick={(e) =>{
+                      onClick={(e) => {
                         e.preventDefault()
-                       setActiveMainTab('etmsDetailsDto')}}
-                        
+                        setActiveMainTab('etmsDetailsDto')
+                      }}
+
                     >
                       E-TMS
                     </button>
@@ -579,9 +580,10 @@ const AddEmployee = () => {
                       onClick={(e) => {
                         e.preventDefault()
 
-                        setActiveMainTab('ePayroll')}
+                        setActiveMainTab('ePayroll')
                       }
-                        
+                      }
+
                     >
                       E-Payroll
                     </button>
@@ -589,13 +591,13 @@ const AddEmployee = () => {
                   {selectedApps['E-LEAVE'] && (
                     <button
                       className={`px-4 py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
-                      onClick={(e) => 
-                        {
-                          e.preventDefault();
-                          setActiveMainTab('eLeave')}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setActiveMainTab('eLeave')
+                      }
 
-                        }
-                        
+                      }
+
                     >
                       E-LEAVE
                     </button>
@@ -689,11 +691,17 @@ const AddEmployee = () => {
                           <div className="grid grid-cols-3 gap-6 mb-6">
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">Join Date</label>
-                              <DatePicker
+                              {/* <DatePicker
                                 selected={startDate}
                                 onChange={(date) => setStartDate(date)}
                                 className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 placeholderText="Select date"
+                              /> */}
+                              <Field
+                                name="joinDate"
+                                type="date"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter phone number"
                               />
                             </div>
                             <div>
@@ -737,11 +745,18 @@ const AddEmployee = () => {
                             </div>
                             <div>
                               <label className="block text-sm font-medium text-gray-700 mb-1">Leave Calculation Date</label>
-                              <DatePicker
+                              {/* <DatePicker
                                 selected={leaveCalDate}
                                 onChange={(date) => setleaveCalDate(date)}
                                 className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                 placeholderText="Select date"
+                              /> */}
+
+                              <Field
+                                name="leaveCalDate"
+                                type="date"
+                                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Enter phone number"
                               />
                             </div>
                           </div>
@@ -1330,13 +1345,13 @@ const AddEmployee = () => {
 
 
                 {activeMainTab === 'ePayroll' && selectedApps['E-payroll'] && (
-                  <EPayrollTabs values={values} setFieldValue={setFieldValue}  appDetails={appDetails}
-                  setAppDetails={setAppDetails}/>
+                  <EPayrollTabs values={values} setFieldValue={setFieldValue} appDetails={appDetails}
+                    setAppDetails={setAppDetails} />
                 )}
 
                 {activeMainTab === 'eLeave' && selectedApps['E-LEAVE'] && (
-                  <ELeaveTabs values={values} setFieldValue={setFieldValue}  appDetails={appDetails}
-                  setAppDetails={setAppDetails}/>
+                  <ELeaveTabs values={values} setFieldValue={setFieldValue} appDetails={appDetails}
+                    setAppDetails={setAppDetails} />
                 )}
 
 
