@@ -959,6 +959,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">{row.mode}</td>
                                                 <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                                                     <ReactSelect
+                                                     value={bankOptions.find(opt => opt.label === appDetails.ePayrollDTO.salaryPayMode[index].bankName) || null}
                                                         options={bankOptions}
                                                         onChange={(option) => {
                                                             const updatedPayModes = [...appDetails.ePayrollDTO.salaryPayMode];
@@ -1081,7 +1082,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Religion</label>
                                         <ReactSelect
-                                            value={religionOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.religionId)}
+                                            value={religionOptions.find(opt => opt.id === appDetails.ePayrollDTO.addtionalEmployee.religionId)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
@@ -1104,7 +1105,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Race</label>
                                         <ReactSelect
-                                            value={RaceOption.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.raceId)}
+                                            value={RaceOption.find(opt => opt.id === appDetails.ePayrollDTO.addtionalEmployee.raceId)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
