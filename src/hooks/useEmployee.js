@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Race_LIST } from "Constants/utils";
 import { Nationality_LIST } from "Constants/utils";
+import { GET_ALL_EMPLOYEETYPE_DATA } from "Constants/utils";
 import { GET_EMPLOYEEDROPDOWN_DATA } from "Constants/utils";
 import { Religion_LIST } from "Constants/utils";
 import { ADD_EMPLOYEE_DATA } from "Constants/utils";
@@ -308,9 +309,54 @@ const { data: EmployeeOptions, isLoading: optionssssLoading } = useQuery({
         ];
     }
 });
+
+
+
+
+const { data: EmployeeTypeOptions, isLoading: optionsssszLoading } = useQuery({
+    queryKey: ['EmployeeTypeOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${GET_ALL_EMPLOYEETYPE_DATA}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+         console.log(data,"type_________________");
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data.content)) {
+            console.error('Data is not an array:', data);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.content.map(emp => ({
+                label: emp.employeeTypeName,
+                value: emp.employeeTypeName,  // You can use fwl.id as value if preferred
+                id: emp.id
+            }))
+        ];
+    }
+});
     
 
-    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions }
+    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions }
 
 }
 export default useEmployee

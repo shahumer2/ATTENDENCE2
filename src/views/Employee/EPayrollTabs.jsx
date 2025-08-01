@@ -17,10 +17,10 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
     const token = currentUser?.token;
     const [activeTab, setActiveTab] = useState('basic');
     // for salary 
-    const { RaceOption, bloodTypeOptions, applyOptions, periodOptions, religionOptions, nationalityOptions } = useEmployee()
+    const { RaceOption, bloodTypeOptions, applyOptions, periodOptions, religionOptions, nationalityOptions,EmployeeTypeOptions } = useEmployee()
 
 
-    console.log(nationalityOptions, religionOptions, "gggggggggggggggggggggggggggggggggggg");
+    console.log(EmployeeTypeOptions, "gggggggggggggggggggggggggggggggggggg");
     const [rows, setRows] = useState([{
         mode: 'CASH',
         bankName: '',
@@ -880,7 +880,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type *</label>
                                     <ReactSelect
-                                        value={employmentTypeOptions?.find(option => option.value === appDetails.ePayrollDTO.employeeTypeId)}
+                                        value={EmployeeTypeOptions?.find(option => option.value === appDetails.ePayrollDTO.employeeTypeId)}
                                         onChange={(option) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
@@ -888,7 +888,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 employeeTypeId: option?.id || null
                                             }
                                         })}
-                                        options={employmentTypeOptions || []}
+                                        options={EmployeeTypeOptions || []}
                                         className="bg-white dark:bg-form-Field"
                                         classNamePrefix="react-select"
                                         placeholder="Select Employment Type"

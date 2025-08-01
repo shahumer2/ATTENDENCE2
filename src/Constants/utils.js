@@ -52,6 +52,12 @@ export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 
 
+
+
+//employeetype
+export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
+
+
  //shift
 
  export const Shift_LIST = `${BASE_URL}/api/shifts/search`;
