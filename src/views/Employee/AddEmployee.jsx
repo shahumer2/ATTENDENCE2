@@ -70,7 +70,7 @@ const AddEmployee = () => {
         { mode: 'CHEQUE 2', bankName: '', branchId: '', accountNo: '', percentage: 0 }
       ],
 
-      additionalEmployee: {
+      addtionalEmployee: {
         nationalityId: null,
         religionId: null,
         raceId: null,

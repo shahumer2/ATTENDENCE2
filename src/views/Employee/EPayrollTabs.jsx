@@ -880,7 +880,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Employment Type *</label>
                                     <ReactSelect
-                                        value={EmployeeTypeOptions?.find(option => option.value === appDetails.ePayrollDTO.employeeTypeId)}
+                                        value={EmployeeTypeOptions?.find(option => option.id === appDetails.ePayrollDTO.employeeTypeId)}
                                         onChange={(option) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
@@ -1058,13 +1058,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Nationality*</label>
                                         <ReactSelect
-                                            value={nationalityOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.nationalityId)}
+                                            value={nationalityOptions.find(opt => opt.id === appDetails.ePayrollDTO.addtionalEmployee.nationalityId)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         nationalityId: option?.id || null
                                                     }
                                                 }
@@ -1081,13 +1081,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Religion</label>
                                         <ReactSelect
-                                            value={religionOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.religionId)}
+                                            value={religionOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.religionId)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         religionId: option?.id || null
                                                     }
                                                 }
@@ -1104,13 +1104,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Race</label>
                                         <ReactSelect
-                                            value={RaceOption.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.raceId)}
+                                            value={RaceOption.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.raceId)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         raceId: option?.id || null
                                                     }
                                                 }
@@ -1128,13 +1128,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Foreign ID No*</label>
                                         <input
                                             type="text"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.forignIdNO}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.forignIdNO}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         forignIdNO: e.target.value
                                                     }
                                                 }
@@ -1148,13 +1148,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Passport Expiry*</label>
                                         <input
                                             type="date"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.pssportExpiry}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.pssportExpiry}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         pssportExpiry: e.target.value
                                                     }
                                                 }
@@ -1167,13 +1167,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Blood Type</label>
                                         <ReactSelect
-                                            value={bloodTypeOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.bloodType)}
+                                            value={bloodTypeOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.bloodType)}
                                             onChange={(option) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         bloodType: option?.value || ''
                                                     }
                                                 }
@@ -1198,13 +1198,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">E.P / Work Permit No*</label>
                                         <input
                                             type="text"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.workPermitNumber}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.workPermitNumber}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         workPermitNumber: e.target.value
                                                     }
                                                 }
@@ -1218,13 +1218,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Issue Date*</label>
                                         <input
                                             type="date"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.issueDate}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.issueDate}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         issueDate: e.target.value
                                                     }
                                                 }
@@ -1238,13 +1238,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Expiry Date*</label>
                                         <input
                                             type="date"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.expiryDate}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.expiryDate}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         expiryDate: e.target.value
                                                     }
                                                 }
@@ -1258,13 +1258,13 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Extension Date *</label>
                                         <input
                                             type="date"
-                                            value={appDetails.ePayrollDTO.additionalEmployee.extensionDate || ''}
+                                            value={appDetails.ePayrollDTO.addtionalEmployee.extensionDate || ''}
                                             onChange={(e) => setAppDetails({
                                                 ...appDetails,
                                                 ePayrollDTO: {
                                                     ...appDetails.ePayrollDTO,
-                                                    additionalEmployee: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                    addtionalEmployee: {
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                         extensionDate: e.target.value || null
                                                     }
                                                 }
@@ -1286,15 +1286,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Code</label>
                                     <input
                                         type="text"
-                                        value={appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.code}
+                                        value={appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.code}
                                         onChange={(e) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         code: e.target.value
                                                     }
                                                 }
@@ -1309,15 +1309,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                                     <input
                                         type="text"
-                                        value={appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.name}
+                                        value={appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.name}
                                         onChange={(e) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         name: e.target.value
                                                     }
                                                 }
@@ -1332,15 +1332,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
                                     <input
                                         type="number"
-                                        value={appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.amount}
+                                        value={appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.amount}
                                         onChange={(e) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         amount: parseFloat(e.target.value) || 0
                                                     }
                                                 }
@@ -1354,15 +1354,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Apply</label>
                                     <ReactSelect
-                                        value={applyOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.apply)}
+                                        value={applyOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.apply)}
                                         onChange={(option) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         apply: option?.value || ''
                                                     }
                                                 }
@@ -1380,15 +1380,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Period</label>
                                     <ReactSelect
-                                        value={periodOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.period)}
+                                        value={periodOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.period)}
                                         onChange={(option) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         period: option?.value || ''
                                                     }
                                                 }
@@ -1407,15 +1407,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <label className="block text-sm font-medium text-gray-700 mb-1">From Date</label>
                                     <input
                                         type="date"
-                                        value={appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.fromDate}
+                                        value={appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.fromDate}
                                         onChange={(e) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         fromDate: e.target.value
                                                     }
                                                 }
@@ -1430,15 +1430,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     <label className="block text-sm font-medium text-gray-700 mb-1">To Date</label>
                                     <input
                                         type="date"
-                                        value={appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.toDate || ''}
+                                        value={appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.toDate || ''}
                                         onChange={(e) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         toDate: e.target.value || null
                                                     }
                                                 }
@@ -1452,15 +1452,15 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">CPF</label>
                                     <ReactSelect
-                                        value={employerCPFOptions.find(opt => opt.value === appDetails.ePayrollDTO.additionalEmployee.allowanceEmp.cpf)}
+                                        value={employerCPFOptions.find(opt => opt.value === appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp.cpf)}
                                         onChange={(option) => setAppDetails({
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     allowanceEmp: {
-                                                        ...appDetails.ePayrollDTO.additionalEmployee.allowanceEmp,
+                                                        ...appDetails.ePayrollDTO.addtionalEmployee.allowanceEmp,
                                                         cpf: option?.value || ''
                                                     }
                                                 }
@@ -1487,10 +1487,10 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                             ...appDetails,
                                             ePayrollDTO: {
                                                 ...appDetails.ePayrollDTO,
-                                                additionalEmployee: {
-                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                addtionalEmployee: {
+                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                     otherReminder: [
-                                                        ...(appDetails.ePayrollDTO.additionalEmployee.otherReminder || []),
+                                                        ...(appDetails.ePayrollDTO.addtionalEmployee.otherReminder || []),
                                                         {
                                                             referenceNumber: '',
                                                             expiryDate: '',
@@ -1508,7 +1508,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                             </div>
                             <hr className='border border-gray-300 mb-2' />
                             <div className='space-y-4'>
-                                {(appDetails.ePayrollDTO.additionalEmployee.otherReminder || []).map((reminder, index) => (
+                                {(appDetails.ePayrollDTO.addtionalEmployee.otherReminder || []).map((reminder, index) => (
                                     <div key={index} className='grid grid-cols-12 gap-4 items-end'>
                                         <div className='col-span-3'>
                                             <label className='block text-sm font-medium text-gray-700 mb-1'>Ref. Nos*</label>
@@ -1516,14 +1516,14 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='text'
                                                 value={reminder.referenceNumber}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
+                                                    const newReminders = [...appDetails.ePayrollDTO.addtionalEmployee.otherReminder];
                                                     newReminders[index].referenceNumber = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
                                                         ePayrollDTO: {
                                                             ...appDetails.ePayrollDTO,
-                                                            additionalEmployee: {
-                                                                ...appDetails.ePayrollDTO.additionalEmployee,
+                                                            addtionalEmployee: {
+                                                                ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                 otherReminder: newReminders
                                                             }
                                                         }
@@ -1538,14 +1538,14 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='date'
                                                 value={reminder.expiryDate}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
+                                                    const newReminders = [...appDetails.ePayrollDTO.addtionalEmployee.otherReminder];
                                                     newReminders[index].expiryDate = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
                                                         ePayrollDTO: {
                                                             ...appDetails.ePayrollDTO,
-                                                            additionalEmployee: {
-                                                                ...appDetails.ePayrollDTO.additionalEmployee,
+                                                            addtionalEmployee: {
+                                                                ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                 otherReminder: newReminders
                                                             }
                                                         }
@@ -1560,14 +1560,14 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                 type='text'
                                                 value={reminder.description}
                                                 onChange={(e) => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
+                                                    const newReminders = [...appDetails.ePayrollDTO.addtionalEmployee.otherReminder];
                                                     newReminders[index].description = e.target.value;
                                                     setAppDetails({
                                                         ...appDetails,
                                                         ePayrollDTO: {
                                                             ...appDetails.ePayrollDTO,
-                                                            additionalEmployee: {
-                                                                ...appDetails.ePayrollDTO.additionalEmployee,
+                                                            addtionalEmployee: {
+                                                                ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                 otherReminder: newReminders
                                                             }
                                                         }
@@ -1580,14 +1580,14 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                             <button
                                                 type="button"
                                                 onClick={() => {
-                                                    const newReminders = [...appDetails.ePayrollDTO.additionalEmployee.otherReminder];
+                                                    const newReminders = [...appDetails.ePayrollDTO.addtionalEmployee.otherReminder];
                                                     newReminders.splice(index, 1);
                                                     setAppDetails({
                                                         ...appDetails,
                                                         ePayrollDTO: {
                                                             ...appDetails.ePayrollDTO,
-                                                            additionalEmployee: {
-                                                                ...appDetails.ePayrollDTO.additionalEmployee,
+                                                            addtionalEmployee: {
+                                                                ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                 otherReminder: newReminders
                                                             }
                                                         }
@@ -1652,8 +1652,8 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                             ...appDetails,
                                                             ePayrollDTO: {
                                                                 ...appDetails.ePayrollDTO,
-                                                                additionalEmployee: {
-                                                                    ...appDetails.ePayrollDTO.additionalEmployee,
+                                                                addtionalEmployee: {
+                                                                    ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                     fundEmployee: selectedFunds
                                                                 }
                                                             }
@@ -1692,8 +1692,8 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                                 ...appDetails,
                                                                 ePayrollDTO: {
                                                                     ...appDetails.ePayrollDTO,
-                                                                    additionalEmployee: {
-                                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                                    addtionalEmployee: {
+                                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                         fundEmployee: selectedFunds
                                                                     }
                                                                 }
@@ -1727,8 +1727,8 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                                                 ...appDetails,
                                                                 ePayrollDTO: {
                                                                     ...appDetails.ePayrollDTO,
-                                                                    additionalEmployee: {
-                                                                        ...appDetails.ePayrollDTO.additionalEmployee,
+                                                                    addtionalEmployee: {
+                                                                        ...appDetails.ePayrollDTO.addtionalEmployee,
                                                                         fundEmployee: selectedFunds
                                                                     }
                                                                 }
@@ -2308,7 +2308,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                             </div>
                         </div>
 
-                        <div className='col-span-2'>
+                        {/* <div className='col-span-2'>
                             <div className='border border-gray-400 rounded-md p-4 mb-5'>
                                 <FieldArray name="contracts">
                                     {({ push, remove }) => (
@@ -2385,7 +2385,7 @@ const ePayrollDTOTabs = ({ values, setFieldValue, appDetails, setAppDetails }) =
                                     )}
                                 </FieldArray>
                             </div>
-                        </div>
+                        </div> */}
 
 
                     </div>
