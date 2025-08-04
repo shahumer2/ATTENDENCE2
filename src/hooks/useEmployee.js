@@ -20,7 +20,7 @@ const useEmployee = (params = {}) => {
     confirmationDate = null,
     leaveCalDate = null,
     resignationDate = null,
-    children = null,
+    children = [],
     profilePic = null,
     appDetails = null,
     setAppDetails = () => {}
