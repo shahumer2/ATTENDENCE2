@@ -51,7 +51,7 @@ export const GET_EMPLOYEEDROPDOWN_DATA = `${BASE_URL}/employee/getEmployeeDropdo
 
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
-
+export const GET_EMPLOYEEQR_DATA = `${BASE_URL}/employee/`;
 
 
 
@@ -127,6 +127,22 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_ReligionSearch_URL = `${BASE_URL}/api/religion/search`;
   export const GET_ReligionhBYID_URL = `${BASE_URL}/api/religion/getBy`;
   export const UPDATE_Religion_URL = `${BASE_URL}/api/religion/update`;
+
+  //leave Group
+  export const LeaveGroup_LIST = `${BASE_URL}/api/leavegroup/getAll`;
+  export const ADD_LeaveGroup_DATA = `${BASE_URL}/api/leavegroup/add`;
+  export const GET_LeaveGroupSearch_URL = `${BASE_URL}/api/leavegroup/search`;
+  export const GET_LeaveGroupBYID_URL = `${BASE_URL}/api/leavegroup/getBy`;
+  export const UPDATE_LeaveGroup_URL = `${BASE_URL}/api/leavegroup/update`;
+
+
+  //leave Type
+  export const Leavetype_LIST = `${BASE_URL}/api/leavetype/getAll`;
+  export const ADD_Leavetype_DATA = `${BASE_URL}/api/leavetype/create`;
+  export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leavetype/search`;
+  export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leavetype/getBy`;
+  export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leavetype/update`;
+
 
     //Race
 

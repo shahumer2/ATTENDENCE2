@@ -254,6 +254,28 @@ function Header() {
                 >
                   Additional Master Setup
                 </NavLink>
+                <NavLink
+                  to="/admin/leaveGroupType"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Leave Group/Leave Type
+                </NavLink>
+                <NavLink
+                  to="/admin/MobileTMS/StaffQRCode"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Staff Qr Code
+                </NavLink>
                 {/* <NavLink
                   to="/admin/designation"
                   className={({ isActive }) =>

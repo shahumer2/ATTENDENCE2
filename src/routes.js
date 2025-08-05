@@ -23,6 +23,8 @@ import Branch from "views/Shift/Branch/Branch";
 import AddBranch from "views/Shift/Branch/AddBranch";
 import UpdateBranch from "views/Shift/Branch/UpdateBranch";
 import Race from "views/Master/Race";
+import ViewEmployeeQr from "views/Employee/ViewEmployeeQr";
+import LeaveGroup from "views/Master/LeaveGroup/LeaveGroup";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -65,6 +67,26 @@ const dashboardRoutes = [
     name: "View Employee", 
     icon: "nc-icon nc-chart-pie-35",
     component :ViewEmployee,
+    layout: "/admin",
+  },
+
+
+  //leave group and type
+
+  {
+    path: "/leaveGroupType",
+    name: "View Leave Group", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :LeaveGroup,
+    layout: "/admin",
+  },
+
+  //app mobile tms
+  {
+    path: "/MobileTMS/StaffQRCode",
+    name: "View Employee", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :ViewEmployeeQr,
     layout: "/admin",
   },
   {
