@@ -142,6 +142,30 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leavetype/search`;
   export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leavetype/getBy`;
   export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leavetype/update`;
+  //hliday group
+  
+    export const HolidayGroup_LIST = `${BASE_URL}/api/holidayGroup/getAll`;
+    export const ADD_HolidayGroup_DATA = `${BASE_URL}/api/holidayGroup/add`;
+    export const GET_HolidayGroupSearch_URL = `${BASE_URL}/api/holidayGroup/search`;
+    export const GET_HolidayGroupBYID_URL = `${BASE_URL}/api/holidayGroup/getBy`;
+    export const UPDATE_HolidayGroup_URL = `${BASE_URL}/api/holidayGroup/update`;
+
+
+  //holiday
+  
+    export const holiday_LIST = `${BASE_URL}/api/holiday/getAll`;
+    export const ADD_holiday_DATA = `${BASE_URL}/api/holiday/add`;
+    export const GET_holidaySearch_URL = `${BASE_URL}/api/holiday/search`;
+    export const GET_holidayBYID_URL = `${BASE_URL}/api/holiday/getBy`;
+    export const UPDATE_holiday_URL = `${BASE_URL}/api/holiday/update`;
+
+  //assignholiday
+   
+    export const AssignHoliday_LIST = `${BASE_URL}/api/AssignHoliday/getAll`;
+    export const ADD_AssignHoliday_DATA = `${BASE_URL}/api/AssignHoliday/add`;
+    export const GET_AssignHolidaySearch_URL = `${BASE_URL}/api/AssignHoliday/search`;
+    export const GET_AssignHolidayBYID_URL = `${BASE_URL}/api/AssignHoliday/getBy`;
+    export const UPDATE_AssignHoliday_URL = `${BASE_URL}/api/AssignHoliday/update`;
 
 
     //Race

@@ -25,6 +25,7 @@ import UpdateBranch from "views/Shift/Branch/UpdateBranch";
 import Race from "views/Master/Race";
 import ViewEmployeeQr from "views/Employee/ViewEmployeeQr";
 import LeaveGroup from "views/Master/LeaveGroup/LeaveGroup";
+import HolidayManagement from "views/Master/HolidayGroup/HolidayGroup";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -78,6 +79,18 @@ const dashboardRoutes = [
     name: "View Leave Group", 
     icon: "nc-icon nc-chart-pie-35",
     component :LeaveGroup,
+    layout: "/admin",
+  },
+
+  //Holiday Group
+
+
+  
+  {
+    path: "/CommonMasters/HolidayMaster",
+    name: "View Leave Group", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :HolidayManagement,
     layout: "/admin",
   },
 

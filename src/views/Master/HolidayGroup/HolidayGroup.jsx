@@ -7,20 +7,28 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
+import { holiday_LIST } from 'Constants/utils';
+import { ADD_holiday_DATA } from 'Constants/utils';
+import { GET_holidaySearch_URL } from 'Constants/utils';
+import { UPDATE_holiday_URL } from 'Constants/utils';
+import { HolidayGroup_LIST } from 'Constants/utils';
+import { ADD_HolidayGroup_DATA } from 'Constants/utils';
+import { GET_HolidayGroupSearch_URL } from 'Constants/utils';
+import { UPDATE_HolidayGroup_URL } from 'Constants/utils';
 
 // API endpoints configuration (replace with your actual endpoints)
 const API_CONFIG = {
   Holiday: {
-    BASE: '/api/holidays',
-    ADD: '/api/holidays',
-    SEARCH: '/api/holidays/search',
-    UPDATE: '/api/holidays',
+    BASE: holiday_LIST,
+    ADD: ADD_holiday_DATA,
+    SEARCH: GET_holidaySearch_URL,
+    UPDATE: UPDATE_holiday_URL
   },
   HolidayGroup: {
-    BASE: '/api/holiday-groups',
-    ADD: '/api/holiday-groups',
-    SEARCH: '/api/holiday-groups/search',
-    UPDATE: '/api/holiday-groups',
+    BASE: HolidayGroup_LIST,
+    ADD: ADD_HolidayGroup_DATA,
+    SEARCH: GET_HolidayGroupSearch_URL,
+    UPDATE: UPDATE_HolidayGroup_URL
   },
   AssignHoliday: {
     BASE: '/api/assign-holiday',
@@ -46,6 +54,59 @@ const HolidayManagement = () => {
 
   // Get API endpoints for current tab
   const currentApi = API_CONFIG[activeTab];
+  const { data: HolidayGroupOptions, isLoading: optionssLoading } = useQuery({
+    queryKey: ['HolidayGroupOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`${HolidayGroup_LIST}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Raw data from API Holiday:', data); // This shows it's an array
+        return data;
+      } catch (error) {
+        console.error('Error fetching DutyRoaster options:', error);
+        throw error;
+      }
+    },
+    enabled: !!token,
+    select: (data) => {
+      console.log('Data in select function:', data); // Should log the array
+      
+      // Since data is directly the array, we don't need data.content
+      if (!Array.isArray(data)) {
+        console.error('Data is not an array:', data);
+        return {
+          HolidayGroup: [{ label: 'Select', value: null }],
+       
+        };
+      }
+  
+      const transformed = {
+        HolidayGroup: [
+          { label: 'Select', value: null },
+          ...data.map(holiday => ({
+            label: holiday.holidayGrpName,
+            value: holiday.holidayGrpName,
+            id:holiday.id
+          }))
+        ],
+      
+      };
+      
+      console.log('Transformed options:', transformed);
+      return transformed;
+    }
+  });
+
+  console.log(HolidayGroupOptions,"jamshed");
 
   // Define columns and form fields for each tab
   const TAB_CONFIG = {
@@ -54,45 +115,41 @@ const HolidayManagement = () => {
       columns: [
         { header: 'Holiday Date', key: 'holidayDate' },
         { header: 'Holiday Name', key: 'holidayName' },
-        { header: 'Reason', key: 'reason' },
-        { header: 'Type', key: 'type' },
+        { header: 'reasonName', key: 'reasonName' },
+        { header: 'holidayGroup', key: 'holidayGroup' },
       ],
       fields: [
         { name: 'holidayDate', label: 'Holiday Date (dd-mm-yyyy)', type: 'date', required: true },
         { name: 'holidayName', label: 'Holiday Name', type: 'text', required: true },
-        { name: 'reason', label: 'Reason', type: 'text', required: false },
+        { name: 'reasonName', label: 'reasonName', type: 'text', required: false },
         { 
-          name: 'type', 
+          name: 'holidayGroup', 
           label: 'Type', 
           type: 'select', 
-          options: [
-            { value: 'PH', label: 'Public Holiday' },
-            { value: 'RH', label: 'Restricted Holiday' },
-            { value: 'GH', label: 'Gazetted Holiday' },
-          ],
+          options: HolidayGroupOptions?.HolidayGroup || [],
           required: true 
         },
       ],
       initialValues: { 
         holidayDate: '', 
         holidayName: '', 
-        reason: '', 
-        type: 'PH' 
+        reasonName: '', 
+        holidayGroup: '' 
       }
     },
     HolidayGroup: {
       label: 'Holiday Group',
       columns: [
-        { header: 'Holiday Group Code', key: 'holidayGroupCode' },
-        { header: 'Holiday Group Name', key: 'holidayGroupName' },
+        { header: 'Holiday Group Code', key: 'holidayGrpCode' },
+        { header: 'Holiday Group Name', key: 'holidayGrpName' },
       ],
       fields: [
-        { name: 'holidayGroupCode', label: 'Holiday Group Code', type: 'text', required: true },
-        { name: 'holidayGroupName', label: 'Holiday Group Name', type: 'text', required: true },
+        { name: 'holidayGrpCode', label: 'Holiday Group Code', type: 'text', required: true },
+        { name: 'holidayGrpName', label: 'Holiday Group Name', type: 'text', required: true },
       ],
       initialValues: { 
-        holidayGroupCode: '', 
-        holidayGroupName: '' 
+        holidayGrpCode: '', 
+        holidayGrpName: '' 
       }
     },
     AssignHoliday: {
@@ -100,7 +157,7 @@ const HolidayManagement = () => {
       columns: [
         { header: 'Employee Code', key: 'employeeCode' },
         { header: 'Employee Name', key: 'employeeName' },
-        { header: 'Holiday Group', key: 'holidayGroupCode' },
+        { header: 'Holiday Group', key: 'holidayGrpCode' },
       ],
       fields: [
         { 
@@ -111,7 +168,7 @@ const HolidayManagement = () => {
           required: true 
         },
         { 
-          name: 'holidayGroupCode', 
+          name: 'holidayGrpCode', 
           label: 'Holiday Group', 
           type: 'select', 
           options: [], // Will be populated from API
@@ -120,7 +177,7 @@ const HolidayManagement = () => {
       ],
       initialValues: { 
         employeeCode: '', 
-        holidayGroupCode: '' 
+        holidayGrpCode: '' 
       }
     },
   };
@@ -183,8 +240,8 @@ const HolidayManagement = () => {
           holidayGroupOptions: [
             { label: 'Select Holiday Group', value: null },
             ...data.holidayGroups.map(group => ({
-              label: `${group.holidayGroupCode} - ${group.holidayGroupName}`,
-              value: group.holidayGroupCode
+              label: `${group.holidayGrpCode} - ${group.holidayGrpName}`,
+              value: group.holidayGrpCode
             }))
           ]
         };
@@ -294,13 +351,13 @@ const HolidayManagement = () => {
       };
     } else if (activeTab === 'HolidayGroup') {
       searchParams = {
-        holidayGroupCode: values.holidayGroupCode,
-        holidayGroupName: values.holidayGroupName
+        holidayGrpCode: values.holidayGrpCode,
+        holidayGrpName: values.holidayGrpName
       };
     } else if (activeTab === 'AssignHoliday') {
       searchParams = {
         employeeCode: values.employeeCode,
-        holidayGroupCode: values.holidayGroupCode
+        holidayGrpCode: values.holidayGrpCode
       };
     }
     
@@ -483,11 +540,11 @@ const HolidayManagement = () => {
                 holidayName: null,
                 type: null 
               } : activeTab === 'HolidayGroup' ? { 
-                holidayGroupCode: null,
-                holidayGroupName: null 
+                holidayGrpCode: null,
+                holidayGrpName: null 
               } : { 
                 employeeCode: null,
-                holidayGroupCode: null 
+                holidayGrpCode: null 
               })
             }}
             onSubmit={handleSearchSubmit}
@@ -530,9 +587,9 @@ const HolidayManagement = () => {
                       <div className="flex-1 min-w-[300px]">
                         <label className="mb-2.5 block text-black">Holiday Group Code</label>
                         <ReactSelect
-                          name="holidayGroupCode"
-                          value={dropdownOptions?.codes?.find(option => option.value === values.holidayGroupCode)}
-                          onChange={(option) => setFieldValue('holidayGroupCode', option?.value || null)}
+                          name="holidayGrpCode"
+                          value={dropdownOptions?.codes?.find(option => option.value === values.holidayGrpCode)}
+                          onChange={(option) => setFieldValue('holidayGrpCode', option?.value || null)}
                           options={dropdownOptions?.codes || []}
                           className="bg-white"
                           classNamePrefix="react-select"
@@ -544,9 +601,9 @@ const HolidayManagement = () => {
                       <div className="flex-1 min-w-[300px]">
                         <label className="mb-2.5 block text-black">Holiday Group Name</label>
                         <ReactSelect
-                          name="holidayGroupName"
-                          value={dropdownOptions?.names?.find(option => option.value === values.holidayGroupName)}
-                          onChange={(option) => setFieldValue('holidayGroupName', option?.value || null)}
+                          name="holidayGrpName"
+                          value={dropdownOptions?.names?.find(option => option.value === values.holidayGrpName)}
+                          onChange={(option) => setFieldValue('holidayGrpName', option?.value || null)}
                           options={dropdownOptions?.names || []}
                           className="bg-white"
                           classNamePrefix="react-select"
@@ -575,9 +632,9 @@ const HolidayManagement = () => {
                       <div className="flex-1 min-w-[300px]">
                         <label className="mb-2.5 block text-black">Holiday Group</label>
                         <ReactSelect
-                          name="holidayGroupCode"
-                          value={dropdownOptions?.holidayGroupOptions?.find(option => option.value === values.holidayGroupCode)}
-                          onChange={(option) => setFieldValue('holidayGroupCode', option?.value || null)}
+                          name="holidayGrpCode"
+                          value={dropdownOptions?.holidayGroupOptions?.find(option => option.value === values.holidayGrpCode)}
+                          onChange={(option) => setFieldValue('holidayGrpCode', option?.value || null)}
                           options={dropdownOptions?.holidayGroupOptions || []}
                           className="bg-white"
                           classNamePrefix="react-select"

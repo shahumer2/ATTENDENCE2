@@ -266,6 +266,17 @@ function Header() {
                   Leave Group/Leave Type
                 </NavLink>
                 <NavLink
+                  to="/admin/CommonMasters/HolidayMaster"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Holiday/Holiday Group
+                </NavLink>
+                <NavLink
                   to="/admin/MobileTMS/StaffQRCode"
                   className={({ isActive }) =>
                     `block px-4 py-2 text-sm ${isActive
