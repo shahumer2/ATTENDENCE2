@@ -137,11 +137,11 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
 
   //leave Type
-  export const Leavetype_LIST = `${BASE_URL}/api/leavetype/getAll`;
-  export const ADD_Leavetype_DATA = `${BASE_URL}/api/leavetype/create`;
-  export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leavetype/search`;
-  export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leavetype/getBy`;
-  export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leavetype/update`;
+  export const Leavetype_LIST = `${BASE_URL}/api/leaveType/getAll`;
+  export const ADD_Leavetype_DATA = `${BASE_URL}/api/leaveType/add`;
+  export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leaveType/search`;
+  export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leaveType/getBy`;
+  export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leaveType/update`;
   //hliday group
   
     export const HolidayGroup_LIST = `${BASE_URL}/api/holidayGroup/getAll`;

@@ -126,7 +126,7 @@ const LeaveGroup = () => {
           required: true 
         },
         { 
-          name: 'leaveGroupId', 
+          name: 'leaveGroup', 
           label: 'Leave Group', 
           type: 'select', 
           options: [], // Will be populated dynamically
@@ -143,7 +143,7 @@ const LeaveGroup = () => {
         leaveTypeName: '',
         isLeave: null,
         payType: null,
-        leaveGroupId: null,
+        leaveGroup: {id: null},
         active: true
       }
     }
@@ -356,12 +356,27 @@ const LeaveGroup = () => {
     
     switch (field.type) {
       case 'select':
+        if (field.name === 'leaveGroup') {
+          return (
+            <ReactSelect
+              name={field.name}
+              value={dropdownOptions?.leaveGroups?.find(option => option.value === values.leaveGroup?.id)}
+              onChange={(option) => setFieldValue('leaveGroup', {id: option?.value || null})}
+              options={dropdownOptions?.leaveGroups}
+              className="w-full"
+              classNamePrefix="react-select"
+              placeholder={field.label}
+              isClearable
+              isLoading={optionsLoading}
+            />
+          );
+        }
         return (
           <ReactSelect
             name={field.name}
             value={field.options.find(option => option.value === values[field.name])}
             onChange={(option) => setFieldValue(field.name, option?.value || null)}
-            options={field.name === 'leaveGroupId' ? dropdownOptions?.leaveGroups : field.options}
+            options={field.name === 'leaveGroup' ? dropdownOptions?.leaveGroups : field.options}
             className="w-full"
             classNamePrefix="react-select"
             placeholder={field.label}

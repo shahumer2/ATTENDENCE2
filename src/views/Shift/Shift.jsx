@@ -16,14 +16,14 @@ const Shift = () => {
   const navigate = useNavigate();
   const [pageSize, setPageSize] = useState(10);
 
-const pageSizeOptions = [
-  { value: 5, label: '5' },
-  { value: 10, label: '10' },
-  { value: 15, label: '15' },
-  { value: 20, label: '20' },
-  { value: 50, label: '50' },
-  { value: 100, label: '100' }
-];
+  const pageSizeOptions = [
+    { value: 5, label: '5' },
+    { value: 10, label: '10' },
+    { value: 15, label: '15' },
+    { value: 20, label: '20' },
+    { value: 50, label: '50' },
+    { value: 100, label: '100' }
+  ];
 
 
   const [searchParams, setSearchParams] = useState({
@@ -42,11 +42,11 @@ const pageSizeOptions = [
             'Authorization': `Bearer ${token}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         console.log('Raw data from API:', data); // This shows it's an array
         return data;
@@ -58,7 +58,7 @@ const pageSizeOptions = [
     enabled: !!token,
     select: (data) => {
       console.log('Data in select function:', data); // Should log the array
-      
+
       // Since data is directly the array, we don't need data.content
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
@@ -67,7 +67,7 @@ const pageSizeOptions = [
           shiftCodes: [{ label: 'Select', value: null }]
         };
       }
-  
+
       const transformed = {
         shiftNames: [
           { label: 'Select', value: null },
@@ -84,42 +84,42 @@ const pageSizeOptions = [
           }))
         ]
       };
-      
+
       console.log('Transformed options:', transformed);
       return transformed;
     }
   });
 
   // Fetch filtered shifts based on search params
-// Fetch filtered shifts based on search params
-const { data: shiftData, isLoading, isError, error } = useQuery({
-  queryKey: ['shifts', currentPage, pageSize, searchParams], // it will re render if there are dep
-  queryFn: async () => {
-    const requestBody = {
-      page: currentPage - 1,
-      size: pageSize,
-      ...(searchParams.shiftCode && { shiftCode: searchParams.shiftCode }),
-      ...(searchParams.shiftName && { shiftName: searchParams.shiftName })
-    };
+  // Fetch filtered shifts based on search params
+  const { data: shiftData, isLoading, isError, error } = useQuery({
+    queryKey: ['shifts', currentPage, pageSize, searchParams], // it will re render if there are dep
+    queryFn: async () => {
+      const requestBody = {
+        page: currentPage - 1,
+        size: pageSize,
+        ...(searchParams.shiftCode && { shiftCode: searchParams.shiftCode }),
+        ...(searchParams.shiftName && { shiftName: searchParams.shiftName })
+      };
 
-    const response = await fetch(`${Shift_LIST}?size=${pageSize}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
-    
-    if (!response.ok) throw new Error('Failed to fetch shifts');
-    
-    const data = await response.json();
-    console.log('Filtered shift data:', data);
-    return data;
-  },
-  enabled: !!token,
-  keepPreviousData: true
-});
+      const response = await fetch(`${Shift_LIST}?size=${pageSize}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch shifts');
+
+      const data = await response.json();
+      console.log('Filtered shift data:', data);
+      return data;
+    },
+    enabled: !!token,
+    keepPreviousData: true
+  });
 
   const handleSearchSubmit = (values) => {
     console.log('Search form submitted with values:', values);
@@ -226,7 +226,7 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
                     Shift Name
                   </th>
                   <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                   Action
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -243,8 +243,8 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
 
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         <div className='flex flex-row gap-3'>
-                        <CiEdit color='green' className='cursor-pointer' size={25} onClick={()=>navigate(`/admin/ShiftUpdate/${shift.id}`)}/>
-                        <MdDelete color='red' className='cursor-pointer' size={25}/>
+                          <CiEdit color='green' className='cursor-pointer' size={25} onClick={() => navigate(`/admin/ShiftUpdate/${shift.id}`)} />
+                          <MdDelete color='red' className='cursor-pointer' size={25} />
 
                         </div>
                       </td>
@@ -262,52 +262,52 @@ const { data: shiftData, isLoading, isError, error } = useQuery({
 
             {/* Pagination */}
             {shiftData?.content?.length > 0 && (
-  <div className="flex justify-between items-center mt-4 p-4">
-    <div className="flex items-center space-x-4">
-      <div className="text-sm text-gray-700">
-        Showing {shiftData.content.length} of {shiftData.totalElements} shifts
-      </div>
-      <div className="w-24">
-        <Select
-          options={pageSizeOptions}
-          value={pageSizeOptions.find(option => option.value === pageSize)}
-          onChange={(selectedOption) => {
-            setPageSize(selectedOption.value);
-            setCurrentPage(1); // Reset to first page when changing page size
-          }}
-          isSearchable={false}
-          menuPlacement="auto"
-          className="text-sm"
-        />
-      </div>
-    </div>
-    <div className="flex space-x-2">
-      <button
-        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        disabled={currentPage === 1}
-        className="px-3 py-1 border rounded disabled:opacity-50"
-      >
-        Previous
-      </button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-        <button
-          key={number}
-          onClick={() => setCurrentPage(number)}
-          className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
-        >
-          {number}
-        </button>
-      ))}
-      <button
-        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 border rounded disabled:opacity-50"
-      >
-        Next
-      </button>
-    </div>
-  </div>
-)}
+              <div className="flex justify-between items-center mt-4 p-4">
+                <div className="flex items-center space-x-4">
+                  <div className="text-sm text-gray-700">
+                    Showing {shiftData.content.length} of {shiftData.totalElements} shifts
+                  </div>
+                  <div className="w-24">
+                    <Select
+                      options={pageSizeOptions}
+                      value={pageSizeOptions.find(option => option.value === pageSize)}
+                      onChange={(selectedOption) => {
+                        setPageSize(selectedOption.value);
+                        setCurrentPage(1); // Reset to first page when changing page size
+                      }}
+                      isSearchable={false}
+                      menuPlacement="auto"
+                      className="text-sm"
+                    />
+                  </div>
+                </div>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                    Previous
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                    <button
+                      key={number}
+                      onClick={() => setCurrentPage(number)}
+                      className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
+                    >
+                      {number}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 border rounded disabled:opacity-50"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
