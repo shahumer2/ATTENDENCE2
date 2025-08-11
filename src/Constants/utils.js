@@ -69,7 +69,9 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
   //Leave Category
 
-  export const LeaveCategory_LIST = `${BASE_URL}/api/LeaveCategory/search`;
+  export const LeaveCategory_LIST = `${BASE_URL}/api/leave-categories/search`;
+  export const LeaveCategory_DROP = `${BASE_URL}/api/leave-categories/getLeaveCategoryDropdown`;
+  
   export const LeaveCategory = `${BASE_URL}/api/leave-categories/fetch-all`;
   export const ADD_LeaveCategory_DATA = `${BASE_URL}/api/leave-categories/create`;
   export const GET_LeaveCategorySearch_URL = `${BASE_URL}/api/LeaveCategory/getLeaveCategoryDropdown`;

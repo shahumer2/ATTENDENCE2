@@ -10,6 +10,7 @@ import { GET_LeaveCategorySearch_URL } from 'Constants/utils';
 import { CiEdit } from "react-icons/ci";
 import Select from 'react-select';
 import { MdDelete } from "react-icons/md";
+import { LeaveCategory_DROP } from 'Constants/utils';
 
 const LeaveCategory = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -37,7 +38,7 @@ const LeaveCategory = () => {
     queryKey: ['LeaveCategoryOptions'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GET_LeaveCategorySearch_URL}`, {
+        const response = await fetch(`${LeaveCategory_DROP}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -57,7 +58,7 @@ const LeaveCategory = () => {
     },
     enabled: !!token,
     select: (data) => {
-      console.log('Data in select function:', data);
+      console.log('Data in select function cat:', data);
 
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
@@ -71,15 +72,15 @@ const LeaveCategory = () => {
         LeaveCategoryNames: [
           { label: 'Select', value: null },
           ...data.map(LeaveCategory => ({
-            label: LeaveCategory.LeaveCategoryName,
-            value: LeaveCategory.LeaveCategoryName
+            label: LeaveCategory.leaveCategoryName,
+            value: LeaveCategory.leaveCategoryName
           }))
         ],
         LeaveCategoryCodes: [
           { label: 'Select', value: null },
           ...data.map(LeaveCategory => ({
-            label: LeaveCategory.LeaveCategoryCode,
-            value: LeaveCategory.LeaveCategoryCode
+            label: LeaveCategory.leaveCategoryCode,
+            value: LeaveCategory.leaveCategoryCode
           }))
         ]
       };
@@ -94,12 +95,11 @@ const LeaveCategory = () => {
     queryKey: ['LeaveCategorys', currentPage, pageSize, searchParams],
     queryFn: async () => {
       const requestBody = {
-        page: currentPage - 1,
-        size: pageSize,
+     
         ...(searchParams.LeaveCategoryCode && { LeaveCategoryCode: searchParams.LeaveCategoryCode }),
         ...(searchParams.LeaveCategoryName && { LeaveCategoryName: searchParams.LeaveCategoryName })
       };
-
+console.log(requestBody,"pakki");
       const response = await fetch(`${LeaveCategory_LIST}?size=${pageSize}`, {
         method: 'POST',
         headers: {
@@ -118,7 +118,7 @@ const LeaveCategory = () => {
     enabled: !!token,
     keepPreviousData: true
   });
-
+console.log(LeaveCategoryData,'jamshe');
   const handleSearchSubmit = (values) => {
     console.log('Search form submitted with values:', values);
     setSearchParams({
@@ -248,10 +248,10 @@ const LeaveCategory = () => {
                   LeaveCategoryData.content.map((LeaveCategory) => (
                     <tr key={LeaveCategory.id} className="even:bg-gray-50 hover:bg-gray-100">
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {LeaveCategory.LeaveCategoryCode}
+                        {LeaveCategory.leaveCategoryCode}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {LeaveCategory.LeaveCategoryName}
+                        {LeaveCategory.leaveCategoryName}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {LeaveCategory.medicalClaimLimitPerYear || 'N/A'}
