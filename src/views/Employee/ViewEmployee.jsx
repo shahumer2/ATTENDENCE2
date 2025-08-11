@@ -2,15 +2,17 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { debounce } from 'lodash';
-
+import { MdDelete } from "react-icons/md";
 import { GET_ALL_EMPLOYEE_DATA } from 'Constants/utils';
 import { GET_ACTIVE_EMPLOYEE_DATA } from 'Constants/utils';
 import { GET_RESIGNED_EMPLOYEE_DATA } from 'Constants/utils';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DELETE_EMPLOYEE_DATA } from 'Constants/utils';
 
 const ViewEmployee = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
-
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState('all'); // 'all', 'active', or 'resigned'
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -63,7 +65,7 @@ const ViewEmployee = () => {
   useEffect(() => {
     fetchEmployees(currentPage, debouncedSearchTerm);
   }, [fetchEmployees, currentPage, debouncedSearchTerm]);
-
+console.log(employees,"jamshedpur");
   // Debounce search input
   const debounceSearch = useCallback(
     debounce((value) => {
@@ -82,6 +84,35 @@ const ViewEmployee = () => {
   // Pagination controls
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const deleteMutation = useMutation({
+    mutationFn: async (employeeId) => {
+      const response = await fetch(`${DELETE_EMPLOYEE_DATA}/${employeeId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete employee');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast.success('Employee deleted successfully');
+      queryClient.invalidateQueries(['employees', activeTab]); // This will refetch the data
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    }
+  });
+
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this employee?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
@@ -144,6 +175,7 @@ const ViewEmployee = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Section</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -164,6 +196,7 @@ const ViewEmployee = () => {
                     {employee?.status || 'N/A'}
                   </span>
                 </td>
+                <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap"><MdDelete size={25} color='red' onClick={()=>handleDelete(employee.id)}/></td>
               </tr>
             ))}
           </tbody>

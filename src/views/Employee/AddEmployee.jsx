@@ -204,7 +204,7 @@ const AddEmployee = () => {
   });
 
   // Initial form values
-  const { initialValues, handleSubmit, RestDay, rateOptions, designationOptions, awsOptions, depOptions,categoryOptions } = useEmployee({
+  const { initialValues, handleSubmit, RestDay, rateOptions, designationOptions, awsOptions, depOptions,categoryOptions,leaveCatOptions } = useEmployee({
     profilePic,
     startDate,
     confirmationDate,
@@ -215,7 +215,7 @@ const AddEmployee = () => {
     appDetails, // Add this
     setAppDetails
   });
-  console.log(children, "---------------------------");
+  console.log(leaveCatOptions, "-------------leave--------------");
 
   // Validation schema
   const validationSchema = Yup.object().shape({
@@ -845,6 +845,7 @@ const AddEmployee = () => {
                               isClearable
                             />
                           </div>
+
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">AWS</label>
                             <ReactSelect
@@ -943,15 +944,18 @@ const AddEmployee = () => {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Leave Category</label>
-                            <Field
-                              as="select"
-                              name="leaveCategory"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                            >
-                              <option value="">Select Leave Category</option>
-                              <option value="annual">Annual</option>
-                              <option value="sick">Sick</option>
-                            </Field>
+                            <ReactSelect
+                             value={leaveCatOptions?.find(option => option.id === values.leaveCategoryId) || null}
+                            
+                              onChange={(option) => setFieldValue("leaveCategoryId", option?.id || null)}
+                              options={leaveCatOptions || []}
+                              getOptionValue={(option) => option.id}  // This tells ReactSelect to use the id for value comparison
+                              className="bg-white dark:bg-form-Field"
+                              classNamePrefix="react-select"
+                              placeholder="Select"
+                              isClearable
+                              menuPosition='fixed'
+                            />
                           </div>
                         </div>
                       </div>

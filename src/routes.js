@@ -26,6 +26,8 @@ import Race from "views/Master/Race";
 import ViewEmployeeQr from "views/Employee/ViewEmployeeQr";
 import LeaveGroup from "views/Master/LeaveGroup/LeaveGroup";
 import HolidayManagement from "views/Master/HolidayGroup/HolidayGroup";
+import LeaveCategory from "views/LeaveManagement/LeaveCategory";
+import AddLeaveCategory from "views/LeaveManagement/AddLeaveCategory";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -81,6 +83,28 @@ const dashboardRoutes = [
     component :LeaveGroup,
     layout: "/admin",
   },
+
+    //leave Category
+
+    {
+      path: "/ELeave/LeaveCategory",
+      name: "View Leave Category", 
+      icon: "nc-icon nc-chart-pie-35",
+      component :LeaveCategory,
+      layout: "/admin",
+    },
+    
+    {
+      path: "/LeaveCategory/add",
+      name: "View Leave Category", 
+      icon: "nc-icon nc-chart-pie-35",
+      component :AddLeaveCategory,
+      layout: "/admin",
+    },
+
+
+
+
 
   //Holiday Group
 

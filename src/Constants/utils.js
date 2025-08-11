@@ -48,7 +48,7 @@ export const ADD_EMPLOYEE_DATA = `${BASE_URL}/employee/addEmployee`;
 export const GET_ALL_EMPLOYEE_DATA = `${BASE_URL}/employee/getAllEmployee`;
 export const GET_EMPLOYEE_DATA = `${BASE_URL}/employee/getAll-Employees`;
 export const GET_EMPLOYEEDROPDOWN_DATA = `${BASE_URL}/employee/getEmployeeDropdown`;
-
+export const DELETE_EMPLOYEE_DATA = `${BASE_URL}/employee/deleteEmployee`;
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 export const GET_EMPLOYEEQR_DATA = `${BASE_URL}/employee/`;
@@ -66,6 +66,15 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const GET_ShiftSearch_URL = `${BASE_URL}/api/shifts/getShiftDropdown`;
  export const GET_SHIFTBYID_URL = `${BASE_URL}/api/shifts`;
  export const UPDATE_SHIFT_URL = `${BASE_URL}/api/shifts/updateShift`;
+
+  //Leave Category
+
+  export const LeaveCategory_LIST = `${BASE_URL}/api/LeaveCategory/search`;
+  export const LeaveCategory = `${BASE_URL}/api/leave-categories/fetch-all`;
+  export const ADD_LeaveCategory_DATA = `${BASE_URL}/api/leave-categories/create`;
+  export const GET_LeaveCategorySearch_URL = `${BASE_URL}/api/LeaveCategory/getLeaveCategoryDropdown`;
+  export const GET_LeaveCategoryBYID_URL = `${BASE_URL}/api/LeaveCategory`;
+  export const UPDATE_LeaveCategory_URL = `${BASE_URL}/api/LeaveCategory/updateLeaveCategory`;
 
 
 
@@ -130,6 +139,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
   //leave Group
   export const LeaveGroup_LIST = `${BASE_URL}/api/leavegroup/getAll`;
+  export const LeaveGroup = `${BASE_URL}/api/leavegroup/fetchAll`;
   export const ADD_LeaveGroup_DATA = `${BASE_URL}/api/leavegroup/add`;
   export const GET_LeaveGroupSearch_URL = `${BASE_URL}/api/leavegroup/search`;
   export const GET_LeaveGroupBYID_URL = `${BASE_URL}/api/leavegroup/getBy`;
