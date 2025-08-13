@@ -2,7 +2,7 @@ export const BASE_URL = 'http://localhost:8081';
 
 
 // auth
-export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
+export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`; 
 
 //department
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
@@ -21,6 +21,24 @@ export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations
 export const DESIGNATIONS_LIST = `${BASE_URL}/api/designations/viewAll`;
 export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
 
+//section
+export const SECTION_ADD = `${BASE_URL}/api/section/add`;
+export const SECTION_LIST = `${BASE_URL}/api/section/getAll`;
+
+export const SECTION_UPDATE = `${BASE_URL}/api/section/update`;
+
+//category
+export const CATEGORY_ADD = `${BASE_URL}/api/category/add`;
+export const CATEGORY_LIST = `${BASE_URL}/api/category/getAll`;
+export const CATEGORYS_LIST = `${BASE_URL}/api/category/viewAll`;
+export const CATEGORY_UPDATE = `${BASE_URL}/api/category/update`;
+//aws
+export const AWS_ADD = `${BASE_URL}/api/aws/add`;
+export const AWS_LIST = `${BASE_URL}/api/aws/getAll`;
+export const AWSS_LIST = `${BASE_URL}/api/aws/viewAll`; 
+export const AWS_UPDATE = `${BASE_URL}/api/aws/update`;
+
+
 
 //compny
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;
@@ -28,6 +46,8 @@ export const GET_COMPANY_id = `${BASE_URL}/api/get-company/id`;
 export const COMPANY_LIST = `${BASE_URL}/api/companies/fetchAll-companies`;
 export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 export const COMPANY_UPDATE = `${BASE_URL}/api/companies`;
+
+
 
 //image
 export const IMAGE = `${BASE_URL}/api/v1/images`;

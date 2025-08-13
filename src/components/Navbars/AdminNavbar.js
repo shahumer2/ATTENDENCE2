@@ -258,7 +258,7 @@ function Header() {
                     }`
                   }
                 >
-                  Designation
+                  Basic Master Setup
                 </NavLink>
                 <NavLink
                   to="/admin/Epayroll/Race"

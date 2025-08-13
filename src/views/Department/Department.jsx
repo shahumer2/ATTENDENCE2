@@ -5,8 +5,26 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { FaEdit } from "react-icons/fa";
 import { debounce } from 'lodash';
-import { DEPARTMENT_ADD, DEPARTMENT_LIST, DEPARTMENT_UPDATE } from 'Constants/utils';
-import { DESIGNATION_ADD, DESIGNATION_LIST, DESIGNATION_UPDATE } from 'Constants/utils';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import Select from 'react-select';
+import { 
+  DEPARTMENT_ADD, 
+  DEPARTMENT_LIST, 
+  DEPARTMENT_UPDATE,
+  DESIGNATION_ADD, 
+  DESIGNATION_LIST, 
+  DESIGNATION_UPDATE,
+  SECTION_ADD,
+  SECTION_LIST,
+  SECTION_UPDATE,
+  CATEGORY_ADD,
+  CATEGORY_LIST,
+  CATEGORY_UPDATE,
+  AWS_ADD,
+  AWS_LIST,
+  AWS_UPDATE,
+  GET_DEPARTMENT_LIST 
+} from 'Constants/utils';
 
 const API_CONFIG = {
   department: {
@@ -14,16 +32,41 @@ const API_CONFIG = {
     add: DEPARTMENT_ADD,
     update: DEPARTMENT_UPDATE,
     codeKey: 'departmentCode',
-    nameKey: 'departmentName'
+    nameKey: 'departmentName',
+    fields: ['code', 'name']
   },
   designation: {
     list: DESIGNATION_LIST,
     add: DESIGNATION_ADD,
     update: DESIGNATION_UPDATE,
     codeKey: 'designationCode',
-    nameKey: 'designationName'
+    nameKey: 'designationName',
+    fields: ['code', 'name']
   },
-  // Add other configurations as needed
+  section: {
+    list: SECTION_LIST,
+    add: SECTION_ADD,
+    update: SECTION_UPDATE,
+    codeKey: 'sectionCode',
+    nameKey: 'sectionName',
+    fields: ['code', 'name','department']
+  },
+  category: {
+    list: CATEGORY_LIST,
+    add: CATEGORY_ADD,
+    update: CATEGORY_UPDATE,
+    codeKey: 'categoryCode',
+    nameKey: 'categoryName',
+    fields: ['code', 'name']
+  },
+  aws: {
+    list: AWS_LIST,
+    add: AWS_ADD,
+    update: AWS_UPDATE,
+    codeKey: 'awsCode',
+    nameKey: 'awsName',
+    fields: ['code', 'name']
+  }
 };
 
 const Department = () => {
@@ -59,6 +102,72 @@ const Department = () => {
     fetchData();
   }, [activeTab, token]);
 
+  // Fetch department options for category dropdown
+  // const { data: depOptions, isLoading: optionsLoading } = useQuery(
+  //   ['depOptions'],
+  //   async () => {
+  //     try {
+  //       const response = await fetch(GET_DEPARTMENT_LIST, {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       });
+  //       if (!response.ok) throw new Error('Failed to fetch departments');
+  //       const data = await response.json();
+  //       return data?.content || [];
+  //     } catch (error) {
+  //       toast.error('Error fetching departments');
+  //       throw error;
+  //     }
+  //   },
+  //   { enabled: !!token }
+  // );
+
+
+  const { data: depOptions, isLoading: optionssddzLoading } = useQuery({
+    queryKey: ['depOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${GET_DEPARTMENT_LIST}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+         console.log(data,"leave cat_________________");
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data)) {
+            console.error('Data is not an array:', data.content);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.map(cat => ({
+                label:cat.departmentName,
+                value: cat.id,  // You can use fwl.id as value if preferred
+                id: cat.id
+            }))
+        ];
+    }
+});
+
+
+
+
+
   // Debounce search
   const debounceSearch = useCallback(
     debounce((value) => setDebouncedSearchTerm(value), 300),
@@ -80,17 +189,29 @@ const Department = () => {
   });
 
   // Form handling
-  const validationSchema = Yup.object().shape({
-    code: Yup.string().required(`${activeTab} code is required`),
-    name: Yup.string().required(`${activeTab} name is required`),
-  });
+  const getValidationSchema = () => {
+    let schema = {
+      code: Yup.string().required(`${activeTab} code is required`),
+      name: Yup.string().required(`${activeTab} name is required`),
+    };
+
+    if (activeTab === 'section') {
+      schema.department = Yup.object().required('Department is required');
+    }
+
+    return Yup.object().shape(schema);
+  };
 
   const handleSubmit = async (values, { resetForm }) => {
     const config = API_CONFIG[activeTab];
-    const newItem = {
+    let newItem = {
       [config.codeKey]: values.code,
       [config.nameKey]: values.name,
     };
+
+    if (activeTab === 'section') {
+      newItem.department = {id:values.department.value};
+    }
 
     try {
       const response = await fetch(config.add, {
@@ -119,11 +240,15 @@ const Department = () => {
     if (!selectedItem) return;
     
     const config = API_CONFIG[activeTab];
-    const updatedItem = {
+    let updatedItem = {
       id: selectedItem.id,
       [config.codeKey]: values.code,
       [config.nameKey]: values.name,
     };
+
+    if (activeTab === 'section') {
+      updatedItem.department = values.department.value;
+    }
 
     try {
       const response = await fetch(`${config.update}/${selectedItem.id}`, {
@@ -203,6 +328,11 @@ const Department = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {activeTab} Name
                 </th>
+                {activeTab === 'section' && (
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Department
+                  </th>
+                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
@@ -220,6 +350,11 @@ const Department = () => {
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {item[nameKey]}
                       </td>
+                      {activeTab === 'section' && (
+                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          {item.department?.departmentName}
+                        </td>
+                      )}
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         <button
                           onClick={() => {
@@ -235,7 +370,7 @@ const Department = () => {
                 })
               ) : (
                 <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center text-gray-500">
+                  <td colSpan={activeTab === 'section' ? 4 : 3} className="px-6 py-4 text-center text-gray-500">
                     No data available
                   </td>
                 </tr>
@@ -249,10 +384,16 @@ const Department = () => {
       {showModal && (
         <ModalForm
           title={`Add ${activeTab}`}
-          initialValues={{ code: '', name: '' }}
-          validationSchema={validationSchema}
+          initialValues={{
+            code: '',
+            name: '',
+            department: activeTab === 'section' ? null : undefined
+          }}
+          validationSchema={getValidationSchema()}
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
+          depOptions={depOptions}
+          activeTab={activeTab}
         />
       )}
 
@@ -262,13 +403,22 @@ const Department = () => {
           initialValues={{
             code: selectedItem[API_CONFIG[activeTab].codeKey],
             name: selectedItem[API_CONFIG[activeTab].nameKey],
+            department: activeTab === 'section' ? {
+              value: selectedItem.department?.id,
+              label: selectedItem.department?.departmentName
+            } : undefined
           }}
-          validationSchema={validationSchema}
+          validationSchema={getValidationSchema()}
           onClose={() => {
             setShowModalUpdate(false);
             setSelectedItem(null);
           }}
           onSubmit={handleUpdateSubmit}
+          depOptions={depOptions?.map(dep => ({
+            value: dep.id,
+            label: dep.departmentName
+          }))}
+          activeTab={activeTab}
           isUpdate
         />
       )}
@@ -276,7 +426,16 @@ const Department = () => {
   );
 };
 
-const ModalForm = ({ title, initialValues, validationSchema, onClose, onSubmit, isUpdate }) => (
+const ModalForm = ({ 
+  title, 
+  initialValues, 
+  validationSchema, 
+  onClose, 
+  onSubmit, 
+  depOptions, 
+  activeTab,
+  isUpdate 
+}) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
     <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
       <div className="p-6">
@@ -287,7 +446,7 @@ const ModalForm = ({ title, initialValues, validationSchema, onClose, onSubmit, 
           onSubmit={onSubmit}
           enableReinitialize
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -301,7 +460,7 @@ const ModalForm = ({ title, initialValues, validationSchema, onClose, onSubmit, 
                 />
                 <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
               </div>
-              <div className="mb-6">
+              <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2">
                   Name *
                 </label>
@@ -313,6 +472,25 @@ const ModalForm = ({ title, initialValues, validationSchema, onClose, onSubmit, 
                 />
                 <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
               </div>
+              
+              {activeTab === 'section' && (
+                <div className="mb-6">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Department *
+                  </label>
+                  <Select
+                    name="department"
+                    options={depOptions}
+                    value={values.department}
+                    onChange={(option) => setFieldValue('department', option)}
+                    className="basic-single"
+                    classNamePrefix="select"
+                    placeholder="Select department"
+                  />
+                  <ErrorMessage name="department" component="div" className="text-red-500 text-xs mt-1" />
+                </div>
+              )}
+
               <div className="flex justify-end space-x-3">
                 <button
                   type="button"

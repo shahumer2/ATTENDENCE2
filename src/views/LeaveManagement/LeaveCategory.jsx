@@ -240,7 +240,7 @@ console.log(LeaveCategoryData,'jamshe');
                   </th>
                   <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
                     Delete
-                  </th>
+                  </th> 
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
