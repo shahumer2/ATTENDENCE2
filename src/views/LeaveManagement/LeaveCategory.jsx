@@ -28,8 +28,8 @@ const LeaveCategory = () => {
   ];
 
   const [searchParams, setSearchParams] = useState({
-    LeaveCategoryCode: null,
-    LeaveCategoryName: null
+    LeaveCategoryCode: "",
+    LeaveCategoryName: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -63,14 +63,14 @@ const LeaveCategory = () => {
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
         return {
-          LeaveCategoryNames: [{ label: 'Select', value: null }],
-          LeaveCategoryCodes: [{ label: 'Select', value: null }]
+          LeaveCategoryNames: [{ label: 'Select', value: "" }],
+          LeaveCategoryCodes: [{ label: 'Select', value: "" }]
         };
       }
 
       const transformed = {
         LeaveCategoryNames: [
-          { label: 'Select', value: null },
+          { label: 'Select', value: "" },
           ...data.map(LeaveCategory => ({
             label: LeaveCategory.leaveCategoryName,
             value: LeaveCategory.leaveCategoryName
@@ -96,8 +96,8 @@ const LeaveCategory = () => {
     queryFn: async () => {
       const requestBody = {
      
-        ...(searchParams.LeaveCategoryCode && { LeaveCategoryCode: searchParams.LeaveCategoryCode }),
-        ...(searchParams.LeaveCategoryName && { LeaveCategoryName: searchParams.LeaveCategoryName })
+        leaveCategoryCode: searchParams.LeaveCategoryCode ,
+     leaveCategoryName: searchParams.LeaveCategoryName,
       };
 console.log(requestBody,"pakki");
       const response = await fetch(`${LeaveCategory_LIST}?size=${pageSize}`, {
@@ -152,8 +152,8 @@ console.log(LeaveCategoryData,'jamshe');
       <div className='items-center justify-center'>
         <Formik
           initialValues={{
-            LeaveCategoryCode: null,
-            LeaveCategoryName: null
+            LeaveCategoryCode: "",
+            LeaveCategoryName: ""
           }}
           onSubmit={handleSearchSubmit}
         >
