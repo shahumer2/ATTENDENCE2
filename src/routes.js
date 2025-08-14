@@ -28,6 +28,7 @@ import LeaveGroup from "views/Master/LeaveGroup/LeaveGroup";
 import HolidayManagement from "views/Master/HolidayGroup/HolidayGroup";
 import LeaveCategory from "views/LeaveManagement/LeaveCategory";
 import AddLeaveCategory from "views/LeaveManagement/AddLeaveCategory";
+import BatchLeave from "views/LeaveManagement/BatchLeave/BatchLeave";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -91,6 +92,14 @@ const dashboardRoutes = [
       name: "View Leave Category", 
       icon: "nc-icon nc-chart-pie-35",
       component :LeaveCategory,
+      layout: "/admin",
+    },
+//batch leave
+    {
+      path: "/ELeave/batchLeave",
+      name: "View Leave Category", 
+      icon: "nc-icon nc-chart-pie-35",
+      component :BatchLeave,
       layout: "/admin",
     },
     

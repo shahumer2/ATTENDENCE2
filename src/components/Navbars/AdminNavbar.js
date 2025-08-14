@@ -557,8 +557,8 @@ function Header() {
                 onMouseEnter={handleLeaveMouseEnter}
                 onMouseLeave={handleLeaveMouseLeave}
               >
-                 {/* <NavLink
-                  to="/admin/ELeave/LeaveCategory"
+                <NavLink
+                  to="/admin/ELeave/batchLeave"
                   className={({ isActive }) =>
                     `block px-4 py-2 text-sm ${isActive
                       ? "bg-[#FFD700] text-[#0e2288] font-bold"
@@ -568,6 +568,7 @@ function Header() {
                 >
                  Batch Leave
                 </NavLink>
+                 {/* 
                 <NavLink
                   to="/admin/ELeave/LeaveCategory"
                   className={({ isActive }) =>

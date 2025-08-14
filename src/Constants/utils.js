@@ -7,10 +7,11 @@ export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 //department
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
+export const DEPARTMENT_SEARCH = `${BASE_URL}/api/department/search`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
 export const GET_DEPARTMENT_id = `${BASE_URL}/api/department/id`;
 export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
-
+export const DEPARTMENT_STATUS_UPDATE = `${BASE_URL}/api/department/isActive`;
 
 
 
@@ -24,18 +25,18 @@ export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignatio
 //section
 export const SECTION_ADD = `${BASE_URL}/api/section/add`;
 export const SECTION_LIST = `${BASE_URL}/api/section/getAll`;
-
+export const SECTION_LISTT = `${BASE_URL}/api/section/fetch-all`;
 export const SECTION_UPDATE = `${BASE_URL}/api/section/update`;
 
 //category
 export const CATEGORY_ADD = `${BASE_URL}/api/category/add`;
 export const CATEGORY_LIST = `${BASE_URL}/api/category/getAll`;
-export const CATEGORYS_LIST = `${BASE_URL}/api/category/viewAll`;
+export const CATEGORYS_LIST = `${BASE_URL}/api/category/fetch-all`;
 export const CATEGORY_UPDATE = `${BASE_URL}/api/category/update`;
 //aws
 export const AWS_ADD = `${BASE_URL}/api/aws/add`;
 export const AWS_LIST = `${BASE_URL}/api/aws/getAll`;
-export const AWSS_LIST = `${BASE_URL}/api/aws/viewAll`; 
+export const AWSS_LIST = `${BASE_URL}/api/aws/fetch-all`; 
 export const AWS_UPDATE = `${BASE_URL}/api/aws/update`;
 
 
@@ -174,6 +175,13 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leaveType/search`;
   export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leaveType/getBy`;
   export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leaveType/update`;
+
+  // batch leave
+  export const BatchLeave_LIST = `${BASE_URL}/api/batch-leaves/fetch-all`;
+  export const ADD_BatchLeave_DATA = `${BASE_URL}/api/batch-leaves/create`;
+  export const GET_BatchLeaveSearch_URL = `${BASE_URL}/api/batch-leaves/search`;
+  export const GET_BatchLeaveBYID_URL = `${BASE_URL}/api/batch-leaves/getBy`;
+  export const UPDATE_BatchLeave_URL = `${BASE_URL}/api/batch-leaves/update`;
   //hliday group
   
     export const HolidayGroup_LIST = `${BASE_URL}/api/holidayGroup/getAll`;

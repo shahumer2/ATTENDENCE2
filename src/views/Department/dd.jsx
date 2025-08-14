@@ -7,30 +7,13 @@ import { FaEdit } from "react-icons/fa";
 import { debounce } from 'lodash';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import Select from 'react-select';
-import { DEPARTMENT_LIST } from 'Constants/utils';
-import { DEPARTMENT_ADD } from 'Constants/utils';
-import { DEPARTMENT_UPDATE } from 'Constants/utils';
-import { DESIGNATION_LIST } from 'Constants/utils';
-import { DESIGNATION_ADD } from 'Constants/utils';
-import { DESIGNATION_UPDATE } from 'Constants/utils';
-import { SECTION_LIST } from 'Constants/utils';
-import { SECTION_ADD } from 'Constants/utils';
-import { SECTION_UPDATE } from 'Constants/utils';
-import { CATEGORY_LIST } from 'Constants/utils';
-import { CATEGORY_ADD } from 'Constants/utils';
-import { CATEGORY_UPDATE } from 'Constants/utils';
-import { AWS_LIST } from 'Constants/utils';
-import { AWS_ADD } from 'Constants/utils';
-import { AWS_UPDATE } from 'Constants/utils';
-import { DEPARTMENT_SEARCH } from 'Constants/utils';
-import { DEPARTMENT_STATUS_UPDATE } from 'Constants/utils';
 
 const API_CONFIG = {
   department: {
-    list: DEPARTMENT_SEARCH,
+    list: DEPARTMENT_LIST,
     add: DEPARTMENT_ADD,
     update: DEPARTMENT_UPDATE,
-    statusUpdate: DEPARTMENT_STATUS_UPDATE, // Add this for status updates
+    statusUpdate: DEPARTMENT_UPDATE, // Add this for status updates
     codeKey: 'departmentCode',
     nameKey: 'departmentName',
     statusKey: 'isActive',
@@ -91,45 +74,9 @@ const Department = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [isActiveFilter, setIsActiveFilter] = useState(null); // null = all, true = active, false = inactive
-// Add this inside your Department component, before the fetchData function
-const { data: departmentOptions } = useQuery({
-  queryKey: ['departmentOptions'],
-  queryFn: async () => {
-    try {
-      const response = await fetch(DEPARTMENT_LIST, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({}),
-      });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch departments');
-      }
-
-      const result = await response.json();
-      return result?.content || [];
-    } catch (error) {
-      toast.error('Error fetching departments');
-      throw error;
-    }
-  },
-  enabled: !!token && activeTab === 'section',
-  select: (data) => {
-    return [
-      { label: 'Select Department', value: null },
-      ...data.map(dep => ({
-        label: dep.departmentName,
-        value: dep.id
-      }))
-    ];
-  }
-});
   // Fetch data with POST request and body
   const fetchData = useCallback(async () => {
-    console.log(debouncedSearchTerm,isActiveFilter,"____________________=");
     setLoading(true);
     try {
       const response = await fetch(API_CONFIG[activeTab].list, {
@@ -162,10 +109,10 @@ const { data: departmentOptions } = useQuery({
   }, [fetchData]);
 
   // Status toggle mutation
-  const { mutate: toggleStatus } = useMutation({
-    mutationFn: async ({ id, isActive }) => {
-      const response = await fetch(`${API_CONFIG[activeTab].statusUpdate}/${id}`, {
-        method: 'PUT',
+  const { mutate: toggleStatus } = useMutation(
+    async ({ id, isActive }) => {
+      const response = await fetch(`${API_CONFIG[activeTab].statusUpdate}/${id}/status`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -175,14 +122,16 @@ const { data: departmentOptions } = useQuery({
       if (!response.ok) throw new Error('Failed to update status');
       return response.json();
     },
-    onSuccess: () => {
-      toast.success('Status updated successfully');
-      fetchData();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
+    {
+      onSuccess: () => {
+        toast.success('Status updated successfully');
+        fetchData();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }
+  );
 
   const handleStatusChange = (id, currentStatus) => {
     toggleStatus({ id, isActive: !currentStatus });
@@ -456,7 +405,7 @@ const { data: departmentOptions } = useQuery({
           validationSchema={getValidationSchema()}
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
-          depOptions={departmentOptions}
+          depOptions={depOptions}
           activeTab={activeTab}
         />
       )}
@@ -479,7 +428,7 @@ const { data: departmentOptions } = useQuery({
             setSelectedItem(null);
           }}
           onSubmit={handleUpdateSubmit}
-          depOptions={departmentOptions}
+          depOptions={depOptions}
           activeTab={activeTab}
           isUpdate
         />
