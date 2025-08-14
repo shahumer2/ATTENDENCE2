@@ -21,7 +21,7 @@ export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
 export const DESIGNATIONS_LIST = `${BASE_URL}/api/designations/viewAll`;
 export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
-
+export const DESIGNATIONS_Search = `${BASE_URL}/api/designations/search`;
 //section
 export const SECTION_ADD = `${BASE_URL}/api/section/add`;
 export const SECTION_LIST = `${BASE_URL}/api/section/getAll`;

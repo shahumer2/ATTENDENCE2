@@ -24,6 +24,7 @@ import { AWS_ADD } from 'Constants/utils';
 import { AWS_UPDATE } from 'Constants/utils';
 import { DEPARTMENT_SEARCH } from 'Constants/utils';
 import { DEPARTMENT_STATUS_UPDATE } from 'Constants/utils';
+import { DESIGNATIONS_Search } from 'Constants/utils';
 
 const API_CONFIG = {
   department: {
@@ -37,7 +38,7 @@ const API_CONFIG = {
     fields: ['code', 'name', 'isActive']
   },
   designation: {
-    list: DESIGNATION_LIST,
+    list: DESIGNATIONS_Search,
     add: DESIGNATION_ADD,
     update: DESIGNATION_UPDATE,
     statusUpdate: DESIGNATION_UPDATE,
@@ -91,45 +92,45 @@ const Department = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
   const [isActiveFilter, setIsActiveFilter] = useState(null); // null = all, true = active, false = inactive
-// Add this inside your Department component, before the fetchData function
-const { data: departmentOptions } = useQuery({
-  queryKey: ['departmentOptions'],
-  queryFn: async () => {
-    try {
-      const response = await fetch(DEPARTMENT_LIST, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({}),
-      });
+  // Add this inside your Department component, before the fetchData function
+  const { data: departmentOptions } = useQuery({
+    queryKey: ['departmentOptions'],
+    queryFn: async () => {
+      try {
+        const response = await fetch(DEPARTMENT_LIST, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({}),
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch departments');
+        if (!response.ok) {
+          throw new Error('Failed to fetch departments');
+        }
+
+        const result = await response.json();
+        return result?.content || [];
+      } catch (error) {
+        toast.error('Error fetching departments');
+        throw error;
       }
-
-      const result = await response.json();
-      return result?.content || [];
-    } catch (error) {
-      toast.error('Error fetching departments');
-      throw error;
+    },
+    enabled: !!token && activeTab === 'section',
+    select: (data) => {
+      return [
+        { label: 'Select Department', value: null },
+        ...data.map(dep => ({
+          label: dep.departmentName,
+          value: dep.id
+        }))
+      ];
     }
-  },
-  enabled: !!token && activeTab === 'section',
-  select: (data) => {
-    return [
-      { label: 'Select Department', value: null },
-      ...data.map(dep => ({
-        label: dep.departmentName,
-        value: dep.id
-      }))
-    ];
-  }
-});
+  });
   // Fetch data with POST request and body
   const fetchData = useCallback(async () => {
-    console.log(debouncedSearchTerm,isActiveFilter,"____________________=");
+    console.log(debouncedSearchTerm, isActiveFilter, "____________________=");
     setLoading(true);
     try {
       const response = await fetch(API_CONFIG[activeTab].list, {
@@ -288,203 +289,210 @@ const { data: departmentOptions } = useQuery({
   };
 
   return (
-    <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
-      {/* Tabs */}
-      <div className="flex border-b mb-6">
-        {Object.keys(API_CONFIG).map((tab) => (
-          <button
-            key={tab}
-            className={`px-4 py-2 font-medium capitalize ${
-              activeTab === tab
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
-            onClick={() => {
-              setActiveTab(tab);
-              setSearchTerm('');
-              setDebouncedSearchTerm('');
-              setIsActiveFilter(null);
-            }}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
+    <>
+      <h2 className='mt-4 ml-7 mb-[-20px] font-semibold text-xl capitalize text-blue-900'>{activeTab}</h2>
 
-      {/* Header + Add Button */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold capitalize">{activeTab} List</h2>
-        <button
-          onClick={() => setShowModal(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Add {activeTab}
-        </button>
-      </div>
+      <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
 
-      {/* Status Filter */}
-      <div className="flex items-center mb-4 space-x-4">
-        <label className="flex items-center space-x-2">
-          <input
-            type="radio"
-            name="statusFilter"
-            checked={isActiveFilter === null}
-            onChange={() => setIsActiveFilter(null)}
-          />
-          <span>All</span>
-        </label>
-        <label className="flex items-center space-x-2">
-          <input
-            type="radio"
-            name="statusFilter"
-            checked={isActiveFilter === true}
-            onChange={() => setIsActiveFilter(true)}
-          />
-          <span>Active</span>
-        </label>
-        <label className="flex items-center space-x-2">
-          <input
-            type="radio"
-            name="statusFilter"
-            checked={isActiveFilter === false}
-            onChange={() => setIsActiveFilter(false)}
-          />
-          <span>Inactive</span>
-        </label>
-      </div>
+        {/* Tabs */}
+        <div className="flex border-b mb-6 mt-[-13px] ml-[-15px]">
+          {Object.keys(API_CONFIG).map((tab) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 font-medium capitalize ${activeTab === tab
+                  ? 'border-b-2 border-blue-500 text-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
+                }`}
+              onClick={() => {
+                setActiveTab(tab);
+                setSearchTerm('');
+                setDebouncedSearchTerm('');
+                setIsActiveFilter(null);
+              }}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
 
-      {/* Search */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder={`Search ${activeTab}...`}
-          className="w-full md:w-64 px-4 py-2 border rounded"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </div>
-
-      {/* Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        {loading ? (
-          <div className="p-4 text-center">Loading...</div>
-        ) : data.length > 0 ? (
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeTab} Code
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  {activeTab} Name
-                </th>
-                {activeTab === 'section' && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Department
-                  </th>
-                )}
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {data.map((item) => {
-                const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
-                return (
-                  <tr key={item.id}>
-                    <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                      {item[codeKey]}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                      {item[nameKey]}
-                    </td>
-                    {activeTab === 'section' && (
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {item.department?.departmentName}
-                      </td>
-                    )}
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <label className="inline-flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="sr-only peer"
-                          checked={item[statusKey]}
-                          onChange={() => handleStatusChange(item.id, item[statusKey])}
-                        />
-                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        <span className="ml-3 text-sm font-medium">
-                          {item[statusKey] ? 'Active' : 'Inactive'}
-                        </span>
-                      </label>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                      <button
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setShowModalUpdate(true);
-                        }}
-                      >
-                        <FaEdit size="1.3rem" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : (
-          <div className="p-4 text-center text-gray-500">
-            No data available
+        {/* Header + Add Button */}
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center mb-4 space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === null}
+                onChange={() => setIsActiveFilter(null)}
+              />
+              <span>All</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === true}
+                onChange={() => setIsActiveFilter(true)}
+              />
+              <span>Active</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === false}
+                onChange={() => setIsActiveFilter(false)}
+              />
+              <span>Inactive</span>
+            </label>
           </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Add {activeTab}
+          </button>
+        </div>
+
+        {/* Status Filter */}
+
+        <div className='flex justify-between bg-blue-100 '>
+          <h2 className="text-lg justify-center mt-3 text-blue-950 rounded-t-md ml-4 font-semibold capitalize">{activeTab} List</h2>
+          <div className="mt-3 mr-2 mb-2">
+            <input
+              type="text"
+              placeholder={`Search ${activeTab}...`}
+              className="w-full md:w-64 px-4 py-2 border rounded"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+        </div>
+        {/* Search */}
+
+
+        {/* Table */}
+        <div className="bg-white rounded-lg shadow overflow-hidden">
+          {loading ? (
+            <div className="p-4 text-center">Loading...</div>
+          ) : data.length > 0 ? (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {activeTab} Code
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {activeTab} Name
+                  </th>
+                  {activeTab === 'section' && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Department
+                    </th>
+                  )}
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {data.map((item) => {
+                  const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
+                  return (
+                    <tr key={item.id}>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {item[codeKey]}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {item[nameKey]}
+                      </td>
+                      {activeTab === 'section' && (
+                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          {item.department?.departmentName}
+                        </td>
+                      )}
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <label className="inline-flex items-center cursor-pointer">
+                          <input
+                            type="checkbox"
+                            className="sr-only peer"
+                            checked={item[statusKey]}
+                            onChange={() => handleStatusChange(item.id, item[statusKey])}
+                          />
+                          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                          <span className="ml-3 text-sm font-medium">
+                            {item[statusKey] ? 'Active' : 'Inactive'}
+                          </span>
+                        </label>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setShowModalUpdate(true);
+                          }}
+                        >
+                          <FaEdit size="1.3rem" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <div className="p-4 text-center text-gray-500">
+              No data available
+            </div>
+          )}
+        </div>
+
+        {/* Modals */}
+        {showModal && (
+          <ModalForm
+            title={`Add ${activeTab}`}
+            initialValues={{
+              code: '',
+              name: '',
+              isActive: true,
+              department: activeTab === 'section' ? null : undefined
+            }}
+            validationSchema={getValidationSchema()}
+            onClose={() => setShowModal(false)}
+            onSubmit={handleSubmit}
+            depOptions={departmentOptions}
+            activeTab={activeTab}
+          />
+        )}
+
+        {showModalUpdate && selectedItem && (
+          <ModalForm
+            title={`Update ${activeTab}`}
+            initialValues={{
+              code: selectedItem[API_CONFIG[activeTab].codeKey],
+              name: selectedItem[API_CONFIG[activeTab].nameKey],
+              isActive: selectedItem[API_CONFIG[activeTab].statusKey],
+              department: activeTab === 'section' ? {
+                value: selectedItem.department?.id,
+                label: selectedItem.department?.departmentName
+              } : undefined
+            }}
+            validationSchema={getValidationSchema()}
+            onClose={() => {
+              setShowModalUpdate(false);
+              setSelectedItem(null);
+            }}
+            onSubmit={handleUpdateSubmit}
+            depOptions={departmentOptions}
+            activeTab={activeTab}
+            isUpdate
+          />
         )}
       </div>
-
-      {/* Modals */}
-      {showModal && (
-        <ModalForm
-          title={`Add ${activeTab}`}
-          initialValues={{
-            code: '',
-            name: '',
-            isActive: true,
-            department: activeTab === 'section' ? null : undefined
-          }}
-          validationSchema={getValidationSchema()}
-          onClose={() => setShowModal(false)}
-          onSubmit={handleSubmit}
-          depOptions={departmentOptions}
-          activeTab={activeTab}
-        />
-      )}
-
-      {showModalUpdate && selectedItem && (
-        <ModalForm
-          title={`Update ${activeTab}`}
-          initialValues={{
-            code: selectedItem[API_CONFIG[activeTab].codeKey],
-            name: selectedItem[API_CONFIG[activeTab].nameKey],
-            isActive: selectedItem[API_CONFIG[activeTab].statusKey],
-            department: activeTab === 'section' ? {
-              value: selectedItem.department?.id,
-              label: selectedItem.department?.departmentName
-            } : undefined
-          }}
-          validationSchema={getValidationSchema()}
-          onClose={() => {
-            setShowModalUpdate(false);
-            setSelectedItem(null);
-          }}
-          onSubmit={handleUpdateSubmit}
-          depOptions={departmentOptions}
-          activeTab={activeTab}
-          isUpdate
-        />
-      )}
-    </div>
+    </>
   );
 };
 
