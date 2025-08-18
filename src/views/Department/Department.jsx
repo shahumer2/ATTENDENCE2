@@ -26,7 +26,8 @@ import { DEPARTMENT_SEARCH } from 'Constants/utils';
 import { DEPARTMENT_STATUS_UPDATE } from 'Constants/utils';
 import { DESIGNATIONS_Search } from 'Constants/utils';
 import { CiSearch } from "react-icons/ci";
-
+import { MdDelete } from "react-icons/md";
+import { IoIosAdd } from "react-icons/io";
 const API_CONFIG = {
   department: {
     list: DEPARTMENT_SEARCH,
@@ -301,8 +302,8 @@ const Department = () => {
             <button
               key={tab}
               className={`px-4 py-2 font-medium capitalize ${activeTab === tab
-                  ? 'border-b-2 border-blue-500 text-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
+                ? 'border-b-2 border-blue-500 text-blue-600'
+                : 'text-gray-500 hover:text-gray-700'
                 }`}
               onClick={() => {
                 setActiveTab(tab);
@@ -317,8 +318,8 @@ const Department = () => {
         </div>
 
         {/* Header + Add Button */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center mb-4 space-x-4">
+        <div className="flex justify-between items-center mb-4 ">
+          <div className="flex items-center mb-4 space-x-4 gap-12">
             <label className="flex items-center space-x-2">
               <input
                 type="radio"
@@ -326,7 +327,7 @@ const Department = () => {
                 checked={isActiveFilter === null}
                 onChange={() => setIsActiveFilter(null)}
               />
-              <span>All</span>
+              <span className='capitalize'>All {activeTab}</span>
             </label>
             <label className="flex items-center space-x-2">
               <input
@@ -335,7 +336,7 @@ const Department = () => {
                 checked={isActiveFilter === true}
                 onChange={() => setIsActiveFilter(true)}
               />
-              <span>Active</span>
+              <span className='capitalize'>Active {activeTab}</span>
             </label>
             <label className="flex items-center space-x-2">
               <input
@@ -344,36 +345,36 @@ const Department = () => {
                 checked={isActiveFilter === false}
                 onChange={() => setIsActiveFilter(false)}
               />
-              <span>Inactive</span>
+              <span className='capitalize'>Inactive {activeTab}</span>
             </label>
           </div>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            className="flex bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
           >
-            Add {activeTab}
+            <IoIosAdd size={25} />  Add {activeTab}
           </button>
         </div>
 
         {/* Status Filter */}
 
-        <div className="flex justify-between bg-blue-100 items-center">
-  <h2 className="text-lg mt-3 text-blue-950 rounded-t-md ml-4 font-semibold capitalize">
-    {activeTab} List
-  </h2>
+        <div className="flex justify-between bg-blue-100 items-center rounded-t-md">
+          <h2 className="text-lg mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
+            {activeTab} List
+          </h2>
 
-  <div className="relative mt-3 mr-2 mb-2 w-full md:w-[350px]">
-    <input
-      type="text"
-      placeholder={`Search ${activeTab}...`}
-      className="w-full pl-10 pr-4 py-2 border rounded-xl"
-      value={searchTerm}
-      onChange={handleSearchChange}
-    />
-    {/* Search Icon inside input */}
-    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-  </div>
-</div>
+          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[450px]">
+            <input
+              type="text"
+              placeholder={`Enter The ${activeTab} Code or ${activeTab} Name `}
+              className=" capitalize pl-8 w-[450px] pr-9 py-2 border rounded-xl"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            {/* Search Icon inside input */}
+            <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+          </div>
+        </div>
 
         {/* Search */}
 
@@ -398,10 +399,13 @@ const Department = () => {
                     </th>
                   )}
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Status
+                    Active / InActive
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Edit
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Delete
                   </th>
                 </tr>
               </thead>
@@ -443,6 +447,16 @@ const Department = () => {
                           }}
                         >
                           <FaEdit size="1.3rem" />
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <button
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setShowModalUpdate(true);
+                          }}
+                        >
+                          <MdDelete color='red' size="1.3rem" />
                         </button>
                       </td>
                     </tr>
