@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import ReactSelect from 'react-select';
 import { useQuery } from '@tanstack/react-query';
-import { Shift_LIST } from 'Constants/utils';
-import { GET_ShiftSearch_URL } from 'Constants/utils';
+import { LeaveCategory_LIST } from 'Constants/utils';
+import { GET_LeaveCategorySearch_URL } from 'Constants/utils';
 import { CiEdit } from "react-icons/ci";
 import Select from 'react-select';
 import { MdDelete } from "react-icons/md";
-const Shift = () => {
+import { LeaveCategory_DROP } from 'Constants/utils';
+
+const LeaveCategory = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const navigate = useNavigate();
@@ -25,19 +27,18 @@ const Shift = () => {
     { value: 100, label: '100' }
   ];
 
-
   const [searchParams, setSearchParams] = useState({
-    shiftCode: null,
-    shiftName: null
+    LeaveCategoryCode: "",
+    LeaveCategoryName: ""
   });
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch all shifts for dropdown options
-  const { data: shiftOptions, isLoading: optionsLoading } = useQuery({
-    queryKey: ['shiftOptions'],
+  // Fetch all LeaveCategorys for dropdown options
+  const { data: LeaveCategoryOptions, isLoading: optionsLoading } = useQuery({
+    queryKey: ['LeaveCategoryOptions'],
     queryFn: async () => {
       try {
-        const response = await fetch(`${GET_ShiftSearch_URL}`, {
+        const response = await fetch(`${LeaveCategory_DROP}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -48,39 +49,38 @@ const Shift = () => {
         }
 
         const data = await response.json();
-        console.log('Raw data from API:', data); // This shows it's an array
+        console.log('Raw data from API:', data);
         return data;
       } catch (error) {
-        console.error('Error fetching shift options:', error);
+        console.error('Error fetching LeaveCategory options:', error);
         throw error;
       }
     },
     enabled: !!token,
     select: (data) => {
-      console.log('Data in select function:', data); // Should log the array
+      console.log('Data in select function cat:', data);
 
-      // Since data is directly the array, we don't need data.content
       if (!Array.isArray(data)) {
         console.error('Data is not an array:', data);
         return {
-          shiftNames: [{ label: 'Select', value: null }],
-          shiftCodes: [{ label: 'Select', value: null }]
+          LeaveCategoryNames: [{ label: 'Select', value: "" }],
+          LeaveCategoryCodes: [{ label: 'Select', value: "" }]
         };
       }
 
       const transformed = {
-        shiftNames: [
-          { label: 'Select', value: null },
-          ...data.map(shift => ({
-            label: shift.shiftName,
-            value: shift.shiftName
+        LeaveCategoryNames: [
+          { label: 'Select', value: "" },
+          ...data.map(LeaveCategory => ({
+            label: LeaveCategory.leaveCategoryName,
+            value: LeaveCategory.leaveCategoryName
           }))
         ],
-        shiftCodes: [
+        LeaveCategoryCodes: [
           { label: 'Select', value: null },
-          ...data.map(shift => ({
-            label: shift.shiftCode,
-            value: shift.shiftCode
+          ...data.map(LeaveCategory => ({
+            label: LeaveCategory.leaveCategoryCode,
+            value: LeaveCategory.leaveCategoryCode
           }))
         ]
       };
@@ -90,19 +90,17 @@ const Shift = () => {
     }
   });
 
-  // Fetch filtered shifts based on search params
-  // Fetch filtered shifts based on search params
-  const { data: shiftData, isLoading, isError, error } = useQuery({
-    queryKey: ['shifts', currentPage, pageSize, searchParams], // it will re render if there are dep
+  // Fetch filtered LeaveCategorys based on search params
+  const { data: LeaveCategoryData, isLoading, isError, error } = useQuery({
+    queryKey: ['LeaveCategorys', currentPage, pageSize, searchParams],
     queryFn: async () => {
       const requestBody = {
-        page: currentPage - 1,
-        size: pageSize,
-        ...(searchParams.shiftCode && { shiftCode: searchParams.shiftCode }),
-        ...(searchParams.shiftName && { shiftName: searchParams.shiftName })
+     
+        leaveCategoryCode: searchParams.LeaveCategoryCode ,
+     leaveCategoryName: searchParams.LeaveCategoryName,
       };
-
-      const response = await fetch(`${Shift_LIST}?size=${pageSize}`, {
+console.log(requestBody,"pakki");
+      const response = await fetch(`${LeaveCategory_LIST}?size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -111,42 +109,42 @@ const Shift = () => {
         body: JSON.stringify(requestBody)
       });
 
-      if (!response.ok) throw new Error('Failed to fetch shifts');
+      if (!response.ok) throw new Error('Failed to fetch LeaveCategorys');
 
       const data = await response.json();
-      console.log('Filtered shift data:', data);
+      console.log('Filtered LeaveCategory data:', data);
       return data;
     },
     enabled: !!token,
     keepPreviousData: true
   });
-
+console.log(LeaveCategoryData,'jamshe');
   const handleSearchSubmit = (values) => {
     console.log('Search form submitted with values:', values);
     setSearchParams({
-      shiftCode: values.shiftCode,
-      shiftName: values.shiftName
+      LeaveCategoryCode: values.LeaveCategoryCode,
+      LeaveCategoryName: values.LeaveCategoryName
     });
     setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil((shiftData?.totalElements || 0) / 10);
+  const totalPages = Math.ceil((LeaveCategoryData?.totalElements || 0) / pageSize);
 
   if (isError) {
     toast.error(error.message);
-    return <div>Error loading shifts</div>;
+    return <div>Error loading LeaveCategorys</div>;
   }
 
   return (
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
       {/* Header + Add Button */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Shift List</h2>
+        <h2 className="text-xl font-semibold">Leave Category List</h2>
         <button
-          onClick={() => navigate("/admin/shift/add")}
+          onClick={() => navigate("/admin/LeaveCategory/add")}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
         >
-          Add Shift
+          Add Leave Category
         </button>
       </div>
 
@@ -154,8 +152,8 @@ const Shift = () => {
       <div className='items-center justify-center'>
         <Formik
           initialValues={{
-            shiftCode: null,
-            shiftName: null
+            LeaveCategoryCode: "",
+            LeaveCategoryName: ""
           }}
           onSubmit={handleSearchSubmit}
         >
@@ -163,35 +161,35 @@ const Shift = () => {
             <Form>
               <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black">Shift Code</label>
+                  <label className="mb-2.5 block text-black">Category Code</label>
                   <ReactSelect
-                    name="shiftCode"
-                    value={shiftOptions?.shiftCodes?.find(option => option.value === values.shiftCode)}
+                    name="LeaveCategoryCode"
+                    value={LeaveCategoryOptions?.LeaveCategoryCodes?.find(option => option.value === values.LeaveCategoryCode)}
                     onChange={(option) => {
-                      console.log('Shift Code selected:', option);
-                      setFieldValue('shiftCode', option?.value || null);
+                      console.log('LeaveCategory Code selected:', option);
+                      setFieldValue('LeaveCategoryCode', option?.value || null);
                     }}
-                    options={shiftOptions?.shiftCodes || []}
+                    options={LeaveCategoryOptions?.LeaveCategoryCodes || []}
                     className="bg-white dark:bg-form-Field"
                     classNamePrefix="react-select"
-                    placeholder="Select Shift Code"
+                    placeholder="Select Category Code"
                     isClearable
                     isLoading={optionsLoading}
                   />
                 </div>
                 <div className="flex-1 min-w-[300px]">
-                  <label className="mb-2.5 block text-black ">Shift Name</label>
+                  <label className="mb-2.5 block text-black">Category Name</label>
                   <ReactSelect
-                    name="shiftName"
-                    value={shiftOptions?.shiftNames?.find(option => option.value === values.shiftName)}
+                    name="LeaveCategoryName"
+                    value={LeaveCategoryOptions?.LeaveCategoryNames?.find(option => option.value === values.LeaveCategoryName)}
                     onChange={(option) => {
-                      console.log('Shift Name selected:', option);
-                      setFieldValue('shiftName', option?.value || null);
+                      console.log('LeaveCategory Name selected:', option);
+                      setFieldValue('LeaveCategoryName', option?.value || null);
                     }}
-                    options={shiftOptions?.shiftNames || []}
+                    options={LeaveCategoryOptions?.LeaveCategoryNames || []}
                     className="bg-white dark:bg-form-Field"
                     classNamePrefix="react-select"
-                    placeholder="Select Shift Name"
+                    placeholder="Select Category Name"
                     isClearable
                     isLoading={optionsLoading}
                   />
@@ -216,44 +214,82 @@ const Shift = () => {
           <div className="p-4 text-center">Loading...</div>
         ) : (
           <>
-            <table className="min-w-full shadow-xl rounded-md border  divide-y divide-gray-200">
+            <table className="min-w-full shadow-xl rounded-md border divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    Shift Code
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Category Code
                   </th>
-                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    Shift Name
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Category Name
                   </th>
-                  <th className="px-6 py-3 text-left text-xs  text-gray-900 uppercase tracking-wider font-semibold">
-                    Action
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Medical Claim Limit (per year)
                   </th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Medical Claim Limit (per visit)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Dental Claim Limit (per year)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Dental Claim Limit (per visit)
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Edit
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Delete
+                  </th> 
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {shiftData?.content?.length > 0 ? (
-                  shiftData.content.map((shift) => (
-                    <tr key={shift.id} className="even:bg-gray-50 hover:bg-gray-100">
+                {LeaveCategoryData?.content?.length > 0 ? (
+                  LeaveCategoryData.content.map((LeaveCategory) => (
+                    <tr key={LeaveCategory.id} className="even:bg-gray-50 hover:bg-gray-100">
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {shift.shiftCode}
+                        {LeaveCategory.leaveCategoryCode}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {shift.shiftName}
+                        {LeaveCategory.leaveCategoryName}
                       </td>
-
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        <div className='flex flex-row gap-3'>
-                          <CiEdit color='green' className='cursor-pointer' size={25} onClick={() => navigate(`/admin/ShiftUpdate/${shift.id}`)} />
-                          <MdDelete color='red' className='cursor-pointer' size={25} />
-
-                        </div>
+                        {LeaveCategory.medicalClaimLimitPerYear || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {LeaveCategory.medicalClaimLimitPerVisit || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {LeaveCategory.dentalClaimLimitPerYear || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        {LeaveCategory.dentalClaimLimitPerVisit || 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <CiEdit 
+                          color='green' 
+                          className='cursor-pointer' 
+                          size={25} 
+                          onClick={() => navigate(`/admin/LeaveCategoryUpdate/${LeaveCategory.id}`)} 
+                        />
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <MdDelete 
+                          color='red' 
+                          className='cursor-pointer' 
+                          size={25} 
+                          onClick={() => {
+                            // Add delete functionality here
+                            console.log('Delete clicked for:', LeaveCategory.id);
+                          }}
+                        />
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={2} className="px-6 py-4 text-sm text-gray-500 text-center">
-                      No shifts found
+                    <td colSpan={8} className="px-6 py-4 text-sm text-gray-500 text-center">
+                      No Leave Categories found
                     </td>
                   </tr>
                 )}
@@ -261,11 +297,11 @@ const Shift = () => {
             </table>
 
             {/* Pagination */}
-            {shiftData?.content?.length > 0 && (
+            {LeaveCategoryData?.content?.length > 0 && (
               <div className="flex justify-between items-center mt-4 p-4">
                 <div className="flex items-center space-x-4">
                   <div className="text-sm text-gray-700">
-                    Showing {shiftData.content.length} of {shiftData.totalElements} shifts
+                    Showing {LeaveCategoryData.content.length} of {LeaveCategoryData.totalElements} Leave Categories
                   </div>
                   <div className="w-24">
                     <Select
@@ -273,7 +309,7 @@ const Shift = () => {
                       value={pageSizeOptions.find(option => option.value === pageSize)}
                       onChange={(selectedOption) => {
                         setPageSize(selectedOption.value);
-                        setCurrentPage(1); // Reset to first page when changing page size
+                        setCurrentPage(1);
                       }}
                       isSearchable={false}
                       menuPlacement="auto"
@@ -315,4 +351,4 @@ const Shift = () => {
   );
 };
 
-export default Shift;
+export default LeaveCategory;

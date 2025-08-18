@@ -2,15 +2,16 @@ export const BASE_URL = 'http://localhost:8081';
 
 
 // auth
-export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
+export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`; 
 
 //department
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
+export const DEPARTMENT_SEARCH = `${BASE_URL}/api/department/search`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
 export const GET_DEPARTMENT_id = `${BASE_URL}/api/department/id`;
 export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
-
+export const DEPARTMENT_STATUS_UPDATE = `${BASE_URL}/api/department/isActive`;
 
 
 
@@ -20,6 +21,24 @@ export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
 export const DESIGNATIONS_LIST = `${BASE_URL}/api/designations/viewAll`;
 export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
+export const DESIGNATIONS_Search = `${BASE_URL}/api/designations/search`;
+//section
+export const SECTION_ADD = `${BASE_URL}/api/section/add`;
+export const SECTION_LIST = `${BASE_URL}/api/section/getAll`;
+export const SECTION_LISTT = `${BASE_URL}/api/section/fetch-all`;
+export const SECTION_UPDATE = `${BASE_URL}/api/section/update`;
+
+//category
+export const CATEGORY_ADD = `${BASE_URL}/api/category/add`;
+export const CATEGORY_LIST = `${BASE_URL}/api/category/getAll`;
+export const CATEGORYS_LIST = `${BASE_URL}/api/category/fetch-all`;
+export const CATEGORY_UPDATE = `${BASE_URL}/api/category/update`;
+//aws
+export const AWS_ADD = `${BASE_URL}/api/aws/add`;
+export const AWS_LIST = `${BASE_URL}/api/aws/getAll`;
+export const AWSS_LIST = `${BASE_URL}/api/aws/fetch-all`; 
+export const AWS_UPDATE = `${BASE_URL}/api/aws/update`;
+
 
 
 //compny
@@ -28,6 +47,8 @@ export const GET_COMPANY_id = `${BASE_URL}/api/get-company/id`;
 export const COMPANY_LIST = `${BASE_URL}/api/companies/fetchAll-companies`;
 export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 export const COMPANY_UPDATE = `${BASE_URL}/api/companies`;
+
+
 
 //image
 export const IMAGE = `${BASE_URL}/api/v1/images`;
@@ -48,10 +69,10 @@ export const ADD_EMPLOYEE_DATA = `${BASE_URL}/employee/addEmployee`;
 export const GET_ALL_EMPLOYEE_DATA = `${BASE_URL}/employee/getAllEmployee`;
 export const GET_EMPLOYEE_DATA = `${BASE_URL}/employee/getAll-Employees`;
 export const GET_EMPLOYEEDROPDOWN_DATA = `${BASE_URL}/employee/getEmployeeDropdown`;
-
+export const DELETE_EMPLOYEE_DATA = `${BASE_URL}/employee/deleteEmployee`;
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
-
+export const GET_EMPLOYEEQR_DATA = `${BASE_URL}/employee/`;
 
 
 
@@ -66,6 +87,17 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const GET_ShiftSearch_URL = `${BASE_URL}/api/shifts/getShiftDropdown`;
  export const GET_SHIFTBYID_URL = `${BASE_URL}/api/shifts`;
  export const UPDATE_SHIFT_URL = `${BASE_URL}/api/shifts/updateShift`;
+
+  //Leave Category
+
+  export const LeaveCategory_LIST = `${BASE_URL}/api/leave-categories/search`;
+  export const LeaveCategory_DROP = `${BASE_URL}/api/leave-categories/getLeaveCategoryDropdown`;
+  
+  export const LeaveCategory = `${BASE_URL}/api/leave-categories/fetch-all`;
+  export const ADD_LeaveCategory_DATA = `${BASE_URL}/api/leave-categories/create`;
+  export const GET_LeaveCategorySearch_URL = `${BASE_URL}/api/LeaveCategory/getLeaveCategoryDropdown`;
+  export const GET_LeaveCategoryBYID_URL = `${BASE_URL}/api/LeaveCategory`;
+  export const UPDATE_LeaveCategory_URL = `${BASE_URL}/api/LeaveCategory/updateLeaveCategory`;
 
 
 
@@ -127,6 +159,54 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_ReligionSearch_URL = `${BASE_URL}/api/religion/search`;
   export const GET_ReligionhBYID_URL = `${BASE_URL}/api/religion/getBy`;
   export const UPDATE_Religion_URL = `${BASE_URL}/api/religion/update`;
+
+  //leave Group
+  export const LeaveGroup_LIST = `${BASE_URL}/api/leavegroup/getAll`;
+  export const LeaveGroup = `${BASE_URL}/api/leavegroup/fetchAll`;
+  export const ADD_LeaveGroup_DATA = `${BASE_URL}/api/leavegroup/add`;
+  export const GET_LeaveGroupSearch_URL = `${BASE_URL}/api/leavegroup/search`;
+  export const GET_LeaveGroupBYID_URL = `${BASE_URL}/api/leavegroup/getBy`;
+  export const UPDATE_LeaveGroup_URL = `${BASE_URL}/api/leavegroup/update`;
+
+
+  //leave Type
+  export const Leavetype_LIST = `${BASE_URL}/api/leaveType/getAll`;
+  export const ADD_Leavetype_DATA = `${BASE_URL}/api/leaveType/add`;
+  export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leaveType/search`;
+  export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leaveType/getBy`;
+  export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leaveType/update`;
+
+  // batch leave
+  export const BatchLeave_LIST = `${BASE_URL}/api/batch-leaves/fetch-all`;
+  export const ADD_BatchLeave_DATA = `${BASE_URL}/api/batch-leaves/create`;
+  export const GET_BatchLeaveSearch_URL = `${BASE_URL}/api/batch-leaves/search`;
+  export const GET_BatchLeaveBYID_URL = `${BASE_URL}/api/batch-leaves/getBy`;
+  export const UPDATE_BatchLeave_URL = `${BASE_URL}/api/batch-leaves/update`;
+  //hliday group
+  
+    export const HolidayGroup_LIST = `${BASE_URL}/api/holidayGroup/getAll`;
+    export const ADD_HolidayGroup_DATA = `${BASE_URL}/api/holidayGroup/add`;
+    export const GET_HolidayGroupSearch_URL = `${BASE_URL}/api/holidayGroup/search`;
+    export const GET_HolidayGroupBYID_URL = `${BASE_URL}/api/holidayGroup/getBy`;
+    export const UPDATE_HolidayGroup_URL = `${BASE_URL}/api/holidayGroup/update`;
+
+
+  //holiday
+  
+    export const holiday_LIST = `${BASE_URL}/api/holiday/getAll`;
+    export const ADD_holiday_DATA = `${BASE_URL}/api/holiday/add`;
+    export const GET_holidaySearch_URL = `${BASE_URL}/api/holiday/search`;
+    export const GET_holidayBYID_URL = `${BASE_URL}/api/holiday/getBy`;
+    export const UPDATE_holiday_URL = `${BASE_URL}/api/holiday/update`;
+
+  //assignholiday
+   
+    export const AssignHoliday_LIST = `${BASE_URL}/api/AssignHoliday/getAll`;
+    export const ADD_AssignHoliday_DATA = `${BASE_URL}/api/AssignHoliday/add`;
+    export const GET_AssignHolidaySearch_URL = `${BASE_URL}/api/AssignHoliday/search`;
+    export const GET_AssignHolidayBYID_URL = `${BASE_URL}/api/AssignHoliday/getBy`;
+    export const UPDATE_AssignHoliday_URL = `${BASE_URL}/api/AssignHoliday/update`;
+
 
     //Race
 

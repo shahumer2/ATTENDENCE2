@@ -5,6 +5,7 @@ import { GET_ALL_EMPLOYEETYPE_DATA } from "Constants/utils";
 import { DEPARTMENT_LIST } from "Constants/utils";
 import { DESIGNATIONS_LIST } from "Constants/utils";
 import { Category_LIST } from "Constants/utils";
+import { LeaveCategory } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
 import { Aws_LIST } from "Constants/utils";
 import { Bank_LIST } from "Constants/utils";
@@ -533,6 +534,49 @@ const { data: designationOptions, isLoading: optionssdzLoading } = useQuery({
     }
 });
 
+//leave cat options 
+const { data: leaveCatOptions, isLoading: optionssddzLoading } = useQuery({
+    queryKey: ['leaveCatOptions'],
+    queryFn: async () => {
+        try {
+            const response = await fetch(`${LeaveCategory}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+         console.log(data,"leave cat_________________");
+            return data;
+        } catch (error) {
+            console.error('Error fetching FWL options:', error);
+            throw error;
+        }
+    },
+    enabled: !!token,
+    select: (data) => {
+        if (!Array.isArray(data.content)) {
+            console.error('Data is not an array:', data.content);
+            return [
+                { label: 'Select', value: null, id: null }
+            ];
+        }
+
+        return [
+            { label: 'Select', value: null, id: null },
+            ...data.content.map(cat => ({
+                label:cat.leaveCategoryName,
+                value: cat.id,  // You can use fwl.id as value if preferred
+                id: cat.id
+            }))
+        ];
+    }
+});
+
 //category
 
 const { data: categoryOptions, isLoading: optionssxsdzLoading } = useQuery({
@@ -576,7 +620,7 @@ const { data: categoryOptions, isLoading: optionssxsdzLoading } = useQuery({
         ];
     }
 });
-    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions,designationOptions,awsOptions,depOptions,categoryOptions }
+    return { initialValues, handleSubmit,RestDay,rateOptions,RaceOption,bloodTypeOptions,applyOptions,periodOptions,religionOptions,nationalityOptions,EmployeeOptions,excludeDaysOptions,EmployeeTypeOptions,bankOptions,designationOptions,awsOptions,depOptions,categoryOptions,leaveCatOptions }
 
 }
 export default useEmployee
