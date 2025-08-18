@@ -28,6 +28,9 @@ function Header() {
   const LeaveDropdownTimeoutRef = useRef(null);
 
   const companyDropdownTimeoutRef = useRef(null);
+  const [allowanceDropdownOpen, setAllowanceDropdownOpen] = useState(false);
+  const allowanceDropdownTimeoutRef = useRef(null);
+
 
   // Sample companies data
   const companies = [
@@ -44,6 +47,7 @@ function Header() {
       if (ShiftDropdownTimeoutRef.current) clearTimeout(employeeDropdownTimeoutRef.current);
       if (masterDropdownTimeoutRef.current) clearTimeout(masterDropdownTimeoutRef.current);
       if (companyDropdownTimeoutRef.current) clearTimeout(companyDropdownTimeoutRef.current);
+      if (allowanceDropdownTimeoutRef.current) clearTimeout(allowanceDropdownTimeoutRef.current);
     };
   }, []);
   // Clear timeouts when component unmounts
@@ -74,6 +78,22 @@ function Header() {
       setUserDropdownOpen(false);
     }, 300); // 300ms delay before closing
   };
+
+
+  //allowence
+
+  const handleAllowanceMouseEnter = () => {
+  if (allowanceDropdownTimeoutRef.current) {
+    clearTimeout(allowanceDropdownTimeoutRef.current);
+  }
+  setAllowanceDropdownOpen(true);
+};
+
+const handleAllowanceMouseLeave = () => {
+  allowanceDropdownTimeoutRef.current = setTimeout(() => {
+    setAllowanceDropdownOpen(false);
+  }, 300);
+};
 
   //master
   const handleMasterMouseEnter = () => {
@@ -744,6 +764,56 @@ function Header() {
             )}
           </div>
 
+          {/* ALLOWANCE DROPDOWN */}
+<div
+  className="relative"
+  onMouseEnter={handleAllowanceMouseEnter}
+  onMouseLeave={handleAllowanceMouseLeave}
+>
+  <button
+    className={`flex items-center text-sm font-bold transition ${
+      allowanceDropdownOpen
+        ? "text-[#FFD700]"
+        : "text-slate-300 hover:text-[#FFD700]"
+    }`}
+  >
+    Allowance
+    {allowanceDropdownOpen ? (
+      <BsChevronUp className="ml-1" />
+    ) : (
+      <BsChevronDown className="ml-1" />
+    )}
+  </button>
+
+  {allowanceDropdownOpen && (
+    <div className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10">
+      <NavLink
+        to="/admin/allowance/viewAllowance"
+        className={({ isActive }) =>
+          `block px-4 py-2 text-sm ${
+            isActive
+              ? "bg-[#FFD700] text-[#0e2288] font-bold"
+              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+          }`
+        }
+      >
+         Allowance
+      </NavLink>
+      {/* <NavLink
+        to="/admin/allowance/view"
+        className={({ isActive }) =>
+          `block px-4 py-2 text-sm ${
+            isActive
+              ? "bg-[#FFD700] text-[#0e2288] font-bold"
+              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+          }`
+        }
+      >
+        View Allowances
+      </NavLink> */}
+    </div>
+  )}
+</div>
 
 
         </div>
