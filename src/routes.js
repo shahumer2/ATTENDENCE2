@@ -23,6 +23,9 @@ import Branch from "views/Shift/Branch/Branch";
 import AddBranch from "views/Shift/Branch/AddBranch";
 import UpdateBranch from "views/Shift/Branch/UpdateBranch";
 import Race from "views/Master/Race";
+import Allowance from "views/Allowance/Allowance";
+import ViewAllowance from "views/Allowance/ViewAllowance";
+import UpdateAllowance from "views/Allowance/UpdateAllowance";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -177,6 +180,30 @@ const dashboardRoutes = [
     layout: "/admin",
   },
 
+
+  //Allowance
+{
+    path: "allowance/view",
+    name: "View Allowance", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :Allowance,
+    layout: "/admin",
+  },
+  {
+    path: "allowance/viewAllowance",
+    name: "View Allowance", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :ViewAllowance,
+    layout: "/admin",
+  },
+
+  {
+    path: "allowance/UpdateAllowance/:id",
+    name: "Update Allowance", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :UpdateAllowance,
+    layout: "/admin",
+  },
 
   //Group
 
