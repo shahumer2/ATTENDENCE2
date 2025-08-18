@@ -276,7 +276,7 @@ const UpdateAllowance = () => {
       }
 
       toast.success('Allowance criteria updated successfully!');
-      navigate('/admin/allowance/viewAllowance');
+      //navigate('/admin/allowance/viewAllowance');
     } catch (error) {
       console.error("Error updating allowance criteria:", error);
       toast.error(error.message || 'Failed to update allowance criteria');

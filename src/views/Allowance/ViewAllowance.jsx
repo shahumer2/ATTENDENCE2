@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
@@ -17,17 +17,25 @@ const fetchAllowanceCriteria = async ({ queryKey }) => {
       headers: { Authorization: `Bearer ${token}` },
     }
   );
-  return response.data; // Page<AllowanceCriteriaDTO>
+  return response.data;
+};
+
+// Delete allowance criteria
+const deleteAllowance = async ({ id, token }) => {
+  await axios.delete(`http://localhost:8081/api/allowance-criteria/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
 const ViewAllowance = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // pagination state
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10); // default page size
+  const [size, setSize] = useState(10);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["allowanceCriteria", { token, page, size }],
@@ -38,6 +46,18 @@ const ViewAllowance = () => {
 
   const criteria = data?.content || [];
   const totalPages = data?.totalPages || 0;
+
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: ({ id }) => deleteAllowance({ id, token }),
+    onSuccess: () => {
+      toast.success("Allowance deleted successfully");
+      queryClient.invalidateQueries(["allowanceCriteria"]);
+    },
+    onError: () => {
+      toast.error("Failed to delete allowance");
+    },
+  });
 
   useEffect(() => {
     if (isError) toast.error(error?.message || "Failed to load allowance criteria");
@@ -96,9 +116,15 @@ const ViewAllowance = () => {
                         <CiEdit size={20} />
                       </button>
                       <button
-                        onClick={() =>
-                          window.confirm("Delete not implemented yet")
-                        }
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this allowance?"
+                            )
+                          ) {
+                            deleteMutation.mutate({ id: item.id });
+                          }
+                        }}
                         className="text-red-600 hover:text-red-800"
                         title="Delete Allowance"
                       >
@@ -112,17 +138,16 @@ const ViewAllowance = () => {
 
             {/* Pagination + Page Size Controls */}
             <div className="flex justify-between items-center mt-4">
-              {/* Page size dropdown */}
               <div className="flex items-center gap-2">
                 <label htmlFor="pageSize" className="text-gray-700 text-sm">
-                  Page Size:
+                  Rows per page:
                 </label>
                 <select
                   id="pageSize"
                   value={size}
                   onChange={(e) => {
                     setSize(Number(e.target.value));
-                    setPage(0); // reset to first page when size changes
+                    setPage(0);
                   }}
                   className="border rounded px-2 py-1"
                 >
@@ -134,7 +159,6 @@ const ViewAllowance = () => {
                 </select>
               </div>
 
-              {/* Pagination controls */}
               <div className="flex items-center gap-2">
                 <button
                   disabled={page === 0}
