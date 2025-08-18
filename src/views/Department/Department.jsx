@@ -25,6 +25,7 @@ import { AWS_UPDATE } from 'Constants/utils';
 import { DEPARTMENT_SEARCH } from 'Constants/utils';
 import { DEPARTMENT_STATUS_UPDATE } from 'Constants/utils';
 import { DESIGNATIONS_Search } from 'Constants/utils';
+import { CiSearch } from "react-icons/ci";
 
 const API_CONFIG = {
   department: {
@@ -356,18 +357,24 @@ const Department = () => {
 
         {/* Status Filter */}
 
-        <div className='flex justify-between bg-blue-100 '>
-          <h2 className="text-lg justify-center mt-3 text-blue-950 rounded-t-md ml-4 font-semibold capitalize">{activeTab} List</h2>
-          <div className="mt-3 mr-2 mb-2">
-            <input
-              type="text"
-              placeholder={`Search ${activeTab}...`}
-              className="w-full md:w-64 px-4 py-2 border rounded"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
-        </div>
+        <div className="flex justify-between bg-blue-100 items-center">
+  <h2 className="text-lg mt-3 text-blue-950 rounded-t-md ml-4 font-semibold capitalize">
+    {activeTab} List
+  </h2>
+
+  <div className="relative mt-3 mr-2 mb-2 w-full md:w-[350px]">
+    <input
+      type="text"
+      placeholder={`Search ${activeTab}...`}
+      className="w-full pl-10 pr-4 py-2 border rounded-xl"
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
+    {/* Search Icon inside input */}
+    <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+  </div>
+</div>
+
         {/* Search */}
 
 
