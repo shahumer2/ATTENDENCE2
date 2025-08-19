@@ -382,9 +382,9 @@ const Department = () => {
           {Object.keys(API_CONFIG).map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2 font-medium capitalize ${activeTab === tab
+              className={`px-4 py-2  capitalize font-bold ${activeTab === tab
                 ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
+                : 'text-gray-900 hover:text-gray-500'
                 }`}
               onClick={() => {
                 setActiveTab(tab);
@@ -440,7 +440,7 @@ const Department = () => {
         {/* Status Filter */}
 
         <div className="flex justify-between bg-blue-100 items-center rounded-t-md">
-          <h2 className="text-lg mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
+          <h2 className="text-md mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
             {activeTab} List
           </h2>
 
@@ -490,13 +490,13 @@ const Department = () => {
                     )}
 
                     {/* Right side - align to end */}
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                    <th className="text-left px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                       Active / InActive
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                       Edit
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                       Delete
                     </th>
                   </tr>
