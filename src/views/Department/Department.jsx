@@ -444,11 +444,11 @@ const Department = () => {
             {activeTab} List
           </h2>
 
-          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
+          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[550px]">
             <input
               type="text"
               placeholder={`Enter The ${activeTab} Code or ${activeTab} Name `}
-              className=" uppercase pl-8 w-[480px] pr-9 py-2 border rounded-xl"
+              className=" uppercase pl-8 w-[530px] pr-9 py-2 border rounded-xl"
               value={searchTerm}
               onChange={handleSearchChange}
             />
