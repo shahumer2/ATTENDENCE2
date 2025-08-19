@@ -28,11 +28,25 @@ import { DESIGNATIONS_Search } from 'Constants/utils';
 import { CiSearch } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { IoIosAdd } from "react-icons/io";
+import { SECTION_SEARCH } from 'Constants/utils';
+import { CATEGORY_SEARCH } from 'Constants/utils';
+import { AWS_SEARCH } from 'Constants/utils';
+import { GET_DEPARTMENT_LIST } from 'Constants/utils';
+import { DESIGNATIONSISACTIVE } from 'Constants/utils';
+import { SECTIONISACTIVE_UPDATE } from 'Constants/utils';
+import { CATEGORYISACTIVE_UPDATE } from 'Constants/utils';
+import { AWS_ISACTIVE } from 'Constants/utils';
+import { DESIGNATION_DELETE } from 'Constants/utils';
+import { DEPARTMENT_DELETE } from 'Constants/utils';
+import { SECTION_DELETE } from 'Constants/utils';
+import { CATEGORY_DELETE } from 'Constants/utils';
+import { AWS_DELETE } from 'Constants/utils';
 const API_CONFIG = {
   department: {
     list: DEPARTMENT_SEARCH,
     add: DEPARTMENT_ADD,
     update: DEPARTMENT_UPDATE,
+    delete: DEPARTMENT_DELETE,
     statusUpdate: DEPARTMENT_STATUS_UPDATE, // Add this for status updates
     codeKey: 'departmentCode',
     nameKey: 'departmentName',
@@ -43,37 +57,41 @@ const API_CONFIG = {
     list: DESIGNATIONS_Search,
     add: DESIGNATION_ADD,
     update: DESIGNATION_UPDATE,
-    statusUpdate: DESIGNATION_UPDATE,
+    delete: DESIGNATION_DELETE,
+    statusUpdate: DESIGNATIONSISACTIVE,
     codeKey: 'designationCode',
     nameKey: 'designationName',
     statusKey: 'isActive',
     fields: ['code', 'name', 'isActive']
   },
   section: {
-    list: SECTION_LIST,
+    list: SECTION_SEARCH,
     add: SECTION_ADD,
     update: SECTION_UPDATE,
-    statusUpdate: SECTION_UPDATE,
+    delete: SECTION_DELETE,
+    statusUpdate: SECTIONISACTIVE_UPDATE,
     codeKey: 'sectionCode',
     nameKey: 'sectionName',
     statusKey: 'isActive',
     fields: ['code', 'name', 'isActive', 'department']
   },
   category: {
-    list: CATEGORY_LIST,
+    list: CATEGORY_SEARCH,
     add: CATEGORY_ADD,
     update: CATEGORY_UPDATE,
-    statusUpdate: CATEGORY_UPDATE,
+    delete: CATEGORY_DELETE,
+    statusUpdate: CATEGORYISACTIVE_UPDATE,
     codeKey: 'categoryCode',
     nameKey: 'categoryName',
     statusKey: 'isActive',
     fields: ['code', 'name', 'isActive']
   },
   aws: {
-    list: AWS_LIST,
+    list: AWS_SEARCH,
     add: AWS_ADD,
     update: AWS_UPDATE,
-    statusUpdate: AWS_UPDATE,
+    delete: AWS_DELETE,
+    statusUpdate: AWS_ISACTIVE,
     codeKey: 'awsCode',
     nameKey: 'awsName',
     statusKey: 'isActive',
@@ -90,6 +108,11 @@ const Department = () => {
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorModal, setErrorModal] = useState({
+    open: false,
+    message: '',
+    employees: []
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(null);
@@ -99,13 +122,13 @@ const Department = () => {
     queryKey: ['departmentOptions'],
     queryFn: async () => {
       try {
-        const response = await fetch(DEPARTMENT_LIST, {
-          method: 'POST',
+        const response = await fetch(GET_DEPARTMENT_LIST, {
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({}),
+
         });
 
         if (!response.ok) {
@@ -113,7 +136,7 @@ const Department = () => {
         }
 
         const result = await response.json();
-        return result?.content || [];
+        return result || [];
       } catch (error) {
         toast.error('Error fetching departments');
         throw error;
@@ -130,6 +153,7 @@ const Department = () => {
       ];
     }
   });
+  console.log(departmentOptions, "asd");
   // Fetch data with POST request and body
   const fetchData = useCallback(async () => {
     console.log(debouncedSearchTerm, isActiveFilter, "____________________=");
@@ -164,10 +188,12 @@ const Department = () => {
     fetchData();
   }, [fetchData]);
 
+  console.log(data, "_____--_____");
+
   // Status toggle mutation
   const { mutate: toggleStatus } = useMutation({
     mutationFn: async ({ id, isActive }) => {
-      const response = await fetch(`${API_CONFIG[activeTab].statusUpdate}/${id}`, {
+      const response = await fetch(`${API_CONFIG[activeTab].statusUpdate}/${id}/active`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -175,16 +201,38 @@ const Department = () => {
         },
         body: JSON.stringify({ isActive }),
       });
-      if (!response.ok) throw new Error('Failed to update status');
+      if (!response.ok) {
+        // parse backend error instead of throwing a plain Error
+        const errorData = await response.json();
+        // throw structured error so onError can use it
+        throw { status: response.status, ...errorData };
+      }
+
       return response.json();
+
+
+
     },
     onSuccess: () => {
       toast.success('Status updated successfully');
       fetchData();
     },
-    onError: (error) => {
-      toast.error(error.message);
-    },
+    onError: async (error) => {
+      console.log(error, "))((");
+      let errorMsg = error.message;
+      const employeeData = error.employees || [];
+
+
+
+
+      setErrorModal({
+        open: true,
+        message: errorMsg,
+        employees: employeeData,
+        employeeCount: employeeData.length || 0
+      });
+    }
+
   });
 
   const handleStatusChange = (id, currentStatus) => {
@@ -290,6 +338,26 @@ const Department = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this record?')) {
+      try {
+        const response = await fetch(`${API_CONFIG[activeTab].delete}/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Delete failed');
+
+        toast.success('Record deleted successfully');
+        fetchData();
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
   return (
     <>
       <h2 className='mt-4 ml-7 mb-[-20px] font-semibold text-xl capitalize text-blue-900'>{activeTab}</h2>
@@ -345,7 +413,7 @@ const Department = () => {
                 checked={isActiveFilter === false}
                 onChange={() => setIsActiveFilter(false)}
               />
-              <span className='capitalize'>Inactive {activeTab}</span>
+              <span className='capitalize'>InActive {activeTab}</span>
             </label>
           </div>
           <button
@@ -363,11 +431,11 @@ const Department = () => {
             {activeTab} List
           </h2>
 
-          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[450px]">
+          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
             <input
               type="text"
               placeholder={`Enter The ${activeTab} Code or ${activeTab} Name `}
-              className=" capitalize pl-8 w-[450px] pr-9 py-2 border rounded-xl"
+              className=" uppercase pl-8 w-[480px] pr-9 py-2 border rounded-xl"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -387,42 +455,57 @@ const Department = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {/* Left side - take most width */}
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
                     {activeTab} Code
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
                     {activeTab} Name
                   </th>
+
                   {activeTab === 'section' && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Department
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
+                      Department NAME
                     </th>
                   )}
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {activeTab === 'section' && (
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
+                      Department CODE
+                    </th>
+                  )}
+
+                  {/* Right side - align to end */}
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                     Active / InActive
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                     Edit
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
                     Delete
                   </th>
                 </tr>
+
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {data.map((item) => {
                   const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
                   return (
                     <tr key={item.id}>
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                      <td className=" uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {item[codeKey]}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                      <td className=" uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         {item[nameKey]}
                       </td>
                       {activeTab === 'section' && (
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                          {item.department?.departmentName}
+                          {item?.departmentName}
+                        </td>
+                      )}
+                      {activeTab === 'section' && (
+                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          {item?.departmentCode}
                         </td>
                       )}
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -451,10 +534,7 @@ const Department = () => {
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                         <button
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setShowModalUpdate(true);
-                          }}
+                          onClick={() => handleDelete(item.id)}
                         >
                           <MdDelete color='red' size="1.3rem" />
                         </button>
@@ -488,6 +568,54 @@ const Department = () => {
             activeTab={activeTab}
           />
         )}
+
+        {errorModal.open && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[900px]">
+              <h2 className="text-lg font-semibold text-black-600 mb-4 capitalize rounded-md">{activeTab}</h2>
+              <hr></hr>
+              <p className="mb-4  text-white p-3" style={{ backgroundColor: '#d97777e3' }}>{errorModal.message}</p>
+
+              {errorModal.employees.length > 0 && (
+                <table
+                  className="w-full border border-gray-300 overflow-scroll font-extralight"
+                  style={{ fontFamily: "'Nunito Sans', sans-serif" }}
+                >
+                  <thead className='text-sm'>
+                    <tr className="bg-gray-100">
+                      <th className="p-2 border font-sm w-[250px] text-left" style={{ fontWeight: "700" }}>Employee Code</th>
+                      <th className="p-2 border w-[650px] text-left">Employee Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {errorModal.employees.map((emp, idx) => (
+                      <tr key={idx}>
+                        <td className="p-2 border">{emp.employeeCode}</td>
+                        <td className="p-2 border">{emp.employeeName}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+
+              <div className="flex justify-end mt-4 gap-2">
+              <button
+                
+                  className="px-8 border py-2 bg-white-500 text-black rounded"
+                >
+                  Total Record: {errorModal.employeeCount}
+                </button>
+                <button
+                  onClick={() => setErrorModal({ open: false, message: '', employees: [],employeeCount:  0 })}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
 
         {showModalUpdate && selectedItem && (
           <ModalForm

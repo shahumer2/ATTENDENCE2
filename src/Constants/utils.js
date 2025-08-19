@@ -8,10 +8,12 @@ export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`;
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
 export const DEPARTMENT_SEARCH = `${BASE_URL}/api/department/search`;
+export const DEPARTMENT_DELETE = `${BASE_URL}/api/department/delete`;
 export const GET_DEPARTMENT_LIST = `${BASE_URL}/api/department/department-list`;
+
 export const GET_DEPARTMENT_id = `${BASE_URL}/api/department/id`;
 export const DEPARTMENT_UPDATE = `${BASE_URL}/api/department/update`;
-export const DEPARTMENT_STATUS_UPDATE = `${BASE_URL}/api/department/isActive`;
+export const DEPARTMENT_STATUS_UPDATE = `${BASE_URL}/api/department`;
 
 
 
@@ -19,26 +21,38 @@ export const DEPARTMENT_STATUS_UPDATE = `${BASE_URL}/api/department/isActive`;
 //designations
 export const DESIGNATION_ADD = `${BASE_URL}/api/designations/addDesignation`;
 export const DESIGNATION_LIST = `${BASE_URL}/api/designations/getAllDesignations`;
+export const DESIGNATION_DELETE = `${BASE_URL}/api/designations/delete`;
 export const DESIGNATIONS_LIST = `${BASE_URL}/api/designations/viewAll`;
 export const DESIGNATION_UPDATE = `${BASE_URL}/api/designations/updateDesignation`;
 export const DESIGNATIONS_Search = `${BASE_URL}/api/designations/search`;
+export const DESIGNATIONSISACTIVE = `${BASE_URL}/api/designations`;
+
+
 //section
 export const SECTION_ADD = `${BASE_URL}/api/section/add`;
 export const SECTION_LIST = `${BASE_URL}/api/section/getAll`;
+export const SECTION_SEARCH = `${BASE_URL}/api/section/search`;
+export const SECTION_DELETE = `${BASE_URL}/api/section/delete`;
 export const SECTION_LISTT = `${BASE_URL}/api/section/fetch-all`;
 export const SECTION_UPDATE = `${BASE_URL}/api/section/update`;
+export const SECTIONISACTIVE_UPDATE = `${BASE_URL}/api/section`;
 
 //category
 export const CATEGORY_ADD = `${BASE_URL}/api/category/add`;
 export const CATEGORY_LIST = `${BASE_URL}/api/category/getAll`;
+export const CATEGORY_SEARCH = `${BASE_URL}/api/category/search`;
 export const CATEGORYS_LIST = `${BASE_URL}/api/category/fetch-all`;
 export const CATEGORY_UPDATE = `${BASE_URL}/api/category/update`;
+export const CATEGORY_DELETE = `${BASE_URL}/api/category/delete`;
+export const CATEGORYISACTIVE_UPDATE = `${BASE_URL}/api/category`;
 //aws
 export const AWS_ADD = `${BASE_URL}/api/aws/add`;
 export const AWS_LIST = `${BASE_URL}/api/aws/getAll`;
+export const AWS_SEARCH = `${BASE_URL}/api/aws/search`;
+export const AWS_DELETE = `${BASE_URL}/api/aws/delete`;
 export const AWSS_LIST = `${BASE_URL}/api/aws/fetch-all`; 
 export const AWS_UPDATE = `${BASE_URL}/api/aws/update`;
-
+export const AWS_ISACTIVE = `${BASE_URL}/api/aws`;
 
 
 //compny
