@@ -381,11 +381,14 @@ const Department = () => {
         <div className="flex border-b mb-6 mt-[-13px] ml-[-15px]">
           {Object.keys(API_CONFIG).map((tab) => (
             <button
+            style={{fontWeight:"600"}}
               key={tab}
-              className={`px-4 py-2  capitalize font-semibold ${activeTab === tab
-                ? 'border-b-2 border-blue-500 text-blue-600 text-md'
-                : 'text-gray-900 hover:text-gray-500'
-                }`}
+              className={`px-4 py-2 capitalize  ${
+                activeTab === tab
+                  ? 'border-b-2 border-blue-500 text-[#242424] text-md'
+                  : 'text-[#242424] hover:text-gray-500'
+              }`}
+              
               onClick={() => {
                 setActiveTab(tab);
                 setSearchTerm('');
@@ -399,43 +402,47 @@ const Department = () => {
         </div>
 
         {/* Header + Add Button */}
-        <div className="flex justify-between items-center mb-4 ">
-          <div className="flex items-center mb-4 space-x-4 gap-12">
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="statusFilter"
-                checked={isActiveFilter === null}
-                onChange={() => setIsActiveFilter(null)}
-              />
-              <span className='capitalize'>All {activeTab}</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="statusFilter"
-                checked={isActiveFilter === true}
-                onChange={() => setIsActiveFilter(true)}
-              />
-              <span className='capitalize'>Active {activeTab}</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="statusFilter"
-                checked={isActiveFilter === false}
-                onChange={() => setIsActiveFilter(false)}
-              />
-              <span className='capitalize'>InActive {activeTab}</span>
-            </label>
-          </div>
-          <button
-            onClick={() => setShowModal(true)}
-            className="flex bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            <IoIosAdd size={25} />  Add {activeTab}
-          </button>
-        </div>
+        <div className="flex justify-between items-center mb-4">
+  <div className="flex items-center mb-4 space-x-4 gap-12 text-sm">
+    <label className="flex items-center space-x-2">
+      <input
+        type="radio"
+        name="statusFilter"
+        checked={isActiveFilter === null}
+        onChange={() => setIsActiveFilter(null)}
+        className="accent-[#337ab7]"
+      />
+      <span className="capitalize">All {activeTab}</span>
+    </label>
+    <label className="flex items-center space-x-2">
+      <input
+        type="radio"
+        name="statusFilter"
+        checked={isActiveFilter === true}
+        onChange={() => setIsActiveFilter(true)}
+        className="accent-[#337ab7]"
+      />
+      <span className="capitalize">Active {activeTab}</span>
+    </label>
+    <label className="flex items-center space-x-2">
+      <input
+        type="radio"
+        name="statusFilter"
+        checked={isActiveFilter === false}
+        onChange={() => setIsActiveFilter(false)}
+        className="accent-[#337ab7]"
+      />
+      <span className="capitalize">InActive {activeTab}</span>
+    </label>
+  </div>
+  <button
+    onClick={() => setShowModal(true)}
+    className="flex bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+  >
+    <IoIosAdd size={25} /> Add {activeTab}
+  </button>
+</div>
+
 
         {/* Status Filter */}
 
