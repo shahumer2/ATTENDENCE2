@@ -41,6 +41,7 @@ import { DEPARTMENT_DELETE } from 'Constants/utils';
 import { SECTION_DELETE } from 'Constants/utils';
 import { CATEGORY_DELETE } from 'Constants/utils';
 import { AWS_DELETE } from 'Constants/utils';
+import Breadcrumb from 'components/Breadcum/Breadcrumb';
 const API_CONFIG = {
   department: {
     list: DEPARTMENT_SEARCH,
@@ -373,7 +374,11 @@ const Department = () => {
 
   return (
     <>
-      <h2 className='mt-4 ml-7 mb-[-20px] font-semibold text-xl capitalize text-blue-900'>{activeTab}</h2>
+     <div className="flex justify-between p-4">
+     
+        <h2 className="mt-2 font-semibold text-xl capitalize text-blue-900">{activeTab}</h2>
+        <Breadcrumb items={`Master, ${activeTab}` }/>
+      </div>
 
       <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
 
