@@ -271,6 +271,17 @@ const handleAllowanceMouseLeave = () => {
                 onMouseLeave={handleMasterMouseLeave}
               >
                 <NavLink
+                  to="/admin/employee/view"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Employee Basic Details
+                </NavLink>
+                <NavLink
                   to="/admin/department"
                   className={({ isActive }) =>
                     `block px-4 py-2 text-sm ${isActive
@@ -715,7 +726,7 @@ const handleAllowanceMouseLeave = () => {
 
 
           {/* EMPLOYEE DROPDOWN */}
-          <div
+          {/* <div
             className="relative"
             onMouseEnter={handleEmployeeMouseEnter}
             onMouseLeave={handleEmployeeMouseLeave}
@@ -763,7 +774,7 @@ const handleAllowanceMouseLeave = () => {
                 </NavLink>
               </div>
             )}
-          </div>
+          </div> */}
 
           {/* ALLOWANCE DROPDOWN */}
 <div

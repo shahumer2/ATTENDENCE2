@@ -8,8 +8,11 @@ import { GET_ACTIVE_EMPLOYEE_DATA } from 'Constants/utils';
 import { GET_RESIGNED_EMPLOYEE_DATA } from 'Constants/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DELETE_EMPLOYEE_DATA } from 'Constants/utils';
+import { IoAdd } from 'react-icons/io5';
+import { useNavigate, } from 'react-router-dom';
 
 const ViewEmployee = () => {
+  const navigate = useNavigate()
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const queryClient = useQueryClient();
@@ -153,7 +156,7 @@ console.log(employees,"jamshedpur");
       </div>
 
       {/* Search */}
-      <div className="mb-4">
+      <div className=" flex justify-between mb-4">
         <input
           type="text"
           placeholder={`Search ${activeTab} employees...`}
@@ -161,6 +164,7 @@ console.log(employees,"jamshedpur");
           value={searchTerm}
           onChange={handleSearchChange}
         />
+        <IoAdd onClick={()=>navigate("/admin/employee/add")} style={{backgroundColor:"#337ab7"}} className=' h-[30px] w-[90px] rounded-lg cursor-pointer' color='white '/>
       </div>
 
       {/* Table */}
