@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedCompany } from "../../redux/Slice/CompanySlice"; // Adjust import path
-import pay from "../../assets/img/pay.png";
+import aste from "../../assets/img/aste.png";
 import { PiDotsNineBold } from "react-icons/pi";
 import { BsBuildings, BsChevronDown, BsChevronRight, BsChevronUp } from "react-icons/bs";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -178,10 +178,10 @@ const handleAllowanceMouseLeave = () => {
         {/* Top Row: Logo + Title + Icons */}
         <div className="flex items-center mb-2 w-full">
           <NavLink to="/">
-            <img src={pay} alt="Logo" className="w-[39px] h-[39px] rounded-full" />
+            <img src={aste} alt="Logo" className="w-[200px] h-[39px] rounded-full" />
           </NavLink>
 
-          <span className="ml-3 text-[#FFD700] text-2xl font-semibold">PAYROLL</span>
+          <span style={{fontFamily:"Nunito Sans', sans-serif !important"}} className="ml-3 text-[#f6b719] text-md font-bold">SCHEDULE MANAGEMENT SOFTWARE</span>
 
           {/* Right Icons */}
 
@@ -229,6 +229,7 @@ const handleAllowanceMouseLeave = () => {
             />
           </div>
         </div>
+
         <div className="flex space-x-6 relative">
           <NavLink
             to="/admin/dashboard"
@@ -236,7 +237,7 @@ const handleAllowanceMouseLeave = () => {
             className={({ isActive }) =>
               isActive
                 ? "text-[#FFD700] text-sm font-bold transition"
-                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+                : "text-slate-50 text-sm font-bold hover:text-[#FFD700] transition"
             }
           >
             Home
@@ -251,7 +252,7 @@ const handleAllowanceMouseLeave = () => {
           >
             <div className="flex items-center text-sm font-bold cursor-pointer transition 
               group-hover:text-[#FFD700] 
-              text-slate-300 
+              text-slate-50 
               hover:text-[#FFD700]"
             >
               Master
@@ -359,7 +360,7 @@ const handleAllowanceMouseLeave = () => {
           >
             <div className="flex items-center text-sm font-bold cursor-pointer transition 
               group-hover:text-[#FFD700] 
-              text-slate-300 
+              text-slate-50 
               hover:text-[#FFD700]"
             >
               Administration
@@ -413,7 +414,7 @@ const handleAllowanceMouseLeave = () => {
             <button
               className={`flex items-center text-sm font-bold transition ${ShiftDropdownOpen || window.location.pathname.includes('/admin/shift')
                 ? "text-[#FFD700]"
-                : "text-slate-300 hover:text-[#FFD700]"
+                : "text-slate-50 hover:text-[#FFD700]"
                 }`}
             >
               Shift
@@ -546,7 +547,7 @@ const handleAllowanceMouseLeave = () => {
             className={({ isActive }) =>
               isActive
                 ? "text-[#FFD700] text-sm font-bold transition"
-                : "text-slate-300 text-sm font-bold hover:text-[#FFD700] transition"
+                : "text-slate-50 text-sm font-bold hover:text-[#FFD700] transition"
             }
           >
             Company
@@ -561,7 +562,7 @@ const handleAllowanceMouseLeave = () => {
             <button
               className={`flex items-center text-sm font-bold transition ${leaveDropDown || window.location.pathname.includes('/admin/employee/add')
                 ? "text-[#FFD700]"
-                : "text-slate-300 hover:text-[#FFD700]"
+                : "text-slate-50 hover:text-[#FFD700]"
                 }`}
             >
               Leave Management
@@ -722,7 +723,7 @@ const handleAllowanceMouseLeave = () => {
             <button
               className={`flex items-center text-sm font-bold transition ${employeeDropdownOpen || window.location.pathname.includes('/admin/employee/add')
                 ? "text-[#FFD700]"
-                : "text-slate-300 hover:text-[#FFD700]"
+                : "text-slate-50 hover:text-[#FFD700]"
                 }`}
             >
               Employee
@@ -774,7 +775,7 @@ const handleAllowanceMouseLeave = () => {
     className={`flex items-center text-sm font-bold transition ${
       allowanceDropdownOpen
         ? "text-[#FFD700]"
-        : "text-slate-300 hover:text-[#FFD700]"
+        : "text-slate-50 hover:text-[#FFD700]"
     }`}
   >
     Allowance
@@ -793,7 +794,7 @@ const handleAllowanceMouseLeave = () => {
           `block px-4 py-2 text-sm ${
             isActive
               ? "bg-[#FFD700] text-[#0e2288] font-bold"
-              : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+              : "text-slate-50 hover:bg-[#1a3188] hover:text-[#FFD700]"
           }`
         }
       >
