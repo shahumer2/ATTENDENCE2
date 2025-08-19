@@ -381,14 +381,13 @@ const Department = () => {
         <div className="flex border-b mb-6 mt-[-13px] ml-[-15px]">
           {Object.keys(API_CONFIG).map((tab) => (
             <button
-            style={{fontWeight:"600"}}
+              style={{ fontWeight: "600" }}
               key={tab}
-              className={`px-4 py-2 capitalize  ${
-                activeTab === tab
-                  ? 'border-b-2 border-blue-500 text-[#242424] text-md'
-                  : 'text-[#242424] hover:text-gray-500'
-              }`}
-              
+              className={`px-4 py-2 capitalize  ${activeTab === tab
+                ? 'border-b-2 border-blue-500 text-[#242424] text-md'
+                : 'text-[#242424] hover:text-gray-500'
+                }`}
+
               onClick={() => {
                 setActiveTab(tab);
                 setSearchTerm('');
@@ -403,45 +402,45 @@ const Department = () => {
 
         {/* Header + Add Button */}
         <div className="flex justify-between items-center mb-4">
-  <div className="flex items-center mb-4 space-x-4 gap-12 text-sm">
-    <label className="flex items-center space-x-2">
-      <input
-        type="radio"
-        name="statusFilter"
-        checked={isActiveFilter === null}
-        onChange={() => setIsActiveFilter(null)}
-        className="accent-[#337ab7]"
-      />
-      <span className="capitalize">All {activeTab}</span>
-    </label>
-    <label className="flex items-center space-x-2">
-      <input
-        type="radio"
-        name="statusFilter"
-        checked={isActiveFilter === true}
-        onChange={() => setIsActiveFilter(true)}
-        className="accent-[#337ab7]"
-      />
-      <span className="capitalize">Active {activeTab}</span>
-    </label>
-    <label className="flex items-center space-x-2">
-      <input
-        type="radio"
-        name="statusFilter"
-        checked={isActiveFilter === false}
-        onChange={() => setIsActiveFilter(false)}
-        className="accent-[#337ab7]"
-      />
-      <span className="capitalize">InActive {activeTab}</span>
-    </label>
-  </div>
-  <button
-    onClick={() => setShowModal(true)}
-    className="flex bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-  >
-    <IoIosAdd size={25} /> Add {activeTab}
-  </button>
-</div>
+          <div className="flex items-center mb-4 space-x-4 gap-12 text-sm">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === null}
+                onChange={() => setIsActiveFilter(null)}
+                className="accent-[#337ab7]"
+              />
+              <span className="capitalize">All {activeTab}</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === true}
+                onChange={() => setIsActiveFilter(true)}
+                className="accent-[#337ab7]"
+              />
+              <span className="capitalize">Active {activeTab}</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="statusFilter"
+                checked={isActiveFilter === false}
+                onChange={() => setIsActiveFilter(false)}
+                className="accent-[#337ab7]"
+              />
+              <span className="capitalize">InActive {activeTab}</span>
+            </label>
+          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="flex bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            <IoIosAdd size={25} /> Add {activeTab}
+          </button>
+        </div>
 
 
         {/* Status Filter */}
@@ -531,31 +530,31 @@ const Department = () => {
                           </td>
                         )}
                         <td className="px-2 py-4 whitespace-nowrap">
-  <label className="inline-flex items-center cursor-pointer">
-    <input
-      type="checkbox"
-      className="sr-only peer"
-      checked={item[statusKey]}
-      onChange={() => handleStatusChange(item.id, item[statusKey])}
-    />
-    {/* ✅ Smaller size switch */}
-    <div className="relative w-8 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 
+                          <label className="inline-flex items-center cursor-pointer">
+                            <input
+                              type="checkbox"
+                              className="sr-only peer"
+                              checked={item[statusKey]}
+                              onChange={() => handleStatusChange(item.id, item[statusKey])}
+                            />
+                            {/* ✅ Smaller size switch */}
+                            <div className="relative w-8 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 
                     after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
                     after:h-3 after:w-3 after:transition-all"></div>
-    <span className="ml-2 text-xs font-medium">
-      {item[statusKey] ? 'Active' : 'Inactive'}
-    </span>
-  </label>
-</td>
+                            <span className="ml-2 text-xs font-medium">
+                              {item[statusKey] ? 'Active' : 'Inactive'}
+                            </span>
+                          </label>
+                        </td>
 
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                          <button 
+                          <button
                             onClick={() => {
                               setSelectedItem(item);
                               setShowModalUpdate(true);
                             }}
                           >
-                           <FaEdit size="1.3rem" style={{ color: "#337ab7" }} />
+                            <FaEdit size="1.3rem" style={{ color: "#337ab7" }} />
                           </button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
@@ -569,7 +568,7 @@ const Department = () => {
                 </tbody>
               </table>
               <div className="flex w-full justify-end items-center mt-4 px-6">
-              <div className="flex space-x-2 text-blue-500">
+                <div className="flex space-x-2 text-blue-500">
                   {page > 1 && (
                     <>
                       <button
@@ -603,7 +602,7 @@ const Department = () => {
                     </>
                   )}
                 </div>
-</div>
+              </div>
               {/* ✅ Pagination & Controls OUTSIDE table */}
               <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
                 {/* Page size selector */}
@@ -621,7 +620,7 @@ const Department = () => {
                 </div>
 
                 {/* Pagination buttons */}
-            
+
 
                 {/* Go to page + info */}
                 <div className="flex items-center space-x-2 gap-4">
@@ -631,15 +630,27 @@ const Department = () => {
                     min="1"
                     max={totalPages}
                     value={page}
-                    onChange={(e) => setPage(Number(e.target.value))}
+                    onChange={(e) => {
+                      let val = Number(e.target.value);
+
+                      // Prevent NaN or invalid numbers
+                      if (!val || val < 1) {
+                        setPage(1);
+                      } else if (val > totalPages) {
+                        setPage(totalPages);
+                      } else {
+                        setPage(val);
+                      }
+                    }}
                     className="border rounded w-[100px] px-2 py-1 border-gray-400 mr-4"
                   />
 
+
                   <span className="text-sm  font-semibold ml-4">
-                    Page {page} of {totalPages} 
+                    Page {page} of {totalPages}
                   </span>
                   <span className="text-sm gap-5 font-semibold">
-                 Total: {totalRecords}
+                    Total: {totalRecords}
                   </span>
                 </div>
               </div>
