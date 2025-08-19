@@ -780,14 +780,14 @@ const ModalForm = ({
           {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Code *
+                <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
+                 {activeTab} Code *
                 </label>
                 <Field
                   name="code"
                   type="text"
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="Enter code"
+                  className="w-full px-3 py-2 border rounded capitalize"
+                  placeholder={`${activeTab} code`}
                 />
                 <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
               </div>
@@ -798,8 +798,8 @@ const ModalForm = ({
                 <Field
                   name="name"
                   type="text"
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="Enter name"
+                  className="w-full px-3 py-2 border rounded capitalize"
+                  placeholder={`${activeTab} Name`}
                 />
                 <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
               </div>
