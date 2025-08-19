@@ -508,24 +508,24 @@ const Department = () => {
                   </tr>
                 </thead>
 
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-200 ">
                   {data.map((item) => {
                     const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
                     return (
-                      <tr key={item.id}>
-                        <td className="uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                      <tr key={item.id} className='text-xs'>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                           {item[codeKey]}
                         </td>
-                        <td className="uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                           {item[nameKey]}
                         </td>
                         {activeTab === 'section' && (
-                          <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          <td className="px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                             {item?.departmentName}
                           </td>
                         )}
                         {activeTab === 'section' && (
-                          <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          <td className="px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                             {item?.departmentCode}
                           </td>
                         )}
@@ -542,7 +542,7 @@ const Department = () => {
                     after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
                     after:h-3 after:w-3 after:transition-all"></div>
                             <span className="ml-2 text-xs font-medium">
-                              {item[statusKey] ? 'Active' : 'Inactive'}
+                              {item[statusKey] ? 'Active' : 'InActive'}
                             </span>
                           </label>
                         </td>
