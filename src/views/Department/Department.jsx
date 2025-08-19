@@ -382,8 +382,8 @@ const Department = () => {
           {Object.keys(API_CONFIG).map((tab) => (
             <button
               key={tab}
-              className={`px-4 py-2  capitalize font-bold ${activeTab === tab
-                ? 'border-b-2 border-blue-500 text-blue-600'
+              className={`px-4 py-2  capitalize font-semibold ${activeTab === tab
+                ? 'border-b-2 border-blue-500 text-blue-600 text-md'
                 : 'text-gray-900 hover:text-gray-500'
                 }`}
               onClick={() => {
@@ -439,16 +439,16 @@ const Department = () => {
 
         {/* Status Filter */}
 
-        <div className="flex justify-between bg-blue-100 items-center rounded-t-md">
+        <div className="flex justify-between bg-blue-50 items-center rounded-t-md">
           <h2 className="text-md mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
             {activeTab} List
           </h2>
 
-          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[550px]">
+          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[400px]">
             <input
               type="text"
               placeholder={`Enter The ${activeTab} Code or ${activeTab} Name `}
-              className=" uppercase pl-8 w-[530px] pr-9 py-2 border rounded-xl"
+              className=" uppercase text-xs pl-8 w-[400px] pr-4 py-3 border rounded-xl"
               value={searchTerm}
               onChange={handleSearchChange}
             />
