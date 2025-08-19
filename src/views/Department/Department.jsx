@@ -118,6 +118,16 @@ const Department = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isActiveFilter, setIsActiveFilter] = useState(null); // null = all, true = active, false = inactive
   // Add this inside your Department component, before the fetchData function
+
+
+  //pagiation//
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  //ends
+
+
   const { data: departmentOptions } = useQuery({
     queryKey: ['departmentOptions'],
     queryFn: async () => {
@@ -156,10 +166,9 @@ const Department = () => {
   console.log(departmentOptions, "asd");
   // Fetch data with POST request and body
   const fetchData = useCallback(async () => {
-    console.log(debouncedSearchTerm, isActiveFilter, "____________________=");
     setLoading(true);
     try {
-      const response = await fetch(API_CONFIG[activeTab].list, {
+      const response = await fetch(`${API_CONFIG[activeTab].list}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -167,7 +176,7 @@ const Department = () => {
         },
         body: JSON.stringify({
           searchTerm: debouncedSearchTerm || undefined,
-          isActive: isActiveFilter !== null ? isActiveFilter : undefined
+          isActive: isActiveFilter !== null ? isActiveFilter : undefined,
         }),
       });
 
@@ -177,12 +186,15 @@ const Department = () => {
 
       const result = await response.json();
       setData(result?.content || []);
+      setTotalPages(result?.totalPages || 1);
+      setTotalRecords(result?.totalElements || 0);
     } catch (error) {
       toast.error(error.message);
     } finally {
       setLoading(false);
     }
-  }, [activeTab, token, debouncedSearchTerm, isActiveFilter]);
+  }, [activeTab, token, debouncedSearchTerm, isActiveFilter, page, pageSize]);
+
 
   useEffect(() => {
     fetchData();
@@ -241,6 +253,7 @@ const Department = () => {
 
   // Debounce search
   const debounceSearch = useCallback(
+
     debounce((value) => setDebouncedSearchTerm(value), 300),
     []
   );
@@ -452,104 +465,185 @@ const Department = () => {
           {loading ? (
             <div className="p-4 text-center">Loading...</div>
           ) : data.length > 0 ? (
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  {/* Left side - take most width */}
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
-                    {activeTab} Code
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
-                    {activeTab} Name
-                  </th>
-
-                  {activeTab === 'section' && (
+            <>
+              {/* ✅ Table */}
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    {/* Left side - take most width */}
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
-                      Department NAME
+                      {activeTab} Code
                     </th>
-                  )}
-                  {activeTab === 'section' && (
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
-                      Department CODE
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[40%]">
+                      {activeTab} Name
                     </th>
+
+                    {activeTab === 'section' && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
+                        Department NAME
+                      </th>
+                    )}
+                    {activeTab === 'section' && (
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%]">
+                        Department CODE
+                      </th>
+                    )}
+
+                    {/* Right side - align to end */}
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                      Active / InActive
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                      Edit
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
+                      Delete
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {data.map((item) => {
+                    const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
+                    return (
+                      <tr key={item.id}>
+                        <td className="uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          {item[codeKey]}
+                        </td>
+                        <td className="uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          {item[nameKey]}
+                        </td>
+                        {activeTab === 'section' && (
+                          <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                            {item?.departmentName}
+                          </td>
+                        )}
+                        {activeTab === 'section' && (
+                          <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                            {item?.departmentCode}
+                          </td>
+                        )}
+                        <td className="px-2 py-4 whitespace-nowrap">
+  <label className="inline-flex items-center cursor-pointer">
+    <input
+      type="checkbox"
+      className="sr-only peer"
+      checked={item[statusKey]}
+      onChange={() => handleStatusChange(item.id, item[statusKey])}
+    />
+    {/* ✅ Smaller size switch */}
+    <div className="relative w-8 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 
+                    after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
+                    after:h-3 after:w-3 after:transition-all"></div>
+    <span className="ml-2 text-xs font-medium">
+      {item[statusKey] ? 'Active' : 'Inactive'}
+    </span>
+  </label>
+</td>
+
+                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          <button
+                            onClick={() => {
+                              setSelectedItem(item);
+                              setShowModalUpdate(true);
+                            }}
+                          >
+                            <FaEdit size="1.3rem" />
+                          </button>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                          <button onClick={() => handleDelete(item.id)}>
+                            <MdDelete color="red" size="1.3rem" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div className="flex w-full justify-end items-center mt-4 px-6">
+              <div className="flex space-x-2 text-blue-500">
+                  {page > 1 && (
+                    <>
+                      <button
+                        onClick={() => setPage(1)}
+                        className="px-3 py-1 border rounded"
+                      >
+                        First
+                      </button>
+                      <button
+                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Prev
+                      </button>
+                    </>
                   )}
+                  {page <= totalPages && (
+                    <>
+                      <button
+                        onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Next
+                      </button>
+                      <button
+                        onClick={() => setPage(totalPages)}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Last
+                      </button>
+                    </>
+                  )}
+                </div>
+</div>
+              {/* ✅ Pagination & Controls OUTSIDE table */}
+              <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
+                {/* Page size selector */}
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium">Page Size:</label>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+                    className="border rounded px-2 py-1 w-[100px] border-gray-400"
+                  >
+                    {[5, 10, 15, 20].map(size => (
+                      <option key={size} value={size}>{size}</option>
+                    ))}
+                  </select>
+                </div>
 
-                  {/* Right side - align to end */}
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
-                    Active / InActive
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
-                    Edit
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-[5%]">
-                    Delete
-                  </th>
-                </tr>
+                {/* Pagination buttons */}
+            
 
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((item) => {
-                  const { codeKey, nameKey, statusKey } = API_CONFIG[activeTab];
-                  return (
-                    <tr key={item.id}>
-                      <td className=" uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {item[codeKey]}
-                      </td>
-                      <td className=" uppercase px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        {item[nameKey]}
-                      </td>
-                      {activeTab === 'section' && (
-                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                          {item?.departmentName}
-                        </td>
-                      )}
-                      {activeTab === 'section' && (
-                        <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                          {item?.departmentCode}
-                        </td>
-                      )}
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <label className="inline-flex items-center cursor-pointer">
-                          <input
-                            type="checkbox"
-                            className="sr-only peer"
-                            checked={item[statusKey]}
-                            onChange={() => handleStatusChange(item.id, item[statusKey])}
-                          />
-                          <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                          <span className="ml-3 text-sm font-medium">
-                            {item[statusKey] ? 'Active' : 'Inactive'}
-                          </span>
-                        </label>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        <button
-                          onClick={() => {
-                            setSelectedItem(item);
-                            setShowModalUpdate(true);
-                          }}
-                        >
-                          <FaEdit size="1.3rem" />
-                        </button>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                        <button
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          <MdDelete color='red' size="1.3rem" />
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                {/* Go to page + info */}
+                <div className="flex items-center space-x-2 gap-4">
+                  <label className="text-sm font-medium">Go to Page:</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max={totalPages}
+                    value={page}
+                    onChange={(e) => setPage(Number(e.target.value))}
+                    className="border rounded w-[100px] px-2 py-1 border-gray-400 mr-4"
+                  />
+
+                  <span className="text-sm  font-semibold ml-4">
+                    Page {page} of {totalPages} 
+                  </span>
+                  <span className="text-sm gap-5 font-semibold">
+                 Total: {totalRecords}
+                  </span>
+                </div>
+              </div>
+            </>
           ) : (
             <div className="p-4 text-center text-gray-500">
               No data available
             </div>
           )}
         </div>
+
 
         {/* Modals */}
         {showModal && (
@@ -599,14 +693,14 @@ const Department = () => {
               )}
 
               <div className="flex justify-end mt-4 gap-2">
-              <button
-                
+                <button
+
                   className="px-8 border py-2 bg-white-500 text-black rounded"
                 >
                   Total Record: {errorModal.employeeCount}
                 </button>
                 <button
-                  onClick={() => setErrorModal({ open: false, message: '', employees: [],employeeCount:  0 })}
+                  onClick={() => setErrorModal({ open: false, message: '', employees: [], employeeCount: 0 })}
                   className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
                   Close
