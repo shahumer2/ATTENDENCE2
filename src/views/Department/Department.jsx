@@ -374,7 +374,7 @@ const Department = () => {
 
   return (
     <>
-     <div className="flex justify-between pl-5 pt-2 pr-8">
+     <div className="flex justify-between pl-8 pt-2 pr-8">
      
         <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">{activeTab}</h2>
         <Breadcrumb className="pr-4" items={`Master, ${activeTab}` }/>
