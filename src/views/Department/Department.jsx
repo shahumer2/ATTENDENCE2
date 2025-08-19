@@ -542,18 +542,18 @@ const Department = () => {
 </td>
 
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                          <button
+                          <button 
                             onClick={() => {
                               setSelectedItem(item);
                               setShowModalUpdate(true);
                             }}
                           >
-                            <FaEdit size="1.3rem" />
+                           <FaEdit size="1.3rem" style={{ color: "#337ab7" }} />
                           </button>
                         </td>
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                           <button onClick={() => handleDelete(item.id)}>
-                            <MdDelete color="red" size="1.3rem" />
+                            <MdDelete style={{ color: "#d97777" }} size="1.3rem" />
                           </button>
                         </td>
                       </tr>
