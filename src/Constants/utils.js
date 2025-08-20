@@ -165,6 +165,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const GET_FwlSearch_URL = `${BASE_URL}/api/fwl/search`;
  export const GET_FwlhBYID_URL = `${BASE_URL}/api/branches/getBy`;
  export const UPDATE_Fwl_URL = `${BASE_URL}/api/branches/updateBranch`;
+ export const UPDATETOGGLER_Fwl_URL = `${BASE_URL}/api/branches`;
 
   //Religion
 
@@ -173,7 +174,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_ReligionSearch_URL = `${BASE_URL}/api/religion/search`;
   export const GET_ReligionhBYID_URL = `${BASE_URL}/api/religion/getBy`;
   export const UPDATE_Religion_URL = `${BASE_URL}/api/religion/update`;
-
+  export const UPDATETOGGLER_Religion_URL = `${BASE_URL}/api/religion`;
   //leave Group
   export const LeaveGroup_LIST = `${BASE_URL}/api/leavegroup/getAll`;
   export const LeaveGroup = `${BASE_URL}/api/leavegroup/fetchAll`;
@@ -229,6 +230,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
     export const GET_RaceSearch_URL = `${BASE_URL}/api/race/search`;
     export const GET_RaceBYID_URL = `${BASE_URL}/api/race/getBy`;
     export const UPDATE_Race_URL = `${BASE_URL}/api/race/update`;
+    export const UPDATEToggler_Race_URL = `${BASE_URL}/api/race`;
         //NATIONALITY
 
         export const Nationality_LIST = `${BASE_URL}/api/nationality/getAll`;
@@ -236,6 +238,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
         export const GET_NationalitySearch_URL = `${BASE_URL}/api/nationality/search`;
         export const GET_NationalityBYID_URL = `${BASE_URL}/api/nationality/getBy`;
         export const UPDATE_Nationality_URL = `${BASE_URL}/api/nationality/update`;
+        export const UPDATETOGGLER_Nationality_URL = `${BASE_URL}/api/nationality`;
 
          //Education
 
@@ -244,6 +247,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const GET_EducationSearch_URL = `${BASE_URL}/api/education/search`;
          export const GET_EducationBYID_URL = `${BASE_URL}/api/education/getBy`;
          export const UPDATE_Education_URL = `${BASE_URL}/api/education/update`;
+         export const UPDATETOGGLER_Education_URL = `${BASE_URL}/api/education`;
 
            //Category
 
@@ -260,6 +264,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const GET_BankSearch_URL = `${BASE_URL}/api/bank/search`;
          export const GET_BankBYID_URL = `${BASE_URL}/api/bank/getBy`;
          export const UPDATE_Bank_URL = `${BASE_URL}/api/bank/update`;
+         export const UPDATETOGGLER_Bank_URL = `${BASE_URL}/api/banK`;
          
          //Career
 
@@ -268,6 +273,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const GET_CareerSearch_URL = `${BASE_URL}/api/career/search`;
          export const GET_CareerBYID_URL = `${BASE_URL}/api/career/getBy`;
          export const UPDATE_Career_URL = `${BASE_URL}/api/career/update`;
+         export const UPDATETOGGLER_Career_URL = `${BASE_URL}/api/career`;
 
 
  //custom filds
