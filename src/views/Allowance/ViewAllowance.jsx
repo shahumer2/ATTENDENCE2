@@ -181,7 +181,7 @@ const filteredCriteria = criteria
                       <div className="flex justify-end items-center mb-4">
                     <button
                       onClick={() => navigate("/admin/allowance/view")}
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded flex items-center gap-2"
                     >
                       <span className="text-2xl font-bold">+</span>
                       <span>Add Allowance</span>
