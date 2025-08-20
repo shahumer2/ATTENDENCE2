@@ -790,7 +790,7 @@ const ModalForm = ({
 
                 <div className="mb-4 w-[300px] gap-4">
                   <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
-                    {activeTab} Code *
+                    {activeTab} Code <span className='text-red-700'>*</span>
                   </label>
                   <Field
                     name="code"
@@ -801,8 +801,8 @@ const ModalForm = ({
                   <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Name *
+                  <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
+                  {activeTab}  Name <span className='text-red-700'>*</span>
                   </label>
                   <Field
                     name="name"
@@ -820,7 +820,7 @@ const ModalForm = ({
                       name="isActive"
                       className="w-4 h-4 text-blue-600 rounded"
                     />
-                    <span>Active</span>
+                    <span>Active/InActive</span>
                   </label>
                   <ErrorMessage name="isActive" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
