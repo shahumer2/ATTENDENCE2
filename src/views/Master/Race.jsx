@@ -52,7 +52,7 @@ const API_CONFIG = {
     ADD: ADD_Race_DATA,
     SEARCH: GET_RaceSearch_URL,
     UPDATE: UPDATE_Race_URL,
-    statusUpdate:UPDATEToggler_Race_URL,
+    statusUpdate: UPDATEToggler_Race_URL,
     statusKey: 'isActive',
   },
   RELIGION: {
@@ -60,7 +60,7 @@ const API_CONFIG = {
     ADD: ADD_Religion_DATA,
     SEARCH: GET_ReligionSearch_URL,
     UPDATE: UPDATE_Religion_URL,
-    statusUpdate:UPDATETOGGLER_Religion_URL,
+    statusUpdate: UPDATETOGGLER_Religion_URL,
     statusKey: 'isActive',
   },
   NATIONALITY: {
@@ -68,7 +68,7 @@ const API_CONFIG = {
     ADD: ADD_Nationality_DATA,
     SEARCH: GET_NationalitySearch_URL,
     UPDATE: UPDATE_Nationality_URL,
-    statusUpdate:UPDATETOGGLER_Nationality_URL,
+    statusUpdate: UPDATETOGGLER_Nationality_URL,
     statusKey: 'isActive',
   },
   EDUCATION: {
@@ -76,28 +76,29 @@ const API_CONFIG = {
     ADD: ADD_Education_DATA,
     SEARCH: GET_EducationSearch_URL,
     UPDATE: UPDATE_Education_URL,
-    statusUpdate:UPDATETOGGLER_Education_URL,
+    statusUpdate: UPDATETOGGLER_Education_URL,
     statusKey: 'isActive',
   },
   FUND: {
-    BASE: '/api/funds',
-    ADD: '/api/funds/addFund',
-    SEARCH: '/api/funds/search',
-    statusUpdate:UPDATETOGGLER_Education_URL,
+    BASE: Fwl_LIST,
+    ADD: ADD_Fwl_DATA,
+    SEARCH: GET_FwlSearch_URL,
+    statusUpdate: UPDATETOGGLER_Fwl_URL,
     statusKey: 'isActive',
   },
   FWL: {
     BASE: Fwl_LIST,
     ADD: ADD_Fwl_DATA,
     SEARCH: GET_FwlSearch_URL,
-    statusUpdate:UPDATETOGGLER_Fwl_URL,
+    statusUpdate: UPDATETOGGLER_Fwl_URL,
     statusKey: 'isActive',
   },
   DAILY: {
-    BASE: '/api/dailies',
-    ADD: '/api/dailies/addDaily',
-    SEARCH: '/api/dailies/search',
-    statusUpdate:UPDATEToggler_Race_URL,
+    BASE: Bank_LIST,
+    ADD: ADD_Bank_DATA,
+    SEARCH: GET_BankSearch_URL,
+    UPDATE: UPDATE_Bank_URL,
+    statusUpdate: UPDATETOGGLER_Bank_URL,
     statusKey: 'isActive',
   },
   BANK: {
@@ -105,14 +106,15 @@ const API_CONFIG = {
     ADD: ADD_Bank_DATA,
     SEARCH: GET_BankSearch_URL,
     UPDATE: UPDATE_Bank_URL,
-    statusUpdate:UPDATETOGGLER_Bank_URL,
+    statusUpdate: UPDATETOGGLER_Bank_URL,
     statusKey: 'isActive',
   },
   COMPONENT: {
-    BASE: '/api/components',
-    ADD: '/api/components/addComponent',
-    SEARCH: '/api/components/search',
-    statusUpdate:UPDATEToggler_Race_URL,
+    BASE: Career_LIST,
+    ADD: ADD_Career_DATA,
+    SEARCH: GET_CareerSearch_URL,
+    UPDATE: UPDATE_Career_URL,
+    statusUpdate: UPDATETOGGLER_Career_URL,
     statusKey: 'isActive',
   },
   CAREER: {
@@ -120,7 +122,7 @@ const API_CONFIG = {
     ADD: ADD_Career_DATA,
     SEARCH: GET_CareerSearch_URL,
     UPDATE: UPDATE_Career_URL,
-    statusUpdate:UPDATETOGGLER_Career_URL,
+    statusUpdate: UPDATETOGGLER_Career_URL,
     statusKey: 'isActive',
   }
 };
@@ -456,59 +458,59 @@ const Race = () => {
     setSearchTerm(e.target.value);
     debounceSearch(e.target.value); // ✅ will update debouncedSearchTerm
   };
-//status toggler chnage
+  //status toggler chnage
 
-const { mutate: toggleStatus } = useMutation({
-  mutationFn: async ({ id, isActive }) => {
-    const response = await fetch(`${currentApi.statusUpdate}/${id}/active`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ isActive }),
-    });
-    if (!response.ok) {
-      // parse backend error instead of throwing a plain Error
-      const errorData = await response.json();
-      // throw structured error so onError can use it
-      throw { status: response.status, ...errorData };
+  const { mutate: toggleStatus } = useMutation({
+    mutationFn: async ({ id, isActive }) => {
+      const response = await fetch(`${currentApi.statusUpdate}/${id}/active`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ isActive }),
+      });
+      if (!response.ok) {
+        // parse backend error instead of throwing a plain Error
+        const errorData = await response.json();
+        // throw structured error so onError can use it
+        throw { status: response.status, ...errorData };
+      }
+
+      return response.json();
+
+
+
+    },
+    onSuccess: () => {
+      toast.success('Status updated successfully');
+
+      //for refetch
+      queryClient.invalidateQueries([activeTab]);
+
+    },
+    onError: async (error) => {
+      console.log(error, "))((");
+      let errorMsg = error.message;
+      const employeeData = error.employees || [];
+
+
+
+
+      setErrorModal({
+        open: true,
+        message: errorMsg,
+        employees: employeeData,
+        employeeCount: employeeData.length || 0
+      });
     }
 
-    return response.json();
+  });
 
-
-
-  },
-  onSuccess: () => {
-    toast.success('Status updated successfully');
-
-    //for refetch
-    queryClient.invalidateQueries([activeTab]);
-    
-  },
-  onError: async (error) => {
-    console.log(error, "))((");
-    let errorMsg = error.message;
-    const employeeData = error.employees || [];
-
-
-
-
-    setErrorModal({
-      open: true,
-      message: errorMsg,
-      employees: employeeData,
-      employeeCount: employeeData.length || 0
-    });
-  }
-
-});
-
-const handleStatusChange = (id, currentStatus) => {
-  const currentApi = API_CONFIG[activeTab.toUpperCase()];
-  toggleStatus({ id, isActive: !currentStatus, statusKey: currentApi.statusKey });
-};
+  const handleStatusChange = (id, currentStatus) => {
+    const currentApi = API_CONFIG[activeTab.toUpperCase()];
+    toggleStatus({ id, isActive: !currentStatus, statusKey: currentApi.statusKey });
+  };
 
 
 
@@ -598,7 +600,7 @@ const handleStatusChange = (id, currentStatus) => {
 
         {/* Add/Edit Form */}
         {isAdding && (
-          <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+          <div className="bg-gray-50 p-4 rounded-lg mb-3 border border-gray-200">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium">
                 {editingId ? 'Edit' : 'Add'} {TAB_CONFIG[activeTab].label}
@@ -695,12 +697,13 @@ const handleStatusChange = (id, currentStatus) => {
                         {TAB_CONFIG[activeTab].columns.map(column => (
                           <th
                             key={column.key}
-                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[3%]"
+                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[20%] mr-[300px]"
                           >
                             {column.header}
                           </th>
                         ))}
-                        <th className="text-left px-6 py-3  text-xs font-medium text-gray-500 uppercase tracking-wider w-[1%]">
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[80%] "></th>
+                        <th className="text-left  py-3  text-xs font-medium text-gray-500 uppercase tracking-wider w-[1%]">
                           Active / InActive
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[1%]">
@@ -716,58 +719,59 @@ const handleStatusChange = (id, currentStatus) => {
                         tableData.content.map((item) => {
                           const { statusKey } = API_CONFIG[activeTab.toUpperCase()];
 
-                            return(
-                          <tr key={item.id} className="even:bg-gray-50 hover:bg-gray-100">
-                            {TAB_CONFIG[activeTab].columns.map(column => (
-                              <td
-                              key={column.key}
-                              className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap"
-                              >
-                                {item[column.key]}
-                              </td>
-                            ))}
-                            <td className="px-2 py-4 whitespace-nowrap">
-                              <label className="inline-flex items-center cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  className="sr-only peer"
-                                  checked={item[statusKey]}
-                                  onChange={() => handleStatusChange(item.id, item[statusKey])}
-                                />
-                                {/* ✅ Smaller size switch */}
-                                <div className="relative w-8 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 
+                          return (
+                            <tr key={item.id} className="even:bg-gray-50 hover:bg-gray-100">
+                              {TAB_CONFIG[activeTab].columns.map(column => (
+                                <td
+                                  key={column.key}
+                                  className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap"
+                                >
+                                  {item[column.key]}
+                                </td>
+                              ))}
+                              <td></td>
+                              <td className=" py-4 whitespace-nowrap">
+                                <label className="inline-flex items-center cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    className="sr-only peer"
+                                    checked={item[statusKey]}
+                                    onChange={() => handleStatusChange(item.id, item[statusKey])}
+                                  />
+                                  {/* ✅ Smaller size switch */}
+                                  <div className="relative w-8 h-4 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-blue-600 
                     after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full 
                     after:h-3 after:w-3 after:transition-all"></div>
-                                <span className="ml-2 text-xs font-medium">
-                                  {/* {item[statusKey] ? 'Active' : 'InActive'} */}
-                                </span>
-                              </label>
-                            </td>
+                                  <span className="ml-2 text-xs font-medium">
+                                    {/* {item[statusKey] ? 'Active' : 'InActive'} */}
+                                  </span>
+                                </label>
+                              </td>
 
 
-                            <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
-                              <div className='flex flex-row gap-3'>
-                              <FaEdit size="1.3rem" style={{ color: "#337ab7" }} 
-                                  color='green'
-                                  className='cursor-pointer'
-                                
-                                  onClick={() => handleEdit(item)}
-                                />
-                              
-                              </div>
-                            </td>
+                              <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                <div className='flex flex-row gap-3'>
+                                  <FaEdit size="1.3rem" style={{ color: "#337ab7" }}
+                                    color='green'
+                                    className='cursor-pointer'
 
-                            <td>
-                            <MdDelete style={{ color: "#d97777" }} size="1.3rem"
+                                    onClick={() => handleEdit(item)}
+                                  />
+
+                                </div>
+                              </td>
+
+                              <td>
+                                <MdDelete style={{ color: "#d97777" }} size="1.3rem"
                                   color='red'
                                   className='cursor-pointer'
-                               
+
                                   onClick={() => handleDelete(item.id)}
                                 />
-                            </td>
-                          </tr>
+                              </td>
+                            </tr>
                           )
-})
+                        })
                       ) : (
                         <tr>
                           <td colSpan={TAB_CONFIG[activeTab].columns.length + 1} className="px-6 py-4 text-sm text-gray-500 text-center">
@@ -866,51 +870,51 @@ const handleStatusChange = (id, currentStatus) => {
                     </div>
                   </div>
                   {errorModal.open && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[900px]">
-              <h2 className="text-lg font-semibold text-black-600 mb-4 capitalize rounded-md">{activeTab}</h2>
-              <hr></hr>
-              <p className="mb-4  text-white p-3" style={{ backgroundColor: '#d97777e3' }}>{errorModal.message}</p>
+                    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+                      <div className="bg-white p-6 rounded-lg shadow-lg w-[900px]">
+                        <h2 className="text-lg font-semibold text-black-600 mb-4 capitalize rounded-md">{activeTab}</h2>
+                        <hr></hr>
+                        <p className="mb-4  text-white p-3" style={{ backgroundColor: '#d97777e3' }}>{errorModal.message}</p>
 
-              {errorModal.employees.length > 0 && (
-                <table
-                  className="w-full border border-gray-300 overflow-scroll font-extralight"
-                  style={{ fontFamily: "'Nunito Sans', sans-serif" }}
-                >
-                  <thead className='text-sm'>
-                    <tr className="bg-gray-100">
-                      <th className="p-2 border font-sm w-[250px] text-left" style={{ fontWeight: "700" }}>Employee Code</th>
-                      <th className="p-2 border w-[650px] text-left">Employee Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {errorModal.employees.map((emp, idx) => (
-                      <tr key={idx}>
-                        <td className="p-2 border">{emp.employeeCode}</td>
-                        <td className="p-2 border">{emp.employeeName}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              )}
+                        {errorModal.employees.length > 0 && (
+                          <table
+                            className="w-full border border-gray-300 overflow-scroll font-extralight"
+                            style={{ fontFamily: "'Nunito Sans', sans-serif" }}
+                          >
+                            <thead className='text-sm'>
+                              <tr className="bg-gray-100">
+                                <th className="p-2 border font-sm w-[250px] text-left" style={{ fontWeight: "700" }}>Employee Code</th>
+                                <th className="p-2 border w-[650px] text-left">Employee Name</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {errorModal.employees.map((emp, idx) => (
+                                <tr key={idx}>
+                                  <td className="p-2 border">{emp.employeeCode}</td>
+                                  <td className="p-2 border">{emp.employeeName}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        )}
 
-              <div className="flex justify-end mt-4 gap-2">
-                <button
+                        <div className="flex justify-end mt-4 gap-2">
+                          <button
 
-                  className="px-8 border py-2 bg-white-500 text-black rounded"
-                >
-                  Total Record: {errorModal.employeeCount}
-                </button>
-                <button
-                  onClick={() => setErrorModal({ open: false, message: '', employees: [], employeeCount: 0 })}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                            className="px-8 border py-2 bg-white-500 text-black rounded"
+                          >
+                            Total Record: {errorModal.employeeCount}
+                          </button>
+                          <button
+                            onClick={() => setErrorModal({ open: false, message: '', employees: [], employeeCount: 0 })}
+                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </div>
