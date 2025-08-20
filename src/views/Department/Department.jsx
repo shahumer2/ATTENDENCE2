@@ -775,7 +775,8 @@ const ModalForm = ({
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
     <div className="bg-white rounded-lg w-full max-w-[70%] h-auto shadow-xl">
       <div className="p-6 ">
-        <h3 className="text-lg font-medium mb-4">{title}</h3>
+        <h3 className="text-lg font-medium mb-1 capitalize">{title}</h3>
+        <hr ></hr>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -784,7 +785,7 @@ const ModalForm = ({
         >
           {({ isSubmitting, setFieldValue, values }) => (
             <Form className=''>
-              <div className='flex gap-5'>
+              <div className='flex gap-5 mt-4'>
 
 
                 <div className="mb-4 w-[300px] gap-4">

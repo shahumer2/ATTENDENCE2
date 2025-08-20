@@ -784,8 +784,8 @@ function Header() {
           >
             <button
               className={`flex items-center text-sm font-bold transition ${allowanceDropdownOpen
-                  ? "text-[#FFD700]"
-                  : "text-slate-50 hover:text-[#FFD700]"
+                ? "text-[#FFD700]"
+                : "text-slate-50 hover:text-[#FFD700]"
                 }`}
             >
               Allowance
