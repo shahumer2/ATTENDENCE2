@@ -264,7 +264,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const GET_BankSearch_URL = `${BASE_URL}/api/bank/search`;
          export const GET_BankBYID_URL = `${BASE_URL}/api/bank/getBy`;
          export const UPDATE_Bank_URL = `${BASE_URL}/api/bank/update`;
-         export const UPDATETOGGLER_Bank_URL = `${BASE_URL}/api/banK`;
+         export const UPDATETOGGLER_Bank_URL = `${BASE_URL}/api/bank`;
          
          //Career
 

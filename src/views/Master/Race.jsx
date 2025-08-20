@@ -764,7 +764,7 @@ const Race = () => {
                               <td>
                                 <MdDelete style={{ color: "#d97777" }} size="1.3rem"
                                   color='red'
-                                  className='cursor-pointer'
+                                  className='cursor-pointer ml-8'
 
                                   onClick={() => handleDelete(item.id)}
                                 />

@@ -42,6 +42,7 @@ import { SECTION_DELETE } from 'Constants/utils';
 import { CATEGORY_DELETE } from 'Constants/utils';
 import { AWS_DELETE } from 'Constants/utils';
 import Breadcrumb from 'components/Breadcum/Breadcrumb';
+import Tooltip from 'components/Tooltip/Tooltip';
 const API_CONFIG = {
   department: {
     list: DEPARTMENT_SEARCH,
@@ -99,6 +100,37 @@ const API_CONFIG = {
     fields: ['code', 'name', 'isActive']
   }
 };
+
+const TOOLTIP_CONTENT = {
+  category: (
+    <p>Category is a wildcard field that can be used to further categorize your employee according to your company’s need. </p>
+  ),
+  section: (
+    <p>Section can be understand as sub department. Before a section can be created, the respective main department needs to be created first.</p>
+  ),
+  designation: (
+    <>
+      <p className="mb-2">
+        <strong>Desig Group</strong> is a wildcard field that can be used to further categorize your
+        employees according to your company’s needs.
+      </p>
+      <p className="mb-2">
+        You can change the header <strong>“Desig Group”</strong> to any name you desire at:
+      </p>
+      <ul className="list-disc list-inside space-y-1">
+        <li>
+          <strong>TMS software</strong> &gt; Utility &gt; System Parameter &gt; Settings
+        </li>
+        <li>
+          <strong>Payroll software</strong> &gt; Admin Setting &gt; System Setting &gt; General Settings
+        </li>
+      </ul>
+    </>
+  ),
+
+
+};
+
 
 const Department = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -376,7 +408,10 @@ const Department = () => {
     <>
       <div className="flex justify-between pl-8 pt-2 pr-8">
 
-        <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">{activeTab}</h2>
+        <div className="flex items-center">
+          <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">{activeTab}</h2>
+          <Tooltip content={TOOLTIP_CONTENT[activeTab]} />
+        </div>
         <Breadcrumb className="pr-4" items={`Master, ${activeTab}`} />
       </div>
 
@@ -802,7 +837,7 @@ const ModalForm = ({
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
-                  {activeTab}  Name <span className='text-red-700'>*</span>
+                    {activeTab}  Name <span className='text-red-700'>*</span>
                   </label>
                   <Field
                     name="name"
