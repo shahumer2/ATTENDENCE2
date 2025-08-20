@@ -27,6 +27,7 @@
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
     "sass": "1.53.0",
+    "use-debounce": "^10.0.5",
     "yup": "^1.6.1"
   },
   "optionalDependencies": {
