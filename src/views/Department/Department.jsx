@@ -374,10 +374,10 @@ const Department = () => {
 
   return (
     <>
-     <div className="flex justify-between pl-8 pt-2 pr-8">
-     
+      <div className="flex justify-between pl-8 pt-2 pr-8">
+
         <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">{activeTab}</h2>
-        <Breadcrumb className="pr-4" items={`Master, ${activeTab}` }/>
+        <Breadcrumb className="pr-4" items={`Master, ${activeTab}`} />
       </div>
 
       <div className="p-4 bg-white mt-[5px] ml-8 mr-8 mb-8">
@@ -773,8 +773,8 @@ const ModalForm = ({
   isUpdate
 }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-    <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-      <div className="p-6">
+    <div className="bg-white rounded-lg w-full max-w-[70%] h-auto shadow-xl">
+      <div className="p-6 ">
         <h3 className="text-lg font-medium mb-4">{title}</h3>
         <Formik
           initialValues={initialValues}
@@ -783,61 +783,65 @@ const ModalForm = ({
           enableReinitialize
         >
           {({ isSubmitting, setFieldValue, values }) => (
-            <Form>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
-                 {activeTab} Code *
-                </label>
-                <Field
-                  name="code"
-                  type="text"
-                  className="w-full px-3 py-2 border rounded capitalize"
-                  placeholder={`${activeTab} code`}
-                />
-                <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2">
-                  Name *
-                </label>
-                <Field
-                  name="name"
-                  type="text"
-                  className="w-full px-3 py-2 border rounded capitalize"
-                  placeholder={`${activeTab} Name`}
-                />
-                <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
+            <Form className=''>
+              <div className='flex gap-5'>
 
-              <div className="mb-4">
-                <label className="flex items-center space-x-2">
-                  <Field
-                    type="checkbox"
-                    name="isActive"
-                    className="w-4 h-4 text-blue-600 rounded"
-                  />
-                  <span>Active</span>
-                </label>
-                <ErrorMessage name="isActive" component="div" className="text-red-500 text-xs mt-1" />
-              </div>
 
-              {activeTab === 'section' && (
-                <div className="mb-6">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
-                    Department *
+                <div className="mb-4 w-[300px] gap-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2 capitalize">
+                    {activeTab} Code *
                   </label>
-                  <Select
-                    name="department"
-                    options={depOptions}
-                    value={values.department}
-                    onChange={(option) => setFieldValue('department', option)}
-                    className="basic-single"
-                    classNamePrefix="select"
-                    placeholder="Select department"
+                  <Field
+                    name="code"
+                    type="text"
+                    className="w-full px-3 py-2 border rounded capitalize"
+                    placeholder={`${activeTab} code`}
                   />
-                  <ErrorMessage name="department" component="div" className="text-red-500 text-xs mt-1" />
+                  <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
-              )}
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Name *
+                  </label>
+                  <Field
+                    name="name"
+                    type="text"
+                    className="w-full px-3 py-2 border rounded capitalize"
+                    placeholder={`${activeTab} Name`}
+                  />
+                  <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+                </div>
+
+                <div className="mt-8">
+                  <label className="flex items-center space-x-2">
+                    <Field
+                      type="checkbox"
+                      name="isActive"
+                      className="w-4 h-4 text-blue-600 rounded"
+                    />
+                    <span>Active</span>
+                  </label>
+                  <ErrorMessage name="isActive" component="div" className="text-red-500 text-xs mt-1" />
+                </div>
+
+                {activeTab === 'section' && (
+                  <div className="mb-6">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                      Department *
+                    </label>
+                    <Select
+                      name="department"
+                      options={depOptions}
+                      value={values.department}
+                      onChange={(option) => setFieldValue('department', option)}
+                      className="basic-single"
+                      classNamePrefix="select"
+                      placeholder="Select department"
+                    />
+                    <ErrorMessage name="department" component="div" className="text-red-500 text-xs mt-1" />
+                  </div>
+                )}
+              </div>
 
               <div className="flex justify-end space-x-3">
                 <button

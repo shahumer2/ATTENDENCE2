@@ -19,7 +19,7 @@ function Header() {
   const [ShiftDropdownOpen, setShiftDropdownOpen] = useState(false);
   const [masterDropdownOpen, setMasterDropdownOpen] = useState(false);
   const [leaveDropDown, setLeaveDropdown] = useState(false)
- 
+
 
   const userDropdownTimeoutRef = useRef(null);
   const masterDropdownTimeoutRef = useRef(null);
@@ -83,17 +83,17 @@ function Header() {
   //allowence
 
   const handleAllowanceMouseEnter = () => {
-  if (allowanceDropdownTimeoutRef.current) {
-    clearTimeout(allowanceDropdownTimeoutRef.current);
-  }
-  setAllowanceDropdownOpen(true);
-};
+    if (allowanceDropdownTimeoutRef.current) {
+      clearTimeout(allowanceDropdownTimeoutRef.current);
+    }
+    setAllowanceDropdownOpen(true);
+  };
 
-const handleAllowanceMouseLeave = () => {
-  allowanceDropdownTimeoutRef.current = setTimeout(() => {
-    setAllowanceDropdownOpen(false);
-  }, 300);
-};
+  const handleAllowanceMouseLeave = () => {
+    allowanceDropdownTimeoutRef.current = setTimeout(() => {
+      setAllowanceDropdownOpen(false);
+    }, 300);
+  };
 
   //master
   const handleMasterMouseEnter = () => {
@@ -181,7 +181,7 @@ const handleAllowanceMouseLeave = () => {
             <img src={aste} alt="Logo" className="w-[200px] h-[39px] rounded-full" />
           </NavLink>
 
-          <span style={{fontFamily:"Nunito Sans', sans-serif !important"}} className="ml-3 text-[#f6b719] text-md font-bold">SCHEDULE MANAGEMENT SOFTWARE</span>
+          <span style={{ fontFamily: "Nunito Sans', sans-serif !important" }} className="ml-3 text-[#f6b719] text-md font-bold">SCHEDULE MANAGEMENT SOFTWARE</span>
 
           {/* Right Icons */}
 
@@ -206,7 +206,7 @@ const handleAllowanceMouseLeave = () => {
 
               {showDropdown && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-md z-50">
-                  <ul className="text-black py-2">
+                  <ul className="text-white py-2">
                     {companies.map((company) => (
                       <li
                         key={company.id}
@@ -488,7 +488,7 @@ const handleAllowanceMouseLeave = () => {
 
                   {branchSetupHover && (
                     <div
-                     
+
                       onMouseEnter={() => setBranchSetupHover(true)}
                       onMouseLeave={() => setBranchSetupHover(false)}
                     >
@@ -564,8 +564,8 @@ const handleAllowanceMouseLeave = () => {
             Company
           </NavLink>
 
-        {/*   Leave Management */}
-        <div
+          {/*   Leave Management */}
+          <div
             className="relative"
             onMouseEnter={handleLeaveMouseEnter}
             onMouseLeave={handleLeaveMouseLeave}
@@ -598,9 +598,9 @@ const handleAllowanceMouseLeave = () => {
                     }`
                   }
                 >
-                 Batch Leave
+                  Batch Leave
                 </NavLink>
-                 {/* 
+                {/* 
                 <NavLink
                   to="/admin/ELeave/LeaveCategory"
                   className={({ isActive }) =>
@@ -690,7 +690,7 @@ const handleAllowanceMouseLeave = () => {
                     }`
                   }
                 >
-                 Leave Category
+                  Leave Category
                 </NavLink>
                 {/* <NavLink
                   to="/admin/ELeave/LeaveCategory"
@@ -719,7 +719,7 @@ const handleAllowanceMouseLeave = () => {
 
 
 
-             
+
               </div>
             )}
           </div>
@@ -777,41 +777,39 @@ const handleAllowanceMouseLeave = () => {
           </div> */}
 
           {/* ALLOWANCE DROPDOWN */}
-<div
-  className="relative"
-  onMouseEnter={handleAllowanceMouseEnter}
-  onMouseLeave={handleAllowanceMouseLeave}
->
-  <button
-    className={`flex items-center text-sm font-bold transition ${
-      allowanceDropdownOpen
-        ? "text-[#FFD700]"
-        : "text-slate-50 hover:text-[#FFD700]"
-    }`}
-  >
-    Allowance
-    {allowanceDropdownOpen ? (
-      <BsChevronUp className="ml-1" />
-    ) : (
-      <BsChevronDown className="ml-1" />
-    )}
-  </button>
+          <div
+            className="relative"
+            onMouseEnter={handleAllowanceMouseEnter}
+            onMouseLeave={handleAllowanceMouseLeave}
+          >
+            <button
+              className={`flex items-center text-sm font-bold transition ${allowanceDropdownOpen
+                  ? "text-[#FFD700]"
+                  : "text-slate-50 hover:text-[#FFD700]"
+                }`}
+            >
+              Allowance
+              {allowanceDropdownOpen ? (
+                <BsChevronUp className="ml-1" />
+              ) : (
+                <BsChevronDown className="ml-1" />
+              )}
+            </button>
 
-  {allowanceDropdownOpen && (
-    <div className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10">
-      <NavLink
-        to="/admin/allowance/viewAllowance"
-        className={({ isActive }) =>
-          `block px-4 py-2 text-sm ${
-            isActive
-              ? "bg-[#FFD700] text-[#0e2288] font-bold"
-              : "text-slate-50 hover:bg-[#1a3188] hover:text-[#FFD700]"
-          }`
-        }
-      >
-         Allowance
-      </NavLink>
-      {/* <NavLink
+            {allowanceDropdownOpen && (
+              <div className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10">
+                <NavLink
+                  to="/admin/allowance/viewAllowance"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-50 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Allowance
+                </NavLink>
+                {/* <NavLink
         to="/admin/allowance/view"
         className={({ isActive }) =>
           `block px-4 py-2 text-sm ${
@@ -823,9 +821,9 @@ const handleAllowanceMouseLeave = () => {
       >
         View Allowances
       </NavLink> */}
-    </div>
-  )}
-</div>
+              </div>
+            )}
+          </div>
 
 
         </div>
