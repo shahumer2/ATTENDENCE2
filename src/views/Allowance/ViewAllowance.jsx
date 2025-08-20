@@ -103,6 +103,7 @@ const filteredCriteria = criteria
 
   return (
 
+    <div style={{ backgroundColor: "#eaf1f8", minHeight: "100vh", paddingTop: "20px", paddingBottom: "20px" }}>
     <>
           <div style={{ display: "flex", alignItems: "center" }}>
                   <h2
@@ -484,6 +485,7 @@ const filteredCriteria = criteria
                         </div>
                       </div>
     </>
+    </div>
   );
 };
 
