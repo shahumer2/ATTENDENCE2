@@ -330,9 +330,9 @@ const UpdateAllowance = () => {
               {/* Basic Fields */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Allowance Code<span className="text-red-600">*</span>
-                  </label>
+                   <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
+  Allowance Code<span className="text-red-600">*</span>
+</label>
                   <Field
                     name="allowanceCode"
                     className="w-full p-2 border border-gray-300 rounded"
@@ -341,7 +341,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                 <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
                     Allowance Name<span className="text-red-600">*</span>
                   </label>
                   <Field
@@ -352,7 +352,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
                     Allowance Amount<span className="text-red-600">*</span>
                   </label>
                   <Field
@@ -366,7 +366,7 @@ const UpdateAllowance = () => {
               {/* Check By Section */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {/* Check by Time In */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -385,12 +385,12 @@ const UpdateAllowance = () => {
                       }}
                       className="mr-2 w-5 h-5"
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by Time In</span>
+                    <span className="text-md font-medium text-gray-700">Check by Time In</span>
                   </label>
 
                   <div className="mt-4 flex gap-4">
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                      
                       <Field
                         as="select"
                         name="checkByTimeOption"
@@ -406,11 +406,11 @@ const UpdateAllowance = () => {
                     </div>
 
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Time</label>
+                      
                       <Field
                         type="time"
                         name="checkByTimeInClock"
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1 border border-gray-300 rounded"
                         disabled={!values.checkBy.includes('time')}
                       />
                       <ErrorMessage name="checkByTimeInClock" component="div" className="text-red-500 text-xs" />
@@ -433,12 +433,13 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Time Out</span>
+                      <span className="text-md font-medium text-gray-700">Check by Time Out</span>
+                      
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                      
                         <Field
                           as="select"
                           name="checkByTimeOutOption"
@@ -454,11 +455,11 @@ const UpdateAllowance = () => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                     
                         <Field
                           type="time"
                           name="checkByTimeOutClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className="w-full p-1 border border-gray-300 rounded"
                           disabled={!values.checkByTimeOut}
                         />
                         <ErrorMessage name="checkByTimeOutClock" component="div" className="text-red-500 text-xs" />
@@ -482,12 +483,12 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Actual</span>
+                      <span className="text-md font-medium text-gray-700">Check by Actual</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                        
                         <Field
                           as="select"
                           name="checkByActualOption"
@@ -503,11 +504,11 @@ const UpdateAllowance = () => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                       
                         <Field
                           type="time"
                           name="checkByActualClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className="w-full p-1 border border-gray-300 rounded"
                           disabled={!values.checkByActual}
                         />
                         <ErrorMessage name="checkByActualClock" component="div" className="text-red-500 text-xs" />
@@ -517,7 +518,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 {/* Check by NRM */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -536,12 +537,12 @@ const UpdateAllowance = () => {
                       }}
                       className="mr-2 w-5 h-5"
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by NRM</span>
+                    <span className="text-md font-medium text-gray-700">Check by NRM</span>
                   </label>
 
                   <div className="mt-4 flex gap-4">
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                     
                       <Field
                         as="select"
                         name="checkByNrmOption"
@@ -557,11 +558,11 @@ const UpdateAllowance = () => {
                     </div>
 
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Time</label>
+                     
                       <Field
                         type="time"
                         name="checkByNrmClock"
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className="w-full p-1 border border-gray-300 rounded"
                         disabled={!values.checkBy.includes('nrm')}
                       />
                       <ErrorMessage name="checkByNrmClock" component="div" className="text-red-500 text-xs" />
@@ -584,12 +585,12 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by OT</span>
+                      <span className="text-md font-medium text-gray-700">Check by OT</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                       
                         <Field
                           as="select"
                           name="checkByOtOption"
@@ -605,11 +606,11 @@ const UpdateAllowance = () => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                       
                         <Field
                           type="time"
                           name="checkByOtClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className="w-full p-1 border border-gray-300 rounded"
                           disabled={!values.checkByOt}
                         />
                         <ErrorMessage name="checkByOtClock" component="div" className="text-red-500 text-xs" />
@@ -633,12 +634,12 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Lateness</span>
+                      <span className="text-md font-medium text-gray-700">Check by Lateness</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                       
                         <Field
                           as="select"
                           name="checkByLatenessOption"
@@ -654,11 +655,11 @@ const UpdateAllowance = () => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                      
                         <Field
                           type="time"
                           name="checkByLatenessClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className="w-full p-1 border border-gray-300 rounded"
                           disabled={!values.checkByLateness}
                         />
                         <ErrorMessage name="checkByLatenessClock" component="div" className="text-red-500 text-xs" />
@@ -682,12 +683,12 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Early Out</span>
+                      <span className="text-md font-medium text-gray-700">Check by Early Out</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                       
                         <Field
                           as="select"
                           name="checkByEarlyOutOption"
@@ -703,11 +704,11 @@ const UpdateAllowance = () => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                       
                         <Field
                           type="time"
                           name="checkByEarlyOutClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className="w-full p-1 border border-gray-300 rounded"
                           disabled={!values.checkByEarlyOut}
                         />
                         <ErrorMessage name="checkByEarlyOutClock" component="div" className="text-red-500 text-xs" />
@@ -717,7 +718,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 {/* Check by Day */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -735,7 +736,7 @@ const UpdateAllowance = () => {
                         }
                       }}
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by Day</span>
+                    <span className="text-md font-medium text-gray-700">Check by Day</span>
                   </label>
 
                   <table className="w-full mt-4 border border-gray-300 text-left text-sm text-gray-700">
@@ -789,7 +790,7 @@ const UpdateAllowance = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {/* Check by Shift */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2 gap-4">
                     <div className="flex items-center">
                       <input
@@ -807,7 +808,7 @@ const UpdateAllowance = () => {
                           }
                         }}
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Shift</span>
+                      <span className="text-md font-medium text-gray-700">Check by Shift</span>
                     </div>
 
                     <div className="flex items-center ml-11 space-x-2">
@@ -873,7 +874,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 {/* Check by Reason */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <div className="flex items-center mb-2">
                     <label className="inline-flex items-center">
                       <input
@@ -895,7 +896,7 @@ const UpdateAllowance = () => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">
+                      <span className="text-md font-medium text-gray-700">
                         Check by Reason
                       </span>
                     </label>
@@ -963,7 +964,7 @@ const UpdateAllowance = () => {
                 </div>
 
                 {/* Check by Clock Location */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <div className="flex items-center mb-2">
                     <label className="inline-flex items-center">
                       <input
@@ -986,7 +987,7 @@ const UpdateAllowance = () => {
                           }
                         }}
                       />
-                      <span className="text-md font-semibold text-gray-700">
+                      <span className="text-md font-medium text-gray-700">
                         Check by Clock Location
                       </span>
                     </label>
