@@ -59,6 +59,7 @@ export const AWS_ISACTIVE = `${BASE_URL}/api/aws`;
 export const COMPANY_ADD = `${BASE_URL}/api/companies/add-company`;
 export const GET_COMPANY_id = `${BASE_URL}/api/get-company/id`;
 export const COMPANY_LIST = `${BASE_URL}/api/companies/fetchAll-companies`;
+export const COMPANY_SEARCH = `${BASE_URL}/api/companies/search`;
 export const GET_COMPANY_LIST = `${BASE_URL}/api/companies/company-list`;
 export const COMPANY_UPDATE = `${BASE_URL}/api/companies`;
 
@@ -126,7 +127,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
 
   //AutoShift
-  export const AutoShift_LIST = `${BASE_URL}/api/roaster/search`;
+  export const AutoShift_LIST = `${BASE_URL}/api/autoshift/search`;
   export const AutoShift_VIEW = `${BASE_URL}/api/autoshift/viewAll`;
 
   export const ADD_AutoShift_DATA = `${BASE_URL}/api/roaster/create`;
@@ -190,6 +191,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
   export const GET_LeavetypeSearch_URL = `${BASE_URL}/api/leaveType/search`;
   export const GET_LeavetypeBYID_URL = `${BASE_URL}/api/leaveType/getBy`;
   export const UPDATE_Leavetype_URL = `${BASE_URL}/api/leaveType/update`;
+  export const UPDATETOGGLER_Leavetype_URL = `${BASE_URL}/api/leaveType`;
 
   // batch leave
   export const BatchLeave_LIST = `${BASE_URL}/api/batch-leaves/fetch-all`;

@@ -285,48 +285,7 @@ const Race = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   // Fetch dropdown options for search filters
-  const { data: dropdownOptions, isLoading: optionsLoading } = useQuery({
-    queryKey: ['dropdownOptions', activeTab],
-    queryFn: async () => {
-      try {
-        const response = await fetch(currentApi.BASE, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        const data = await response.json();
-        return data || [];
-      } catch (error) {
-        console.error(`Error fetching ${activeTab} options:`, error);
-        throw error;
-      }
-    },
-    enabled: !!token,
-    select: (data) => {
-      const codeKey = `${activeTab}Code`;
-      const nameKey = `${activeTab}Name`;
-
-      return {
-        codes: [
-          { label: 'Select', value: null },
-          ...data.content.map(item => ({
-            label: item[codeKey],
-            value: item[codeKey]
-          }))
-        ],
-        names: [
-          { label: 'Select', value: null },
-          ...data.map(item => ({
-            label: item[nameKey],
-            value: item[nameKey]
-          }))
-        ]
-      };
-    }
-  });
 
   // Fetch table data
   const { data: tableData, isLoading, isError, error } = useQuery({
@@ -551,6 +510,7 @@ const Race = () => {
         </div>
 
         <div className="flex justify-between items-center mb-4">
+          
           <div className="flex items-center mb-4 space-x-4 gap-12 text-sm">
             <label className="flex items-center space-x-2">
               <input
@@ -781,7 +741,7 @@ const Race = () => {
                       )}
                     </tbody>
                   </table>
-
+  {/* ✅ Pagination & Controls OUTSIDE table */}
                   <div className="flex w-full justify-end items-center mt-4 px-6">
                     <div className="flex space-x-2 text-blue-500">
                       {page > 1 && (
@@ -818,7 +778,7 @@ const Race = () => {
                       )}
                     </div>
                   </div>
-                  {/* ✅ Pagination & Controls OUTSIDE table */}
+                
                   <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
                     {/* Page size selector */}
                     <div className="flex items-center space-x-2">

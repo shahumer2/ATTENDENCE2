@@ -22,7 +22,7 @@ const Tooltip = ({ content }) => {
         </span>
 
         {/* Tooltip Box */}
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 ml-9 bg-yellow-100 text-black text-sm px-4 py-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
+        <div className="absolute top-full left-12 transform -translate-x-1/2 mt-2 w-80 ml-9 bg-yellow-100 text-black text-sm px-4 py-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
           {content}
         </div>
       </span>
