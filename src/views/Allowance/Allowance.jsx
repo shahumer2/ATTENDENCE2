@@ -275,9 +275,83 @@ const handleSubmit = async (values, { resetForm }) => {
   }
 
   return (
+
+    <div style={{ backgroundColor: "#eaf1f8", minHeight: "100vh", paddingTop: "0px", paddingBottom: "20px" }}>
+    <>
+      <div style={{ display: "flex", alignItems: "center" }}>
+                  <h2
+                    style={{
+                      fontFamily: "'Nunito Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "20px",
+                      color: "#091e42",
+                      paddingLeft: "40px",
+                      paddingTop: "30px",
+                      marginRight: "8px",
+                    }}
+                  >
+                    Allowance
+                  </h2>
+
+                    {/* Tooltip Wrapper */}
+                    <div className="relative flex items-center justify-center w-4 h-4 mr-3" style={{ paddingTop: "30px"}}>
+                                                                                <span className="text-yellow-500 text-xs cursor-pointer group inline-flex items-center justify-center">
+                                                                                <span
+                                                              style={{
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                width: "14px",
+                                                                height: "14px",
+                                                                borderRadius: "50%",
+                                                                backgroundColor: "gold",
+                                                                color: "white",
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold",
+                                                              }}
+                                                            >
+                                                              i
+                                                            </span>
+
+                                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-yellow-100 text-black text-sm px-4 py-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
+                                                        <p className="mb-2">
+                                                          This page lets you setup daily allowances and their eligible criteria.
+                                                        </p>
+                                                        <p className="mb-2">
+                                                          Assignment of allowance(s) to staff can be done in <strong>Allowance Settings &gt; Staff Allowance</strong>.
+                                                        </p>
+                                                        <p>
+                                                          Allowances can also be assigned to shift in <strong>Shift Settings &gt; Shift Master</strong>, 
+                                                          which indirectly will also be assigned to the staff if the staff is working on that shift.
+                                                        </p>
+                                                      </div>
+
+                                                                                </span>
+                    </div>
+
+                      <div className="w-full flex justify-end pr-10 pt-5">
+                      <p
+                        style={{
+                          fontSize: "17px",
+                          fontWeight: 500,
+                          lineHeight: 1.43,
+                          letterSpacing: "0.14px",
+                          color: "#4B5563", // gray-600
+                        }}
+                      >
+                        Allowance Setting <span style={{ color: "#9CA3AF" }}>&gt;</span>{" "}
+                        <span style={{ color: "#111827" }}>Allowance</span>
+                      </p>
+                    </div>
+
+
+                </div>
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Allowance Criteria</h1>
+      <h1 className="-mt-[5px] mb-[12px] pb-[8px] text-[23px] font-bold border-b border-[#ababab] text-[#323232] ">
+  Allowance Criteria
+</h1>
+
 
         <Formik
           initialValues={initialValues}
@@ -289,9 +363,10 @@ const handleSubmit = async (values, { resetForm }) => {
               {/* Basic Fields */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Allowance Code<span className="text-red-600">*</span>
-                  </label>
+                <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
+  Allowance Code<span className="text-red-600">*</span>
+</label>
+
                   <Field
                     name="allowanceCode"
                     className="w-full p-2 border border-gray-300 rounded"
@@ -300,7 +375,7 @@ const handleSubmit = async (values, { resetForm }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                 <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
                     Allowance Name<span className="text-red-600">*</span>
                   </label>
                   <Field
@@ -311,7 +386,7 @@ const handleSubmit = async (values, { resetForm }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                 <label className="block mb-[2px] text-[14px] font-bold text-gray-700">
                     Allowance Amount<span className="text-red-600">*</span>
                   </label>
                   <Field
@@ -325,7 +400,7 @@ const handleSubmit = async (values, { resetForm }) => {
               {/* Check By Section */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {/* Check by Time In */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -344,35 +419,54 @@ const handleSubmit = async (values, { resetForm }) => {
                       }}
                       className="mr-2 w-5 h-5"
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by Time In</span>
+                    <span className="text-md font-medium text-gray-700">Check by Time In</span>
                   </label>
 
                   <div className="mt-4 flex gap-4">
-                    <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                <div className="w-1/2">
                       <Field
                         as="select"
                         name="checkByTimeOption"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        disabled={!values.checkBy.includes('time')}
+                        disabled={!values.checkBy.includes("time")}
+                        className={`w-full p-2 rounded-md border 
+                          text-[14px] font-medium text-[#242424] 
+                          overflow-hidden whitespace-nowrap text-ellipsis
+                          ${values.checkBy.includes("time") 
+                            ? "border-[#d8dae5] bg-white cursor-pointer"   // enabled
+                            : "border-[#d8dae5] bg-[rgb(211_211_211/25%)] cursor-not-allowed" // disabled
+                          }
+                        `}
                       >
-                        <option value="">Select Option</option>
+                        {/* <option value="">Select Option</option> */}
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
                       </Field>
-                      <ErrorMessage name="checkByTimeOption" component="div" className="text-red-500 text-xs" />
+
+                      <ErrorMessage
+                        name="checkByTimeOption"
+                        component="div"
+                        className="text-red-500 text-xs"
+                      />
                     </div>
 
+
+
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Time</label>
+                      {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                     
                       <Field
-  type="time"
-  name="checkByTimeInClock"
-  className="w-full p-2 border border-gray-300 rounded"
-  disabled={!values.checkBy.includes('time')}
-/>
+                                type="time"
+                                name="checkByTimeInClock"
+                                // className="w-full p-1 border border-gray-300 rounded "
+                                className={`w-full p-1 border border-gray-300 rounded ${
+                                  values.checkBy.includes('time')
+                                    ? "cursor-default bg-white"
+                                    : "cursor-not-allowed bg-[rgb(211_211_211/25%)]"
+                                }`}
+
+                                disabled={!values.checkBy.includes('time')}
+                              />
 
                       <ErrorMessage name="checkByTimeInClock" component="div" className="text-red-500 text-xs" />
                     </div>
@@ -394,32 +488,40 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Time Out</span>
+                      <span className="text-md font-medium text-gray-700">Check by Time Out</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
-                        <Field
-                          as="select"
-                          name="checkByTimeOutOption"
-                          className="w-full p-2 border border-gray-300 rounded"
-                          disabled={!values.checkByTimeOut}
-                        >
-                          <option value="">Select Option</option>
-                          <option value="=">=</option>
-                          <option value="<=">&lt;=</option>
-                          <option value=">=">&gt;=</option>
-                        </Field>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
+                      <Field
+                            as="select"
+                            name="checkByTimeOutOption"
+                            className={`w-full p-1 border border-gray-300 rounded h-8 ${
+                              values.checkByTimeOut ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                            }`}
+                            disabled={!values.checkByTimeOut}
+                          >
+                            {/* <option value="">Select Option</option> */}
+                            <option value="=">=</option>
+                            <option value="<=">&lt;=</option>
+                            <option value=">=">&gt;=</option>
+                          </Field>
+
                         <ErrorMessage name="checkByTimeOutOption" component="div" className="text-red-500 text-xs" />
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                         <Field
                           type="time"
                           name="checkByTimeOutClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          // className="w-full p-1 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded ${
+                              values.checkByTimeOut
+                                ? "cursor-default bg-white"
+                                : "cursor-not-allowed bg-gray-100"
+                            }`}
                           disabled={!values.checkByTimeOut}
                         />
                         <ErrorMessage name="checkByTimeOutClock" component="div" className="text-red-500 text-xs" />
@@ -443,19 +545,21 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Actual</span>
+                      <span className="text-md font-medium text-gray-700">Check by Actual</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
                         <Field
                           as="select"
                           name="checkByActualOption"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className={`w-full p-1 border border-gray-300 rounded h-8 ${
+                              values.checkByActual ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                            }`}
                           disabled={!values.checkByActual}
                         >
-                          <option value="">Select Option</option>
+                          {/* <option value="">Select Option</option> */}
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -464,11 +568,16 @@ const handleSubmit = async (values, { resetForm }) => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                         <Field
                           type="time"
                           name="checkByActualClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          // className="w-full p-1 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded ${
+                                values.checkByActual
+                                  ? "cursor-default bg-white"
+                                  : "cursor-not-allowed bg-gray-100"
+                              }`}
                           disabled={!values.checkByActual}
                         />
                         <ErrorMessage name="checkByActualClock" component="div" className="text-red-500 text-xs" />
@@ -478,7 +587,7 @@ const handleSubmit = async (values, { resetForm }) => {
                 </div>
 
                 {/* Check by NRM */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -497,19 +606,26 @@ const handleSubmit = async (values, { resetForm }) => {
                       }}
                       className="mr-2 w-5 h-5"
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by NRM</span>
+                    <span className="text-md font-medium text-gray-700">Check by NRM</span>
                   </label>
 
                   <div className="mt-4 flex gap-4">
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                      {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
                       <Field
                         as="select"
                         name="checkByNrmOption"
-                        className="w-full p-2 border border-gray-300 rounded"
+                        className={`w-full p-2 rounded-md border 
+                          text-[14px] font-medium text-[#242424] 
+                          overflow-hidden whitespace-nowrap text-ellipsis
+                          ${values.checkBy.includes("nrm") 
+                            ? "border-[#d8dae5] bg-white cursor-pointer"   // enabled
+                            : "border-[#d8dae5] bg-[rgb(211_211_211/25%)] cursor-not-allowed" // disabled
+                          }
+                        `}
                         disabled={!values.checkBy.includes('nrm')}
                       >
-                        <option value="">Select Option</option>
+                        {/* <option value="">Select Option</option> */}
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
@@ -518,11 +634,16 @@ const handleSubmit = async (values, { resetForm }) => {
                     </div>
 
                     <div className="w-1/2">
-                      <label className="block text-sm text-gray-600 mb-1">Time</label>
+                      {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                       <Field
                         type="time"
                         name="checkByNrmClock"
-                        className="w-full p-2 border border-gray-300 rounded"
+                        // className="w-full p-1 border border-gray-300 rounded"
+                         className={`w-full p-1 border border-gray-300 rounded ${
+                              values.checkBy.includes('nrm')
+                                ? "cursor-default bg-white"
+                                : "cursor-not-allowed bg-gray-100"
+                            }`}
                         disabled={!values.checkBy.includes('nrm')}
                       />
                       <ErrorMessage name="checkByNrmClock" component="div" className="text-red-500 text-xs" />
@@ -545,19 +666,21 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by OT</span>
+                      <span className="text-md font-medium text-gray-700">Check by OT</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
                         <Field
                           as="select"
                           name="checkByOtOption"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className={`w-full p-1 border border-gray-300 rounded h-8 ${
+                              values.checkByOt ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                            }`}
                           disabled={!values.checkByOt}
                         >
-                          <option value="">Select Option</option>
+                          {/* <option value="">Select Option</option> */}
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -566,11 +689,16 @@ const handleSubmit = async (values, { resetForm }) => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                         <Field
                           type="time"
                           name="checkByOtClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          // className="w-full p-1 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded ${
+                              values.checkByOt
+                                ? "cursor-default bg-white"
+                                : "cursor-not-allowed bg-gray-100"
+                            }`}
                           disabled={!values.checkByOt}
                         />
                         <ErrorMessage name="checkByOtClock" component="div" className="text-red-500 text-xs" />
@@ -594,19 +722,21 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Lateness</span>
+                      <span className="text-md font-medium text-gray-700">Check by Lateness</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
                         <Field
                           as="select"
                           name="checkByLatenessOption"
-                          className="w-full p-2 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded h-8 ${
+                              values.checkByLateness ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                            }`}
                           disabled={!values.checkByLateness}
                         >
-                          <option value="">Select Option</option>
+                          {/* <option value="">Select Option</option> */}
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -615,11 +745,16 @@ const handleSubmit = async (values, { resetForm }) => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                         <Field
                           type="time"
                           name="checkByLatenessClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          // className="w-full p-1 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded ${
+                              values.checkByLateness
+                                ? "cursor-default bg-white"
+                                : "cursor-not-allowed bg-gray-100"
+                            }`}
                           disabled={!values.checkByLateness}
                         />
                         <ErrorMessage name="checkByLatenessClock" component="div" className="text-red-500 text-xs" />
@@ -643,19 +778,21 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">Check by Early Out</span>
+                      <span className="text-md font-medium text-gray-700">Check by Early Out</span>
                     </label>
 
                     <div className="mt-4 flex gap-4">
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Select Option</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Select Option</label> */}
                         <Field
                           as="select"
                           name="checkByEarlyOutOption"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          className={`w-full p-1 border border-gray-300 rounded h-8 ${
+                              values.checkByEarlyOut ? "bg-white cursor-pointer" : "bg-gray-100 cursor-not-allowed"
+                            }`}
                           disabled={!values.checkByEarlyOut}
                         >
-                          <option value="">Select Option</option>
+                          {/* <option value="">Select Option</option> */}
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -664,11 +801,16 @@ const handleSubmit = async (values, { resetForm }) => {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="block text-sm text-gray-600 mb-1">Time</label>
+                        {/* <label className="block text-sm text-gray-600 mb-1">Time</label> */}
                         <Field
                           type="time"
                           name="checkByEarlyOutClock"
-                          className="w-full p-2 border border-gray-300 rounded"
+                          // className="w-full p-1 border border-gray-300 rounded"
+                           className={`w-full p-1 border border-gray-300 rounded ${
+                              values.checkByEarlyOutClock
+                                ? "cursor-default bg-white"
+                                : "cursor-not-allowed bg-gray-100"
+                            }`}
                           disabled={!values.checkByEarlyOut}
                         />
                         <ErrorMessage name="checkByEarlyOutClock" component="div" className="text-red-500 text-xs" />
@@ -678,7 +820,7 @@ const handleSubmit = async (values, { resetForm }) => {
                 </div>
 
                 {/* Check by Day */}
-                <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <label className="inline-flex items-center mb-2">
                     <input
                       type="checkbox"
@@ -696,7 +838,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         }
                       }}
                     />
-                    <span className="text-md font-semibold text-gray-700">Check by Day</span>
+                    <span className="text-md font-medium text-gray-700">Check by Day</span>
                   </label>
 
                   <table className="w-full mt-4 border border-gray-300 text-left text-sm text-gray-700">
@@ -751,7 +893,7 @@ const handleSubmit = async (values, { resetForm }) => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
  {/* Check by Shift */}
-  <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+  <div className="border border-gray-300 rounded p-4 shadow-sm ">
                       <label className="inline-flex items-center mb-2 gap-4">
                         <div className="flex items-center">
                           <input
@@ -769,7 +911,7 @@ const handleSubmit = async (values, { resetForm }) => {
                               }
                             }}
                           />
-                          <span className="text-md font-semibold text-gray-700">Check by Shift</span>
+                          <span className="text-md font-medium text-gray-700">Check by Shift</span>
                         </div>
 
                         {/* Checkbox in front of Pay */}
@@ -851,7 +993,7 @@ const handleSubmit = async (values, { resetForm }) => {
 
 
 {/* Check by Reason */}
-                         <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                         <div className="border border-gray-300 rounded p-4 shadow-sm ">
                   <div className="flex items-center mb-2">
                     <label className="inline-flex items-center">
                       <input
@@ -873,7 +1015,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         }}
                         className="mr-2 w-5 h-5"
                       />
-                      <span className="text-md font-semibold text-gray-700">
+                      <span className="text-md font-medium text-gray-700">
                         Check by Reason
                       </span>
                     </label>
@@ -946,7 +1088,7 @@ const handleSubmit = async (values, { resetForm }) => {
 
 
                      {/* Check by Clock Location */}
-                      <div className="border border-gray-300 rounded p-4 shadow-sm bg-gray-50">
+                      <div className="border border-gray-300 rounded p-4 shadow-sm ">
                             <div className="flex items-center mb-2">
                               {/* Check by Clock Location */}
                               <label className="inline-flex items-center">
@@ -970,7 +1112,7 @@ const handleSubmit = async (values, { resetForm }) => {
                                     }
                                   }}
                                 />
-                                <span className="text-md font-semibold text-gray-700">
+                                <span className="text-md font-medium text-gray-700">
                                   Check by Clock Location
                                 </span>
                               </label>
@@ -1070,6 +1212,8 @@ const handleSubmit = async (values, { resetForm }) => {
 
         <ToastContainer position="top-right" autoClose={2000} />
       </div>
+    </div>
+    </>
     </div>
   );
 };
