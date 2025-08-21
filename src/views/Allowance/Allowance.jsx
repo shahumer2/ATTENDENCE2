@@ -950,44 +950,46 @@ const handleSubmit = async (values, { resetForm }) => {
                       </label>
 
                             {/* Shift List Table */}
-                                    <div className="mt-3 border p-3 rounded">
-                                      {/* <h2 className="text-md font-semibold mb-2">Shift List</h2> */}
-                                      {shiftList.length > 0 ? (
+                                 <div className="mt-3 border p-3 rounded">
+  {shiftList.length > 0 ? (
+    <div className="max-h-64 overflow-y-auto overflow-x-auto border rounded">
+      <table className="min-w-full text-sm border table-fixed">
+        <thead className="bg-gray-100 sticky top-0">
+          <tr className="text-left text-gray-700">
+            <th className="p-2 border" style={{ width: "180px" }}>Code</th>
+            <th className="p-2 border" style={{ width: "220px" }}>Name</th>
+            <th className="p-2 border text-center" style={{ width: "80px" }}>Select</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {shiftList.map((shift) => {
+            const isChecked = selectedShifts.includes(shift.id);
+            return (
+              <tr key={shift.id} className="hover:bg-gray-50">
+                <td className="p-2 border" style={{ width: "180px" }}>{shift.shiftCode}</td>
+                <td className="p-2 border" style={{ width: "220px" }}>{shift.shiftName}</td>
+                <td className="p-2 border text-center" style={{ width: "80px" }}>
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 cursor-pointer"
+                    disabled={!values.checkBy.includes("shift")}
+                    checked={isChecked}
+                    onChange={(e) => handleShiftSelect(shift.id, e.target.checked)}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div className="p-3 text-center text-gray-500 italic">
+      No shift data available.
+    </div>
+  )}
+</div>
 
-<table className="min-w-full text-sm border table-fixed">
-  <thead>
-    <tr className="bg-gray-100 text-left">
-      <th className="p-2 border" style={{ width: '180px' }}>Code</th>
-      <th className="p-2 border" style={{ width: '220px' }}>Name</th>
-      <th className="p-2 border" style={{ width: '80px' }}>Select</th>
-    </tr>
-  </thead>
-  <tbody>
-    {shiftList.map((shift) => {
-      const isChecked = selectedShifts.includes(shift.id);
-      return (
-        <tr key={shift.id}>
-          <td className="p-2 border" style={{ width: '180px' }}>{shift.shiftCode}</td>
-          <td className="p-2 border" style={{ width: '220px' }}>{shift.shiftName}</td>
-          <td className="p-2 border text-center" style={{ width: '80px' }}>
-            <input
-              type="checkbox"
-              className="w-5 h-5"
-              disabled={!values.checkBy.includes('shift')}
-              checked={isChecked}
-              onChange={(e) => handleShiftSelect(shift.id, e.target.checked)}
-            />
-          </td>
-        </tr>
-      );
-    })}
-  </tbody>
-</table>
-
-                                      ) : (
-                                        <p className="text-gray-600">No shift data available.</p>
-                                      )}
-                                    </div>
                                   </div>
 
 
@@ -1049,40 +1051,47 @@ const handleSubmit = async (values, { resetForm }) => {
                   </div>
 
                   <div className="mt-3 border p-3 rounded">
-                    {reasonList.length > 0 ? (
-                      <table className="min-w-full text-sm border">
-                        <thead>
-                          <tr className="bg-gray-100 text-left">
-                            <th className="p-2 border">Code</th>
-                            <th className="p-2 border">Name</th>
-                            <th className="p-2 border">Select</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {reasonList.map((reason) => {
-                            const isChecked = selectedReasons.includes(reason.id);
-                            return (
-                              <tr key={reason.id}>
-                                <td className="p-2 border">{reason.leaveGrpCode}</td>
-                                <td className="p-2 border">{reason.leaveGrpName}</td>
-                                <td className="p-2 border text-center">
-                                  <input
-                                    type="checkbox"
-                                    className="w-5 h-5"
-                                    disabled={!values.checkBy.includes("reason")}
-                                    checked={isChecked}
-                                    onChange={(e) => handleReasonSelect(reason.id, e.target.checked)}
-                                  />
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    ) : (
-                      <p className="text-gray-600">No reason data available.</p>
-                    )}
-                  </div>
+  {reasonList.length > 0 ? (
+    <div className="max-h-64 overflow-y-auto overflow-x-auto border rounded">
+      <table className="min-w-full text-sm border border-gray-300 rounded">
+        <thead className="bg-gray-100 sticky top-0">
+          <tr className="text-left text-gray-700">
+            <th className="p-2 border">Code</th>
+            <th className="p-2 border">Name</th>
+            <th className="p-2 border text-center">Select</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {reasonList.map((reason) => {
+            const isChecked = selectedReasons.includes(reason.id);
+            return (
+              <tr key={reason.id} className="hover:bg-gray-50">
+                <td className="p-2 border">{reason.leaveGrpCode}</td>
+                <td className="p-2 border">{reason.leaveGrpName}</td>
+                <td className="p-2 border text-center">
+                  <input
+                    type="checkbox"
+                    className="w-5 h-5 cursor-pointer"
+                    disabled={!values.checkBy.includes("reason")}
+                    checked={isChecked}
+                    onChange={(e) =>
+                      handleReasonSelect(reason.id, e.target.checked)
+                    }
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div className="p-3 text-center text-gray-500 italic">
+      No reason data available.
+    </div>
+  )}
+</div>
+
                 </div>
 
 
@@ -1148,7 +1157,51 @@ const handleSubmit = async (values, { resetForm }) => {
 
                                                     {/* Clock List Table */}
                                                    {/* Check by Clock Location - Updated Table */}
-<div className="mt-3 border p-3 rounded">
+                                                   <div className="mt-3 border p-3 rounded">
+  {clockList.length > 0 ? (
+    <div className="max-h-64 overflow-y-auto border rounded">
+      <table className="min-w-full text-sm border border-gray-300 rounded">
+        <thead className="bg-gray-100 sticky top-0">
+          <tr className="text-left text-gray-700">
+            <th className="p-2 border">Code</th>
+            <th className="p-2 border">Name</th>
+            <th className="p-2 border text-center">Select</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {clockList.map((clock) => {
+            const isChecked = selectedClocks.includes(clock.id);
+            return (
+              <tr key={clock.id} className="hover:bg-gray-50">
+                <td className="p-2 border">{clock.branchCode}</td>
+                <td className="p-2 border">{clock.branchName}</td>
+                <td className="p-2 border text-center">
+                  <label className="inline-flex items-center justify-center">
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 cursor-pointer"
+                      disabled={!values.checkBy.includes("clock")}
+                      checked={isChecked}
+                      onChange={(e) =>
+                        handleClockSelect(clock.id, e.target.checked)
+                      }
+                    />
+                  </label>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div className="p-3 text-center text-gray-500 italic">
+      No clock location data available.
+    </div>
+  )}
+</div>
+
+{/* <div className="mt-3 border p-3 rounded">
   {clockList.length > 0 ? (
     <table className="min-w-full text-sm border">
       <thead>
@@ -1182,7 +1235,7 @@ const handleSubmit = async (values, { resetForm }) => {
   ) : (
     <p className="text-gray-600">No clock location data available.</p>
   )}
-</div>
+</div> */}
                                         </div>
 
               </div>
