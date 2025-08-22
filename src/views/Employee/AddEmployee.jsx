@@ -721,7 +721,7 @@ const AddEmployee = () => {
                                 <DatePicker
                                   selected={confirmationDate}
                                   onChange={(date) => setConfirmationDate(date)}
-                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                  className="w-full p-2 mr-8 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                                   placeholderText="Select date"
                                 />
                               </div>
@@ -776,7 +776,7 @@ const AddEmployee = () => {
                             <DatePicker
                               selected={resignationDate}
                               onChange={(date) => setResignationDate(date)}
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                               placeholderText="Select date"
                             />
                           </div>
