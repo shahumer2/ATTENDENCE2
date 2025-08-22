@@ -304,7 +304,7 @@ const handleSubmit = async (values, { resetForm }) => {
                                                                 width: "14px",
                                                                 height: "14px",
                                                                 borderRadius: "50%",
-                                                                backgroundColor: "gold",
+                                                                backgroundColor: "#fac863",
                                                                 color: "white",
                                                                 fontSize: "14px",
                                                                 fontWeight: "bold",
@@ -1162,8 +1162,22 @@ const handleSubmit = async (values, { resetForm }) => {
                       {/* Tooltip Icon with hover-specific group */}
                       <div className="relative flex items-center justify-center w-4 h-4">
                       <span className="text-yellow-500 text-xs cursor-pointer group inline-flex items-center justify-center">
-                        <span className="hover-target">ℹ️</span>
-
+                         <span
+                                                              style={{
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                width: "14px",
+                                                                height: "14px",
+                                                                borderRadius: "50%",
+                                                                backgroundColor: "#fac863",
+                                                                color: "white",
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold",
+                                                              }}
+                                                            >
+                                                              i
+                                                            </span>
                         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-72 bg-yellow-100 text-black text-sm px-4 py-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
                           <p className="mb-1 font-medium">When Pay is enabled:</p>
                           <p className="mb-1">Entries that are <strong>ticked below</strong> will be used for criteria verification.</p>
@@ -1182,7 +1196,7 @@ const handleSubmit = async (values, { resetForm }) => {
                       </label>
 
                             {/* Shift List Table */}
-                                 <div className="mt-3 border p-3 rounded">
+                                 <div className="mt-0 border p-3 rounded">
   {shiftList.length > 0 ? (
     <div className="max-h-64 overflow-y-auto overflow-x-auto border rounded">
       <table className="min-w-full text-sm border table-fixed">
@@ -1243,7 +1257,7 @@ const handleSubmit = async (values, { resetForm }) => {
       : "border-gray-400"
   } ${
     !values.checkBy.includes("shift")
-      ? "bg-gray-100 cursor-not-allowed"
+      ? "bg-gray-100 cursor-not-allowed border-[#cdd0dd]"
       : ""
   }`}
 >
@@ -1356,7 +1370,22 @@ const handleSubmit = async (values, { resetForm }) => {
                        {/* Tooltip Icon with hover-specific group */}
                       <div className="relative flex items-center justify-center w-4 h-4">
                       <span className="text-yellow-500 text-xs cursor-pointer group inline-flex items-center justify-center">
-                        <span className="hover-target">ℹ️</span>
+                       <span
+                                                              style={{
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                width: "14px",
+                                                                height: "14px",
+                                                                borderRadius: "50%",
+                                                                backgroundColor: "#fac863",
+                                                                color: "white",
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold",
+                                                              }}
+                                                            >
+                                                              i
+                                                            </span>
 
                         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-72 bg-yellow-100 text-black text-sm px-4 py-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
                           <p className="mb-1 font-medium">When Pay is enabled:</p>
@@ -1429,7 +1458,7 @@ const handleSubmit = async (values, { resetForm }) => {
                   : "border-gray-400"
               } ${
                 !values.checkBy.includes("reason")
-                  ? "bg-gray-100 cursor-not-allowed"
+                  ? "bg-gray-100 cursor-not-allowed border-[#cdd0dd]"
                   : ""
               }`}
             >
@@ -1481,7 +1510,7 @@ const handleSubmit = async (values, { resetForm }) => {
                                   type="checkbox"
                                   name="checkBy"
                                   value="clock"
-                                  className="mr-2 w-5 h-5"
+                                  className="peer hidden"
                                   checked={values.checkBy.includes("clock")}
                                   onChange={(e) => {
                                     const checked = e.target.checked;
@@ -1497,6 +1526,17 @@ const handleSubmit = async (values, { resetForm }) => {
                                     }
                                   }}
                                 />
+
+                                   <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] after:border-r-[3px] after:border-b-[3px] after:border-[#337ab7] after:rotate-45 after:hidden
+      peer-checked:after:block
+    "
+  ></span>
                                 <span className="text-md font-medium text-gray-700">
                                   Check by Clock Location
                                 </span>
@@ -1510,15 +1550,49 @@ const handleSubmit = async (values, { resetForm }) => {
                                   checked={values.payClock || false}
                                   disabled={!values.checkBy.includes("clock")}
                                   onChange={(e) => setFieldValue("payClock", e.target.checked)}
-                                  className="mr-2 w-5 h-5"
+                                  className="peer hidden"
                                 />
-                                <span className="text-md font-semibold text-gray-700 mr-2">Pay</span>
+                                 {/* Custom checkbox box */}
+  <span
+    className={`
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 rounded-sm relative
+      ${values.checkBy.includes("clock") ? "border-gray-400" : "border-gray-300 bg-gray-100 cursor-not-allowed"}
+      peer-checked:border-[#337ab7]
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[3px] after:border-b-[3px] 
+      after:border-[#337ab7] after:rotate-45 
+      after:hidden peer-checked:after:block
+    `}
+  ></span>
+                                <span
+  className={`min-h-[20px] mb-0 font-medium cursor-pointer inline-block align-middle relative  indent-0 text-[14px] ${
+    values.checkBy.includes("clock") ? "text-gray-700" : "text-gray-400"
+  }`}
+>
+  Pay
+</span>
 
                               
                                                 {/* Tooltip Icon with hover-specific group */}
                                                               <div className="relative flex items-center justify-center w-4 h-4 mr-3">
                                                               <span className="text-yellow-500 text-xs cursor-pointer group inline-flex items-center justify-center">
-                                                                <span className="hover-target">ℹ️</span>
+                                                               <span
+                                                              style={{
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                width: "14px",
+                                                                height: "14px",
+                                                                borderRadius: "50%",
+                                                                backgroundColor: "#fac863",
+                                                                color: "white",
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold",
+                                                              }}
+                                                            >
+                                                              i
+                                                            </span>
 
                                                                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-72 bg-yellow-100 text-black text-sm px-4 py-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
                                                                   <p className="mb-1 font-medium">When Pay is enabled:</p>
@@ -1596,7 +1670,7 @@ const handleSubmit = async (values, { resetForm }) => {
                   : "border-gray-400"
               } ${
                 !values.checkBy.includes("clock")
-                  ? "cursor-not-allowed bg-gray-100"
+                  ? "cursor-not-allowed bg-gray-100 border-[#cdd0dd]"
                   : ""
               }`}
             >
