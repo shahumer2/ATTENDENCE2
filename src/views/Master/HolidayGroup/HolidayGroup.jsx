@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { Formik, Form, Field } from 'formik';
 import ReactSelect from 'react-select';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiSearch } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 import { holiday_LIST } from 'Constants/utils';
 import { ADD_holiday_DATA } from 'Constants/utils';
+import { debounce } from 'lodash';
 import { GET_holidaySearch_URL } from 'Constants/utils';
 import { UPDATE_holiday_URL } from 'Constants/utils';
 import { HolidayGroup_LIST } from 'Constants/utils';
 import { ADD_HolidayGroup_DATA } from 'Constants/utils';
 import { GET_HolidayGroupSearch_URL } from 'Constants/utils';
 import { UPDATE_HolidayGroup_URL } from 'Constants/utils';
+import Tooltip from 'components/Tooltip/Tooltip';
+import Breadcrumb from 'components/Breadcum/Breadcrumb';
+import { FaEdit } from 'react-icons/fa';
 
 // API endpoints configuration (replace with your actual endpoints)
 const API_CONFIG = {
@@ -45,10 +49,19 @@ const HolidayManagement = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const [isActiveFilter, setIsActiveFilter] = useState(null); 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
   const [activeTab, setActiveTab] = useState('Holiday');
   const [searchParams, setSearchParams] = useState({});
-  const [currentPage, setCurrentPage] = useState(1);
+ 
   const [isAdding, setIsAdding] = useState(false);
   const [editingId, setEditingId] = useState(null);
 
@@ -271,13 +284,14 @@ const HolidayManagement = () => {
 
   // Fetch table data
   const { data: tableData, isLoading, isError, error } = useQuery({
-    queryKey: [activeTab, currentPage, searchParams],
+    queryKey: [activeTab, currentPage, debouncedSearchTerm, isActiveFilter],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
         size: 10,
-        ...searchParams
-      };
+        searchTerm: debouncedSearchTerm || "",   // ✅ single search field
+        isActive: isActiveFilter,            // ✅ active/inactive filter
+    };
 
       const response = await fetch(currentApi.SEARCH, {
         method: 'POST',
@@ -291,6 +305,8 @@ const HolidayManagement = () => {
       if (!response.ok) throw new Error(`Failed to fetch ${activeTab} data`);
       
       const data = await response.json();
+      setTotalPages(data?.totalPages || 1);
+      setTotalRecords(data?.totalElements || 0);
       return data;
     },
     enabled: !!token,
@@ -399,14 +415,34 @@ const HolidayManagement = () => {
     mutation.mutate(values);
   };
 
-  const totalPages = Math.ceil((tableData?.totalElements || 0) / 10);
+
 
   if (isError) {
     toast.error(error.message);
     return <div>Error loading {activeTab} data</div>;
   }
 
+  const debounceSearch = useCallback(
+
+    debounce((value) => setDebouncedSearchTerm(value), 300),
+    []
+);
+
+const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    debounceSearch(e.target.value); // ✅ will update debouncedSearchTerm
+};
+
   return (
+    <>
+       <div className="flex justify-between pl-8 pt-2 pr-8">
+
+<div className="flex items-center">
+  <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">Holiday / Holiday Group</h2>
+ 
+</div>
+<Breadcrumb className="pr-4" items={`Master,Holiday / Holiday Group`} />
+</div>
     <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
       {/* Header + Add Button */}
       <div className="flex justify-between items-center mb-4">
@@ -533,131 +569,24 @@ const HolidayManagement = () => {
 
       {/* Search Form */}
       {!isAdding && (
-        <div className='items-center justify-center'>
-          <Formik
-            initialValues={{
-              ...(activeTab === 'Holiday' ? { 
-                holidayName: null,
-                type: null 
-              } : activeTab === 'HolidayGroup' ? { 
-                holidayGrpCode: null,
-                holidayGrpName: null 
-              } : { 
-                employeeCode: null,
-                holidayGrpCode: null 
-              })
-            }}
-            onSubmit={handleSearchSubmit}
-          >
-            {({ setFieldValue, values, handleSubmit }) => (
-              <Form>
-                <div className="mb-4.5 flex flex-wrap gap-6 mt-12">
-                  {activeTab === 'Holiday' ? (
-                    <>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Holiday Name</label>
-                        <ReactSelect
-                          name="holidayName"
-                          value={dropdownOptions?.names?.find(option => option.value === values.holidayName)}
-                          onChange={(option) => setFieldValue('holidayName', option?.value || null)}
-                          options={dropdownOptions?.names || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Holiday Name"
-                          isClearable
-                          isLoading={optionsLoading}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Type</label>
-                        <ReactSelect
-                          name="type"
-                          value={TAB_CONFIG.Holiday.fields.find(f => f.name === 'type')?.options?.find(opt => opt.value === values.type)}
-                          onChange={(option) => setFieldValue('type', option?.value || null)}
-                          options={TAB_CONFIG.Holiday.fields.find(f => f.name === 'type')?.options || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Type"
-                          isClearable
-                        />
-                      </div>
-                    </>
-                  ) : activeTab === 'HolidayGroup' ? (
-                    <>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Holiday Group Code</label>
-                        <ReactSelect
-                          name="holidayGrpCode"
-                          value={dropdownOptions?.codes?.find(option => option.value === values.holidayGrpCode)}
-                          onChange={(option) => setFieldValue('holidayGrpCode', option?.value || null)}
-                          options={dropdownOptions?.codes || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Holiday Group Code"
-                          isClearable
-                          isLoading={optionsLoading}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Holiday Group Name</label>
-                        <ReactSelect
-                          name="holidayGrpName"
-                          value={dropdownOptions?.names?.find(option => option.value === values.holidayGrpName)}
-                          onChange={(option) => setFieldValue('holidayGrpName', option?.value || null)}
-                          options={dropdownOptions?.names || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Holiday Group Name"
-                          isClearable
-                          isLoading={optionsLoading}
-                        />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Employee</label>
-                        <ReactSelect
-                          name="employeeCode"
-                          value={dropdownOptions?.employeeOptions?.find(option => option.value === values.employeeCode)}
-                          onChange={(option) => setFieldValue('employeeCode', option?.value || null)}
-                          options={dropdownOptions?.employeeOptions || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Employee"
-                          isClearable
-                          isLoading={optionsLoading}
-                        />
-                      </div>
-                      <div className="flex-1 min-w-[300px]">
-                        <label className="mb-2.5 block text-black">Holiday Group</label>
-                        <ReactSelect
-                          name="holidayGrpCode"
-                          value={dropdownOptions?.holidayGroupOptions?.find(option => option.value === values.holidayGrpCode)}
-                          onChange={(option) => setFieldValue('holidayGrpCode', option?.value || null)}
-                          options={dropdownOptions?.holidayGroupOptions || []}
-                          className="bg-white"
-                          classNamePrefix="react-select"
-                          placeholder="Select Holiday Group"
-                          isClearable
-                          isLoading={optionsLoading}
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="flex justify-center">
-                  <button
-                    type="submit"
-                    className="flex md:w-[240px] w-[220px] md:h-[37px] h-[40px] pt-2 rounded-lg justify-center bg-primary md:p-2.5 font-semibold md:text-sm text-white text-xl hover:bg-opacity-90 bg-blue-500 m-5"
-                  >
-                    Search
-                  </button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+        
+        <div className="flex justify-between bg-blue-50 items-center rounded-t-md">
+        <h2 className="text-md mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
+        Holiday Group List
+        </h2>
+
+        <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
+          <input
+            type="text"
+            placeholder={`Enter The Holiday Group Code or Holiday Group Name `}
+            className=" uppercase text-xs pl-8 w-[480px] pr-4 py-3 border rounded-xl"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          {/* Search Icon inside input */}
+          <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
         </div>
+      </div>
       )}
 
       {/* Table */}
@@ -678,8 +607,12 @@ const HolidayManagement = () => {
                         {column.header}
                       </th>
                     ))}
+                    <th className='w-[50%]'></th>
                     <th className="px-6 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
-                      Action
+                    Edit
+                    </th>
+                    <th className="px-3 py-3 text-left text-xs text-gray-900 uppercase tracking-wider font-semibold">
+                    Delete
                     </th>
                   </tr>
                 </thead>
@@ -695,21 +628,25 @@ const HolidayManagement = () => {
                             {item[column.key]}
                           </td>
                         ))}
+                        <td></td>
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                           <div className='flex flex-row gap-3'>
-                            <CiEdit 
+                          <FaEdit size="1.3rem" style={{ color: "#337ab7" }}
                               color='green' 
                               className='cursor-pointer' 
-                              size={25} 
+                             
                               onClick={() => handleEdit(item)}
                             />
-                            <MdDelete 
+                           
+                          </div>
+                        </td>
+                        <td>
+                        <MdDelete style={{ color: "#d97777" }} size="1.3rem" 
                               color='red' 
                               className='cursor-pointer' 
-                              size={25}
+                           
                               onClick={() => handleDelete(item.id)}
                             />
-                          </div>
                         </td>
                       </tr>
                     ))
@@ -761,6 +698,7 @@ const HolidayManagement = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

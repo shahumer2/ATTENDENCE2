@@ -242,7 +242,7 @@ const DutyRoaster = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {DutyRoasterData?.content?.length > 0 ? (
                     DutyRoasterData.content.map((DutyRoaster) => (
-                      <tr key={DutyRoaster.id} className="even:bg-gray-50 hover:bg-gray-100">
+                      <tr key={DutyRoaster.id} className="even:bg-gray-50 hover:bg-gray-100 capitalize">
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                           {DutyRoaster.dutyRoasterCode}
                         </td>

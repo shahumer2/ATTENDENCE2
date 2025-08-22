@@ -113,6 +113,18 @@ const gg = () => {
         const currentApi = API_CONFIG[activeTab.toUpperCase()];
         toggleStatus({ id, isActive: !currentStatus, statusKey: currentApi.statusKey });
     };
+    const TOOLTIP_CONTENT = {
+        shift: (
+          <div>
+            <p className="mb-2">
+            This page lets you setup shift(s) according to your company's needs.
+    
+    
+            </p>
+          
+          </div>
+        ),
+      };
     return (
 
 

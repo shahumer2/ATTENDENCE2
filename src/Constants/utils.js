@@ -117,6 +117,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
 
 
+
  //Groups
  export const Groups_LIST = `${BASE_URL}/api/groups/getAll`;
  export const ADD_Groups_DATA = `${BASE_URL}/api/groups/addGroup`;
