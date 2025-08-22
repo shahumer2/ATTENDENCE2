@@ -284,7 +284,7 @@ const HolidayManagement = () => {
 
   // Fetch table data
   const { data: tableData, isLoading, isError, error } = useQuery({
-    queryKey: [activeTab, currentPage, debouncedSearchTerm, isActiveFilter],
+    queryKey: [activeTab, currentPage, debouncedSearchTerm, isActiveFilter ,page, pageSize],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,

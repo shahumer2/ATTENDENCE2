@@ -92,7 +92,7 @@ const DutyRoaster = () => {
   // Fetch filtered DutyRoasters based on search params
   // Fetch filtered DutyRoasters based on search params
   const { data: DutyRoasterData, isLoading, isError, error } = useQuery({
-    queryKey: ['DutyRoasters', currentPage, debouncedSearchTerm, isActiveFilter],
+    queryKey: ['DutyRoasters', currentPage, debouncedSearchTerm, isActiveFilter ,page, pageSize],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -101,7 +101,7 @@ const DutyRoaster = () => {
         isActive: isActiveFilter,            // ✅ active/inactive filter
       };
 
-      const response = await fetch(GET_DutyRoasterSearch_URL, {
+      const response = await fetch(`${GET_DutyRoasterSearch_URL}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

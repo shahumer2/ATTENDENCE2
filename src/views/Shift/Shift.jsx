@@ -50,7 +50,7 @@ const Shift = () => {
   // Fetch filtered shifts based on search params
   // Fetch filtered shifts based on search params
   const { data: shiftData, isLoading, isError, error } = useQuery({
-    queryKey: ['shifts', currentPage, debouncedSearchTerm, isActiveFilter], // it will re render if there are dep
+    queryKey: ['shifts', currentPage, debouncedSearchTerm, isActiveFilter ,page, pageSize], // it will re render if there are dep
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -59,7 +59,7 @@ const Shift = () => {
         isActive: isActiveFilter,            // ✅ active/inactive filter
       };
 
-      const response = await fetch(`${Shift_LIST}`, {
+      const response = await fetch(`${Shift_LIST}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

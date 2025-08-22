@@ -315,7 +315,7 @@ const Race = () => {
 
   // Fetch table data
   const { data: tableData, isLoading, isError, error } = useQuery({
-    queryKey: [activeTab, currentPage, debouncedSearchTerm, isActiveFilter],
+    queryKey: [activeTab, currentPage, debouncedSearchTerm, isActiveFilter,page, pageSize],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -324,7 +324,7 @@ const Race = () => {
         isActive: isActiveFilter,            // ✅ active/inactive filter
       };
 
-      const response = await fetch(currentApi.SEARCH, {
+      const response = await fetch(`${currentApi.SEARCH}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -94,7 +94,7 @@ const Branch = () => {
   // Fetch filtered Branchs based on search params
   // Fetch filtered Branchs based on search params
   const { data: BranchData, isLoading, isError, error } = useQuery({
-    queryKey: ['Branchs', currentPage, debouncedSearchTerm, isActiveFilter],
+    queryKey: ['Branchs', currentPage, debouncedSearchTerm, isActiveFilter,page, pageSize],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -103,7 +103,7 @@ const Branch = () => {
         isActive: isActiveFilter,            // ✅ active/inactive filter
     };
 
-      const response = await fetch(GET_BranchSearch_URL, {
+      const response = await fetch(`${GET_BranchSearch_URL}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

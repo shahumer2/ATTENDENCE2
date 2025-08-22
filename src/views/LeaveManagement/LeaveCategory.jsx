@@ -105,7 +105,7 @@ const LeaveCategory = () => {
 
   // Fetch filtered LeaveCategorys based on search params
   const { data: LeaveCategoryData, isLoading, isError, error } = useQuery({
-    queryKey: ['LeaveCategorys',currentPage, debouncedSearchTerm, isActiveFilter],
+    queryKey: ['LeaveCategorys',currentPage, debouncedSearchTerm, isActiveFilter,page, pageSize],
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -114,7 +114,7 @@ const LeaveCategory = () => {
         isActive: isActiveFilter,            // ✅ active/inactive filter
     };
       console.log(requestBody, "pakki");
-      const response = await fetch(`${LeaveCategory_LIST}`, {
+      const response = await fetch(`${LeaveCategory_LIST}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
