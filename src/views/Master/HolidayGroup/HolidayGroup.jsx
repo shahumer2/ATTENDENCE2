@@ -107,7 +107,7 @@ const HolidayManagement = () => {
           { label: 'Select', value: null },
           ...data.map(holiday => ({
             label: holiday.holidayGrpName,
-            value: holiday.holidayGrpName,
+            value: holiday.id,
             id:holiday.id
           }))
         ],
@@ -147,7 +147,7 @@ const HolidayManagement = () => {
         holidayDate: '', 
         holidayName: '', 
         reasonName: '', 
-        holidayGroup: '' 
+        holidayGroup: {id:""}
       }
     },
     HolidayGroup: {
@@ -288,12 +288,12 @@ const HolidayManagement = () => {
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
-        size: 10,
+      
         searchTerm: debouncedSearchTerm || "",   // ✅ single search field
         isActive: isActiveFilter,            // ✅ active/inactive filter
     };
 
-      const response = await fetch(currentApi.SEARCH, {
+      const response = await fetch(`${currentApi.SEARCH}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -322,7 +322,11 @@ const HolidayManagement = () => {
           opt => opt.value === values.employeeCode
         );
         values.employeeName = employee?.name || '';
+      
       }
+      if (activeTab === 'Holiday') {
+               values.holidayGroup = { id: values.holidayGroup }; // ✅ wrap id in object
+             }
 
       const url = editingId 
         ? `${currentApi.UPDATE}/${editingId}`
