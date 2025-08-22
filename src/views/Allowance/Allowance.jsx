@@ -401,26 +401,43 @@ const handleSubmit = async (values, { resetForm }) => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 {/* Check by Time In */}
                 <div className="border border-gray-300 rounded p-4 shadow-sm ">
-                  <label className="inline-flex items-center mb-2">
-                    <input
-                      type="checkbox"
-                      name="checkBy"
-                      value="time"
-                      checked={values.checkBy.includes('time')}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-                        if (checked) {
-                          setFieldValue('checkBy', [...values.checkBy, 'time']);
-                        } else {
-                          setFieldValue('checkBy', values.checkBy.filter((v) => v !== 'time'));
-                          setFieldValue('checkByTimeOption', '');
-                          setFieldValue('checkByTimeInClock', '');
-                        }
-                      }}
-                      className="mr-2 w-5 h-5"
-                    />
-                    <span className="text-md font-medium text-gray-700">Check by Time In</span>
-                  </label>
+                <label className="inline-flex items-center mb-2 cursor-pointer">
+  <input
+    type="checkbox"
+    name="checkBy"
+    value="time"
+    checked={values.checkBy.includes("time")}
+    onChange={(e) => {
+      const checked = e.target.checked;
+      if (checked) {
+        setFieldValue("checkBy", [...values.checkBy, "time"]);
+      } else {
+        setFieldValue(
+          "checkBy",
+          values.checkBy.filter((v) => v !== "time")
+        );
+        setFieldValue("checkByTimeOption", "");
+        setFieldValue("checkByTimeInClock", "");
+      }
+    }}
+    className="peer hidden"
+  />
+  {/* Custom checkbox box */}
+  <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] after:border-r-[3px] after:border-b-[3px] after:border-[#337ab7] after:rotate-45 after:hidden
+      peer-checked:after:block
+    "
+  ></span>
+  <span className="text-md font-medium text-gray-700">Check by Time In</span>
+</label>
+
+
+
 
                   <div className="mt-4 flex gap-4">
                 <div className="w-1/2">
@@ -486,8 +503,20 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue('checkByTimeOutClock', '');
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                        className="peer hidden"
                       />
+                      {/* Custom checkbox box */}
+<span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">Check by Time Out</span>
                     </label>
 
@@ -543,8 +572,19 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue('checkByActualClock', '');
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                       className="peer hidden"
                       />
+                      <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">Check by Actual</span>
                     </label>
 
@@ -604,8 +644,19 @@ const handleSubmit = async (values, { resetForm }) => {
                           setFieldValue('checkByNrmClock', '');
                         }
                       }}
-                      className="mr-2 w-5 h-5"
+                     className="peer hidden"
                     />
+                    <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                     <span className="text-md font-medium text-gray-700">Check by NRM</span>
                   </label>
 
@@ -664,8 +715,19 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue('checkByOtClock', '');
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                        className="peer hidden"
                       />
+                      <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">Check by OT</span>
                     </label>
 
@@ -720,8 +782,20 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue('checkByLatenessClock', '');
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                        className="peer hidden"
                       />
+
+                      <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">Check by Lateness</span>
                     </label>
 
@@ -776,8 +850,20 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue('checkByEarlyOutClock', '');
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                        className="peer hidden"
                       />
+
+                      <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">Check by Early Out</span>
                     </label>
 
@@ -826,7 +912,7 @@ const handleSubmit = async (values, { resetForm }) => {
                       type="checkbox"
                       name="checkBy"
                       value="day"
-                      className="mr-2 w-5 h-5"
+                     className="peer hidden"
                       checked={values.checkBy.includes('day')}
                       onChange={(e) => {
                         const checked = e.target.checked;
@@ -838,6 +924,18 @@ const handleSubmit = async (values, { resetForm }) => {
                         }
                       }}
                     />
+
+                    <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[2.5px] after:border-b-[2.5px] after:border-[#337ab7] 
+      after:rotate-45 after:hidden peer-checked:after:block
+    "
+  ></span>
                     <span className="text-md font-medium text-gray-700">Check by Day</span>
                   </label>
 
@@ -848,7 +946,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         <th className="p-2 border-b text-center">Select</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                       {['Days', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((day) => (
                         <tr key={day} className="hover:bg-gray-50">
                           <td className="p-2 border-b">{day}</td>
@@ -885,9 +983,95 @@ const handleSubmit = async (values, { resetForm }) => {
                           </td>
                         </tr>
                       ))}
-                    </tbody>
+                    </tbody> */}
+                    <tbody>
+  {[
+    'Days',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ].map((day) => (
+    <tr key={day} className="hover:bg-gray-50">
+      <td className="p-2 border-b">{day}</td>
+      <td className="p-2 border-b text-center">
+        <label className="inline-flex items-center cursor-pointer justify-center">
+          <input
+            type="checkbox"
+            checked={
+              day === 'Days'
+                ? [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday',
+                  ].every((d) => values.selectedDays.includes(d))
+                : values.selectedDays.includes(day)
+            }
+            disabled={!values.checkBy.includes('day')}
+            onChange={(e) => {
+              if (!values.checkBy.includes('day')) return;
+
+              if (day === 'Days') {
+                if (e.target.checked) {
+                  // Select all
+                  setFieldValue('selectedDays', [
+                    'Monday',
+                    'Tuesday',
+                    'Wednesday',
+                    'Thursday',
+                    'Friday',
+                    'Saturday',
+                    'Sunday',
+                  ]);
+                } else {
+                  // Deselect all
+                  setFieldValue('selectedDays', []);
+                }
+              } else {
+                if (e.target.checked) {
+                  setFieldValue('selectedDays', [...values.selectedDays, day]);
+                } else {
+                  setFieldValue(
+                    'selectedDays',
+                    values.selectedDays.filter((d) => d !== day)
+                  );
+                }
+              }
+            }}
+            className="peer hidden"
+          />
+          {/* Custom checkbox */}
+         <span
+  className={`
+    w-5 h-5 flex items-center justify-center 
+    border-2 border-gray-400 rounded-sm 
+    ${!values.checkBy.includes('day') ? 'cursor-not-allowed bg-gray-100' : ''}
+    peer-checked:border-[#337ab7]
+    relative
+    after:content-[''] after:w-[6px] after:h-[10px] 
+    after:border-r-[3px] after:border-b-[3px] after:border-[#337ab7] 
+    after:rotate-45 after:absolute 
+    after:opacity-0 peer-checked:after:opacity-100
+  `}
+></span>
+
+        </label>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
                   </table>
                 </div>
+
+                
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -900,7 +1084,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             type="checkbox"
                             name="checkBy"
                             value="shift"
-                            className="w-6 h-6 mr-2"
+                            className="peer hidden"
                             checked={values.checkBy.includes('shift')}
                             onChange={(e) => {
                               const checked = e.target.checked;
@@ -911,13 +1095,23 @@ const handleSubmit = async (values, { resetForm }) => {
                               }
                             }}
                           />
+                            <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] after:border-r-[3px] after:border-b-[3px] after:border-[#337ab7] after:rotate-45 after:hidden
+      peer-checked:after:block
+    "
+  ></span>
                           <span className="text-md font-medium text-gray-700">Check by Shift</span>
                         </div>
 
                         {/* Checkbox in front of Pay */}
                     <div className="flex items-center ml-11 space-x-2">
                       {/* Pay Checkbox */}
-                      <input
+                      {/* <input
                         type="checkbox"
                         name="payCheckbox"
                         className="w-5 h-5"
@@ -925,7 +1119,45 @@ const handleSubmit = async (values, { resetForm }) => {
                         checked={values.payCheckbox}
                         onChange={(e) => setFieldValue('payCheckbox', e.target.checked)}
                       />
-                      <span className="text-md font-semibold text-gray-700">Pay</span>
+
+                      
+                      <span className="text-md font-semibold text-gray-700">Pay</span> */}
+
+
+                      <label className="inline-flex items-center mb-2 cursor-pointer mt-1">
+  <input
+    type="checkbox"
+    name="payCheckbox"
+    disabled={!values.checkBy.includes("shift")}
+    checked={values.payCheckbox}
+    onChange={(e) => setFieldValue("payCheckbox", e.target.checked)}
+    className="peer hidden"
+  />
+
+  {/* Custom checkbox box */}
+  <span
+    className={`
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 rounded-sm relative
+      ${values.checkBy.includes("shift") ? "border-gray-400" : "border-gray-300 bg-gray-100 cursor-not-allowed"}
+      peer-checked:border-[#337ab7]
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[3px] after:border-b-[3px] 
+      after:border-[#337ab7] after:rotate-45 
+      after:hidden peer-checked:after:block
+    `}
+  ></span>
+
+<span
+  className={`min-h-[20px] mb-0 font-medium cursor-pointer inline-block align-middle relative  indent-0 text-[14px] ${
+    values.checkBy.includes("shift") ? "text-gray-700" : "text-gray-400"
+  }`}
+>
+  Pay
+</span>
+
+</label>
+
 
                       {/* Tooltip Icon with hover-specific group */}
                       <div className="relative flex items-center justify-center w-4 h-4">
@@ -961,7 +1193,7 @@ const handleSubmit = async (values, { resetForm }) => {
             <th className="p-2 border text-center" style={{ width: "80px" }}>Select</th>
           </tr>
         </thead>
-        <tbody className="divide-y">
+        {/* <tbody className="divide-y">
           {shiftList.map((shift) => {
             const isChecked = selectedShifts.includes(shift.id);
             return (
@@ -980,7 +1212,63 @@ const handleSubmit = async (values, { resetForm }) => {
               </tr>
             );
           })}
-        </tbody>
+        </tbody> */}
+
+        <tbody className="divide-y">
+  {shiftList.map((shift) => {
+    const isChecked = selectedShifts.includes(shift.id);
+    return (
+      <tr key={shift.id} className="hover:bg-gray-50">
+        <td className="p-2 border" style={{ width: "180px" }}>
+          {shift.shiftCode}
+        </td>
+        <td className="p-2 border" style={{ width: "220px" }}>
+          {shift.shiftName}
+        </td>
+        <td className="p-2 border text-center" style={{ width: "80px" }}>
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="hidden"
+              disabled={!values.checkBy.includes("shift")}
+              checked={isChecked}
+              onChange={(e) =>
+                handleShiftSelect(shift.id, e.target.checked)
+              }
+            />
+         <span
+  className={`w-5 h-5 border-2 rounded flex items-center justify-center ${
+    isChecked
+      ? "border-blue-500 text-blue-500"
+      : "border-gray-400"
+  } ${
+    !values.checkBy.includes("shift")
+      ? "bg-gray-100 cursor-not-allowed"
+      : ""
+  }`}
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={`w-3 h-3 font-bold transition-opacity duration-150 ${
+      isChecked ? "opacity-100" : "opacity-0"
+    }`}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth="5"
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+</span>
+
+          </label>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
+
       </table>
     </div>
   ) : (
@@ -1015,8 +1303,19 @@ const handleSubmit = async (values, { resetForm }) => {
                             setFieldValue("payReason", false);
                           }
                         }}
-                        className="mr-2 w-5 h-5"
+                       className="peer hidden"
                       />
+
+                           <span
+    className="
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 border-gray-400 rounded-sm 
+      peer-checked:border-[#337ab7]
+      relative
+      after:content-[''] after:w-[6px] after:h-[10px] after:border-r-[3px] after:border-b-[3px] after:border-[#337ab7] after:rotate-45 after:hidden
+      peer-checked:after:block
+    "
+  ></span>
                       <span className="text-md font-medium text-gray-700">
                         Check by Reason
                       </span>
@@ -1029,10 +1328,30 @@ const handleSubmit = async (values, { resetForm }) => {
                         checked={values.payReason || false}
                         disabled={!values.checkBy.includes("reason")}
                         onChange={(e) => setFieldValue("payReason", e.target.checked)}
-                        className="mr-2 w-5 h-5 ml-11"
+                       className="peer hidden"
                       />
-                      <span className="text-md font-semibold text-gray-700 mr-2">Pay</span>
+                      {/* <span className="text-md font-semibold text-gray-700 mr-2">Pay</span> */}
+ {/* Custom checkbox box */}
+  <span
+    className={`
+      w-5 h-5 mr-2 flex items-center justify-center 
+      border-2 rounded-sm relative
+      ${values.checkBy.includes("reason") ? "border-gray-400" : "border-gray-300 bg-gray-100 cursor-not-allowed"}
+      peer-checked:border-[#337ab7]
+      after:content-[''] after:w-[6px] after:h-[10px] 
+      after:border-r-[3px] after:border-b-[3px] 
+      after:border-[#337ab7] after:rotate-45 
+      after:hidden peer-checked:after:block
+    `}
+  ></span>
 
+<span
+  className={`min-h-[20px] mb-0 font-medium cursor-pointer inline-block align-middle relative  indent-0 text-[14px] ${
+    values.checkBy.includes("reason") ? "text-gray-700" : "text-gray-400"
+  }`}
+>
+  Pay
+</span>
 
                        {/* Tooltip Icon with hover-specific group */}
                       <div className="relative flex items-center justify-center w-4 h-4">
@@ -1061,7 +1380,7 @@ const handleSubmit = async (values, { resetForm }) => {
             <th className="p-2 border text-center">Select</th>
           </tr>
         </thead>
-        <tbody className="divide-y">
+        {/* <tbody className="divide-y">
           {reasonList.map((reason) => {
             const isChecked = selectedReasons.includes(reason.id);
             return (
@@ -1082,7 +1401,64 @@ const handleSubmit = async (values, { resetForm }) => {
               </tr>
             );
           })}
-        </tbody>
+        </tbody> */}
+
+
+    <tbody className="divide-y">
+  {reasonList.map((reason) => {
+    const isChecked = selectedReasons.includes(reason.id);
+    return (
+      <tr key={reason.id} className="hover:bg-gray-50">
+        <td className="p-2 border">{reason.leaveGrpCode}</td>
+        <td className="p-2 border">{reason.leaveGrpName}</td>
+        <td className="p-2 border text-center">
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="hidden"
+              disabled={!values.checkBy.includes("reason")}
+              checked={isChecked}
+              onChange={(e) =>
+                handleReasonSelect(reason.id, e.target.checked)
+              }
+            />
+            <span
+              className={`w-5 h-5 border-2 rounded flex items-center justify-center ${
+                isChecked
+                  ? "border-blue-500 text-blue-500"
+                  : "border-gray-400"
+              } ${
+                !values.checkBy.includes("reason")
+                  ? "bg-gray-100 cursor-not-allowed"
+                  : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`w-3 h-3 font-bold transition-opacity duration-150 ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
+
+
       </table>
     </div>
   ) : (
@@ -1168,7 +1544,7 @@ const handleSubmit = async (values, { resetForm }) => {
             <th className="p-2 border text-center">Select</th>
           </tr>
         </thead>
-        <tbody className="divide-y">
+        {/* <tbody className="divide-y">
           {clockList.map((clock) => {
             const isChecked = selectedClocks.includes(clock.id);
             return (
@@ -1191,7 +1567,64 @@ const handleSubmit = async (values, { resetForm }) => {
               </tr>
             );
           })}
-        </tbody>
+        </tbody> */}
+
+
+      <tbody className="divide-y">
+  {clockList.map((clock) => {
+    const isChecked = selectedClocks.includes(clock.id);
+    return (
+      <tr key={clock.id} className="hover:bg-gray-50">
+        <td className="p-2 border">{clock.branchCode}</td>
+        <td className="p-2 border">{clock.branchName}</td>
+        <td className="p-2 border text-center">
+          <label className="inline-flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              className="hidden"
+              disabled={!values.checkBy.includes("clock")}
+              checked={isChecked}
+              onChange={(e) =>
+                handleClockSelect(clock.id, e.target.checked)
+              }
+            />
+            {/* Custom Checkbox */}
+            <span
+              className={`w-5 h-5 border-2 rounded flex items-center justify-center ${
+                isChecked
+                  ? "border-blue-500 text-blue-500"
+                  : "border-gray-400"
+              } ${
+                !values.checkBy.includes("clock")
+                  ? "cursor-not-allowed bg-gray-100"
+                  : ""
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`w-3 h-3 font-bold transition-opacity duration-150 ${
+                  isChecked ? "opacity-100" : "opacity-0"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="5" // bolder tick
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </span>
+          </label>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
+
       </table>
     </div>
   ) : (
