@@ -26,7 +26,7 @@ const deleteAutoShift = async ({ id, token }) => {
 
 const AutoShift = () => {
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +39,8 @@ const AutoShift = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+
+  console.log(page,"kk");
   // Fetch AutoShifts
   const {
     data: autoShifts,
@@ -46,7 +48,7 @@ const AutoShift = () => {
     isError,
     error
   } = useQuery({
-    queryKey: ['autoShifts', currentPage, debouncedSearchTerm, isActiveFilter], // dependencies
+    queryKey: ['autoShifts', page, debouncedSearchTerm, isActiveFilter, pageSize],  // dependencies
     queryFn: async () => {
       const requestBody = {
         page: currentPage - 1,
@@ -55,7 +57,7 @@ const AutoShift = () => {
         isActive: isActiveFilter,               // ✅ active/inactive filter
       };
 
-      const response = await fetch(`${AutoShift_LIST}`, {
+      const response = await fetch(`${AutoShift_LIST}?page=${page - 1}&size=${pageSize}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -67,6 +69,7 @@ const AutoShift = () => {
       if (!response.ok) throw new Error('Failed to fetch Auto Shifts');
 
       const data = await response.json();
+      console.log(data,"kkiikkii");
 
       // If you maintain pagination state
       setTotalPages(data?.totalPages || 1);
