@@ -196,10 +196,14 @@ useEffect(() => {
   Auto Shift Code<span className="text-red-600">*</span>
 </label>
 
-                    <Field
-                      name="autoShiftCode"
-                      className="w-full p-2 border border-gray-300 rounded"
-                    />
+                   <Field
+  name="autoShiftCode"
+  placeholder=" Auto Shift Code"
+  className="block w-full h-[38px] px-3 py-1.5 text-[14px] font-medium text-[#242424] 
+             bg-transparent border border-[#ced4da] rounded-md focus:outline-none 
+             focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+/>
+
                     <ErrorMessage
                       name="autoShiftCode"
                       component="div"
@@ -213,7 +217,10 @@ useEffect(() => {
                     </label>
                     <Field
                       name="autoShiftName"
-                      className="w-full p-2 border border-gray-300 rounded"
+                     placeholder=" Auto Shift Name"
+  className="block w-full h-[38px] px-3 py-1.5 text-[14px] font-medium text-[#242424] 
+             bg-transparent border border-[#ced4da] rounded-md focus:outline-none 
+             focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     />
                     <ErrorMessage
                       name="autoShiftName"
