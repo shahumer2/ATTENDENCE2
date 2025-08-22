@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ADD_Autoshift_DATA } from 'Constants/utils';
+import { GET_ShiftSearch_URL } from 'Constants/utils'; // adjust path
 
 const AddAutoShift = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
@@ -34,25 +35,45 @@ const AddAutoShift = () => {
     autoShiftName: Yup.string().required('Auto Shift Name is required'),
   });
 
-  useEffect(() => {
-    fetch("http://localhost:8081/api/shifts/getShiftDropdown", {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+  // useEffect(() => {
+  //   fetch("http://localhost:8081/api/shifts/getShiftDropdown", {
+  //     method: "GET",
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`,
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //     .then(async (res) => {
+  //       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+  //       const data = await res.json();
+  //       setShiftOptions(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching shift options:", error);
+  //       setShiftOptions([]);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }, [token]);
+
+useEffect(() => {
+  fetch(GET_ShiftSearch_URL, {
+    method: "GET",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      const data = await res.json();
+      setShiftOptions(data);
     })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-        const data = await res.json();
-        setShiftOptions(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching shift options:", error);
-        setShiftOptions([]);
-      })
-      .finally(() => setLoading(false));
-  }, [token]);
+    .catch((error) => {
+      console.error("Error fetching shift options:", error);
+      setShiftOptions([]);
+    })
+    .finally(() => setLoading(false));
+}, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
