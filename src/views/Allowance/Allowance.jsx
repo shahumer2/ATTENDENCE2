@@ -369,7 +369,17 @@ const handleSubmit = async (values, { resetForm }) => {
 
                   <Field
                     name="allowanceCode"
+                     placeholder=" ALLOWANCE CODE"
                     className="w-full p-2 border border-gray-300 rounded"
+                     style={{
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
+                    
                   />
                   <ErrorMessage name="allowanceCode" component="div" className="text-red-500 text-xs" />
                 </div>
@@ -380,7 +390,16 @@ const handleSubmit = async (values, { resetForm }) => {
                   </label>
                   <Field
                     name="allowanceName"
+                     placeholder="ALLOWANCE NAME "
                     className="w-full p-2 border border-gray-300 rounded"
+                     style={{
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
                   />
                   <ErrorMessage name="allowanceName" component="div" className="text-red-500 text-xs" />
                 </div>
@@ -391,7 +410,17 @@ const handleSubmit = async (values, { resetForm }) => {
                   </label>
                   <Field
                     name="allowanceAmount"
+                    placeholder="0.00 "
                     className="w-full p-2 border border-gray-300 rounded"
+                    style={{
+                       width: "131px",  
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
                   />
                   <ErrorMessage name="allowanceAmount" component="div" className="text-red-500 text-xs" />
                 </div>
