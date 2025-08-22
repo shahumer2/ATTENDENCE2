@@ -483,7 +483,7 @@ const handleSubmit = async (values, { resetForm }) => {
                           }
                         `}
                       >
-                        {/* <option value="">Select Option</option> */}
+                        <option value="">Select Option</option>
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
@@ -560,7 +560,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                             disabled={!values.checkByTimeOut}
                           >
-                            {/* <option value="">Select Option</option> */}
+                            <option value="">Select Option</option>
                             <option value="=">=</option>
                             <option value="<=">&lt;=</option>
                             <option value=">=">&gt;=</option>
@@ -628,7 +628,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByActual}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -705,7 +705,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         `}
                         disabled={!values.checkBy.includes('nrm')}
                       >
-                        {/* <option value="">Select Option</option> */}
+                        <option value="">Select Option</option>
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
@@ -771,7 +771,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByOt}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -839,7 +839,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByLateness}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -907,7 +907,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByEarlyOut}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -1081,7 +1081,7 @@ const handleSubmit = async (values, { resetForm }) => {
   className={`
     w-5 h-5 flex items-center justify-center 
     border-2 border-gray-400 rounded-sm 
-    ${!values.checkBy.includes('day') ? 'cursor-not-allowed bg-gray-100' : ''}
+    ${!values.checkBy.includes('day') ? 'cursor-not-allowed bg-gray-100 border-[#cdd0dd]' : ''}
     peer-checked:border-[#337ab7]
     relative
     after:content-[''] after:w-[6px] after:h-[10px] 
