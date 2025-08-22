@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ADD_Autoshift_DATA } from 'Constants/utils';
+import { GET_ShiftSearch_URL } from 'Constants/utils'; // adjust path
 
 const AddAutoShift = () => {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
@@ -33,25 +35,45 @@ const AddAutoShift = () => {
     autoShiftName: Yup.string().required('Auto Shift Name is required'),
   });
 
-  useEffect(() => {
-    fetch("http://localhost:8081/api/shifts/getShiftDropdown", {
-      method: "GET",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+  // useEffect(() => {
+  //   fetch("http://localhost:8081/api/shifts/getShiftDropdown", {
+  //     method: "GET",
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`,
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  //     .then(async (res) => {
+  //       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+  //       const data = await res.json();
+  //       setShiftOptions(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching shift options:", error);
+  //       setShiftOptions([]);
+  //     })
+  //     .finally(() => setLoading(false));
+  // }, [token]);
+
+useEffect(() => {
+  fetch(GET_ShiftSearch_URL, {
+    method: "GET",
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(async (res) => {
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      const data = await res.json();
+      setShiftOptions(data);
     })
-      .then(async (res) => {
-        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-        const data = await res.json();
-        setShiftOptions(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching shift options:", error);
-        setShiftOptions([]);
-      })
-      .finally(() => setLoading(false));
-  }, [token]);
+    .catch((error) => {
+      console.error("Error fetching shift options:", error);
+      setShiftOptions([]);
+    })
+    .finally(() => setLoading(false));
+}, [token]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -69,46 +91,86 @@ const AddAutoShift = () => {
     };
   }, []);
 
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   try {
+  //     const today = new Date().toISOString().split('T')[0];
+
+  //     const payload = {
+  //       autoShiftCode: values.autoShiftCode,
+  //       autoShiftName: values.autoShiftName,
+  //       shiftDurations: values.shiftSchedulers
+  //         .filter(s => s.shiftId !== null)
+  //         .map(s => ({
+  //           shiftId: s.shiftId,
+  //           startTime: `${today}T${s.fromTime}:00`,
+  //           endTime: `${today}T${s.toTime}:00`,
+  //         })),
+  //     };
+
+  //     const response = await fetch("http://localhost:8081/api/autoshift/addAutoShift", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         "Authorization": `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify(payload),
+  //     });
+
+  //     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+  //     await response.json();
+  //     toast.success("AutoShift saved successfully!");
+  //     resetForm();
+
+  //     setTimeout(() => {
+  //       navigate('/admin/ETMS/AutoShift');
+  //     }, 1500);
+  //   } catch (error) {
+  //     console.error("Error saving AutoShift:", error);
+  //     toast.error("Failed to save AutoShift.");
+  //   }
+  // };
+
+
   const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const today = new Date().toISOString().split('T')[0];
+  try {
+    const today = new Date().toISOString().split('T')[0];
 
-      const payload = {
-        autoShiftCode: values.autoShiftCode,
-        autoShiftName: values.autoShiftName,
-        shiftDurations: values.shiftSchedulers
-          .filter(s => s.shiftId !== null)
-          .map(s => ({
-            shiftId: s.shiftId,
-            startTime: `${today}T${s.fromTime}:00`,
-            endTime: `${today}T${s.toTime}:00`,
-          })),
-      };
+    const payload = {
+      autoShiftCode: values.autoShiftCode,
+      autoShiftName: values.autoShiftName,
+      shiftDurations: values.shiftSchedulers
+        .filter(s => s.shiftId !== null)
+        .map(s => ({
+          shiftId: s.shiftId,
+          startTime: `${today}T${s.fromTime}:00`,
+          endTime: `${today}T${s.toTime}:00`,
+        })),
+    };
 
-      const response = await fetch("http://localhost:8081/api/autoshift/addAutoShift", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+    const response = await fetch(ADD_Autoshift_DATA, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // make sure token is defined
+      },
+      body: JSON.stringify(payload),
+    });
 
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      await response.json();
-      toast.success("AutoShift saved successfully!");
-      resetForm();
+    await response.json();
+    toast.success("AutoShift saved successfully!");
+    resetForm();
 
-      setTimeout(() => {
-        navigate('/admin/ETMS/AutoShift');
-      }, 1500);
-    } catch (error) {
-      console.error("Error saving AutoShift:", error);
-      toast.error("Failed to save AutoShift.");
-    }
-  };
-
+    setTimeout(() => {
+      navigate('/admin/ETMS/AutoShift');
+    }, 1500);
+  } catch (error) {
+    console.error("Error saving AutoShift:", error);
+    toast.error("Failed to save AutoShift.");
+  }
+};
   return (
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">

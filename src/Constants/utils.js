@@ -145,6 +145,10 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const GET_DutyRoasterBYID_URL = `${BASE_URL}/api/roaster/getRoster`;
  export const UPDATE_DutyRoaster_URL = `${BASE_URL}/api/roaster/updateShift`;
 
+//  AutoShift
+ export const ADD_Autoshift_DATA = `${BASE_URL}/api/autoshift/addAutoShift`;
+
+
  //Branch
 
  export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;
