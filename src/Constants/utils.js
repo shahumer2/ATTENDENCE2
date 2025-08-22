@@ -151,7 +151,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
 //  Allowance
     export const ADD_Allowance_DATA = `${BASE_URL}/api/allowance-criteria/create-allowance`;
-
+    export const GET_AllowanceSearch_URL = `${BASE_URL}/api/allowance-criteria/search`;
 
  //Branch
 

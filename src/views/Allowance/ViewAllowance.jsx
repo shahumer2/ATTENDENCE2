@@ -8,8 +8,26 @@ import axios from "axios";
 import { MdDelete, MdSearch } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { FaEdit } from "react-icons/fa";
+import { GET_AllowanceSearch_URL } from "Constants/utils";
 
 // 🔄 Fetch allowance criteria using search API (POST)
+// const fetchAllowanceCriteria = async ({ queryKey }) => {
+//   const [, { token, page, size, search }] = queryKey;
+
+//   // Build request payload
+//   const payload = search && search.trim() !== "" ? { searchText: search } : {};
+
+//   const response = await axios.post(
+//     `http://localhost:8081/api/allowance-criteria/search?page=${page}&size=${size}`,
+//     payload,
+//     {
+//       headers: { Authorization: `Bearer ${token}` },
+//     }
+//   );
+
+//   return response.data;
+// };
+
 const fetchAllowanceCriteria = async ({ queryKey }) => {
   const [, { token, page, size, search }] = queryKey;
 
@@ -17,7 +35,7 @@ const fetchAllowanceCriteria = async ({ queryKey }) => {
   const payload = search && search.trim() !== "" ? { searchText: search } : {};
 
   const response = await axios.post(
-    `http://localhost:8081/api/allowance-criteria/search?page=${page}&size=${size}`,
+    `${GET_AllowanceSearch_URL}?page=${page}&size=${size}`,
     payload,
     {
       headers: { Authorization: `Bearer ${token}` },
@@ -26,6 +44,7 @@ const fetchAllowanceCriteria = async ({ queryKey }) => {
 
   return response.data;
 };
+
 
 // Delete allowance criteria
 const deleteAllowance = async ({ id, token }) => {
