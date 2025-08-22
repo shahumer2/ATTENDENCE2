@@ -16,6 +16,7 @@ const useShift = (id) => {
     
 
     const initialValues = {
+      isActive:"",
         shiftCode: '',
         shiftName: '',
         lateGracePeriod: '',

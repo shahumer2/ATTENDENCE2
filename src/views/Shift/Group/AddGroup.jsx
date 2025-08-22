@@ -36,6 +36,7 @@ const AddGroup = () => {
                       Number of Groups <span className="text-red-500">*</span>
                     </label>
                     <Field
+                    type="number"
                       name="numberOfGrps"
                       id="numberOfGrps"
                       className="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
