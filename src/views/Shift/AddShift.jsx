@@ -47,7 +47,7 @@ const AddShift = () => {
         >
           {({ values, setFieldValue }) => (
             <Form>
-              <div className='flex flex-row gap-2 flex-2 mb-3'>
+              <div className='flex flex-row gap-6 flex-2  mb-3'>
                 <div className='w-[300px]'>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Shift Code<span className='text-red-600'>*</span></label>
                   <Field
@@ -68,14 +68,17 @@ const AddShift = () => {
                   />
                   <ErrorMessage name="shiftName" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
-                <div className="flex items-center mt-6">
-                  <Field
-                    type="checkbox"
-                    name="isActive"
-                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label className="ml-2 block text-sm text-gray-700">Is Active</label>
-                </div>
+                <div className="flex items-center mt-6 ml-9">
+  <Field
+    type="checkbox"
+    name="isActive"
+    className="h-5 w-5 accent-blue-600 border-gray-300 rounded cursor-pointer focus:ring-blue-500"
+  />
+  <label className="ml-2 block text-sm font-medium text-gray-700 cursor-pointer">
+    Is Active
+  </label>
+</div>
+
 
 
 

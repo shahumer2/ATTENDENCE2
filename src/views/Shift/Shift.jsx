@@ -23,7 +23,7 @@ const Shift = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  const [isActiveFilter, setIsActiveFilter] = useState(null); 
+  const [isActiveFilter, setIsActiveFilter] = useState(null);
   const pageSizeOptions = [
     { value: 5, label: '5' },
     { value: 10, label: '10' },
@@ -57,7 +57,7 @@ const Shift = () => {
         size: 10,
         searchTerm: debouncedSearchTerm || "",   // ✅ single search field
         isActive: isActiveFilter,            // ✅ active/inactive filter
-    };
+      };
 
       const response = await fetch(`${Shift_LIST}`, {
         method: 'POST',
@@ -80,7 +80,7 @@ const Shift = () => {
     keepPreviousData: true
   });
 
- 
+
 
 
 
@@ -92,44 +92,44 @@ const Shift = () => {
     shift: (
       <div>
         <p className="mb-2">
-        This page lets you setup shift(s) according to your company's needs.
+          This page lets you setup shift(s) according to your company's needs.
 
 
         </p>
-      
+
       </div>
     ),
   };
-  
+
   const debounceSearch = useCallback(
 
     debounce((value) => setDebouncedSearchTerm(value), 300),
     []
-);
+  );
 
-const handleSearchChange = (e) => {
+  const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     debounceSearch(e.target.value); // ✅ will update debouncedSearchTerm
-};
-const handleDelete = async (id) => {
-  if (window.confirm('Are you sure you want to delete this record?')) {
-    try {
-      const response = await fetch(`${DELETE_SHIFTBYID_URL}/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+  };
+  const handleDelete = async (id) => {
+    if (window.confirm('Are you sure you want to delete this record?')) {
+      try {
+        const response = await fetch(`${DELETE_SHIFTBYID_URL}/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
 
-      if (!response.ok) throw new Error('Delete failed');
+        if (!response.ok) throw new Error('Delete failed');
 
-      toast.success('Record deleted successfully');
-      queryClient.invalidateQueries("shifts");
-    } catch (error) {
-      toast.error(error.message);
+        toast.success('Record deleted successfully');
+        queryClient.invalidateQueries("shifts");
+      } catch (error) {
+        toast.error(error.message);
+      }
     }
-  }
-};
+  };
 
   return (
     <>
@@ -137,112 +137,112 @@ const handleDelete = async (id) => {
 
         <div className="flex items-center">
           <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">Shift</h2>
-          <Tooltip className="ml-8"  content={TOOLTIP_CONTENT.shift}/>
+          <Tooltip className="ml-8" content={TOOLTIP_CONTENT.shift} />
         </div>
         <Breadcrumb className="pr-4" items={`Shift Settings,Shift `} />
       </div>
       <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
-      <div>
-                <div className="flex justify-between items-center mb-4">
-                    {/* ✅ Left side: show filters only for Leave Type */}
-                   
-                        <div className="flex items-center space-x-4 gap-12 text-sm">
-                            <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
-                                    name="statusFilter"
-                                    checked={isActiveFilter === null}
-                                    onChange={() => setIsActiveFilter(null)}
-                                    className="accent-[#337ab7]"
-                                />
-                                <span className="capitalize">All Shifts</span>
-                            </label>
-                            <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
-                                    name="statusFilter"
-                                    checked={isActiveFilter === true}
-                                    onChange={() => setIsActiveFilter(true)}
-                                    className="accent-[#337ab7]"
-                                />
-                                <span className="capitalize">Active Shifts</span>
-                            </label>
-                            <label className="flex items-center space-x-2">
-                                <input
-                                    type="radio"
-                                    name="statusFilter"
-                                    checked={isActiveFilter === false}
-                                    onChange={() => setIsActiveFilter(false)}
-                                    className="accent-[#337ab7]"
-                                />
-                                <span className="capitalize">Inactive Shifts</span>
-                            </label>
-                        </div>
-                  
+        <div>
+          <div className="flex justify-between items-center mb-4">
+            {/* ✅ Left side: show filters only for Leave Type */}
 
-                    {/* ✅ Right side: Add button is always here */}
-                   
-                        <div>
-                            <button
-                                 onClick={() => navigate("/admin/shift/add")}
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-                            >
-                                Add Shift
-                            </button>
-                        </div>
-                   
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <div className="flex justify-between bg-blue-50 items-center rounded-t-md">
-                    <h2 className="text-md mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
-                      Shift
-                    </h2>
-
-                    <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
-                        <input
-                            type="text"
-                            placeholder={`Enter The Shift Code or Shift Name `}
-                            className=" uppercase text-xs pl-8 w-[480px] pr-4 py-3 border rounded-xl"
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                        {/* Search Icon inside input */}
-                        <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
+            <div className="flex items-center space-x-4 gap-12 text-sm">
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="statusFilter"
+                  checked={isActiveFilter === null}
+                  onChange={() => setIsActiveFilter(null)}
+                  className="accent-[#337ab7]"
+                />
+                <span className="capitalize">All Shifts</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="statusFilter"
+                  checked={isActiveFilter === true}
+                  onChange={() => setIsActiveFilter(true)}
+                  className="accent-[#337ab7]"
+                />
+                <span className="capitalize">Active Shifts</span>
+              </label>
+              <label className="flex items-center space-x-2">
+                <input
+                  type="radio"
+                  name="statusFilter"
+                  checked={isActiveFilter === false}
+                  onChange={() => setIsActiveFilter(false)}
+                  className="accent-[#337ab7]"
+                />
+                <span className="capitalize">Inactive Shifts</span>
+              </label>
             </div>
+
+
+            {/* ✅ Right side: Add button is always here */}
+
+            <div>
+              <button
+                onClick={() => navigate("/admin/shift/add")}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                Add Shift
+              </button>
+            </div>
+
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div className="flex justify-between bg-blue-50 items-center rounded-t-md">
+            <h2 className="text-md mt-3 mb-4 text-blue-750 rounded-t-md ml-4 font-semibold capitalize">
+              Shift
+            </h2>
+
+            <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
+              <input
+                type="text"
+                placeholder={`Enter The Shift Code or Shift Name `}
+                className=" uppercase text-xs pl-8 w-[480px] pr-4 py-3 border rounded-xl"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              {/* Search Icon inside input */}
+              <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
         {/* Header + Add Button */}
-       
+
 
         {/* Search Form */}
-     
+
 
 
 
@@ -290,12 +290,12 @@ const handleDelete = async (id) => {
 
                         <td className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">
                           <div className='flex flex-row gap-3'>
-                          <FaEdit size="1.3rem" style={{ color: "#337ab7" }} onClick={() => navigate(`/admin/ShiftUpdate/${shift.id}`)} />
-                            
+                            <FaEdit size="1.3rem" style={{ color: "#337ab7" }} onClick={() => navigate(`/admin/ShiftUpdate/${shift.id}`)} />
+
 
                           </div>
                         </td>
-                        <td><MdDelete style={{ color: "#d97777" }} size="1.3rem"     onClick={() => handleDelete(shift.id)}/></td>
+                        <td><MdDelete style={{ color: "#d97777" }} size="1.3rem" onClick={() => handleDelete(shift.id)} /></td>
                       </tr>
                     ))
                   ) : (
@@ -311,54 +311,54 @@ const handleDelete = async (id) => {
               {/* Pagination */}
               <div className="flex w-full justify-end items-center mt-4 px-6">
                 <div className="flex space-x-2 text-blue-500">
-                    {page > 1 && (
-                        <>
-                            <button
-                                onClick={() => setPage(1)}
-                                className="px-3 py-1 border rounded"
-                            >
-                                First
-                            </button>
-                            <button
-                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                                className="px-3 py-1 border rounded"
-                            >
-                                Prev
-                            </button>
-                        </>
-                    )}
-                    {page <= totalPages && (
-                        <>
-                            <button
-                                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
-                                className="px-3 py-1 border rounded"
-                            >
-                                Next
-                            </button>
-                            <button
-                                onClick={() => setPage(totalPages)}
-                                className="px-3 py-1 border rounded"
-                            >
-                                Last
-                            </button>
-                        </>
-                    )}
+                  {page > 1 && (
+                    <>
+                      <button
+                        onClick={() => setPage(1)}
+                        className="px-3 py-1 border rounded"
+                      >
+                        First
+                      </button>
+                      <button
+                        onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Prev
+                      </button>
+                    </>
+                  )}
+                  {page <= totalPages && (
+                    <>
+                      <button
+                        onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Next
+                      </button>
+                      <button
+                        onClick={() => setPage(totalPages)}
+                        className="px-3 py-1 border rounded"
+                      >
+                        Last
+                      </button>
+                    </>
+                  )}
                 </div>
-            </div>
+              </div>
 
-            <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
+              <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
                 {/* Page size selector */}
                 <div className="flex items-center space-x-2">
-                    <label className="text-sm font-medium">Page Size:</label>
-                    <select
-                        value={pageSize}
-                        onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
-                        className="border rounded px-2 py-1 w-[100px] border-gray-400"
-                    >
-                        {[5, 10, 15, 20].map(size => (
-                            <option key={size} value={size}>{size}</option>
-                        ))}
-                    </select>
+                  <label className="text-sm font-medium">Page Size:</label>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+                    className="border rounded px-2 py-1 w-[100px] border-gray-400"
+                  >
+                    {[5, 10, 15, 20].map(size => (
+                      <option key={size} value={size}>{size}</option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Pagination buttons */}
@@ -366,36 +366,36 @@ const handleDelete = async (id) => {
 
                 {/* Go to page + info */}
                 <div className="flex items-center space-x-2 gap-4">
-                    <label className="text-sm font-medium">Go to Page:</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max={totalPages}
-                        value={page}
-                        onChange={(e) => {
-                            let val = Number(e.target.value);
+                  <label className="text-sm font-medium">Go to Page:</label>
+                  <input
+                    type="number"
+                    min="1"
+                    max={totalPages}
+                    value={page}
+                    onChange={(e) => {
+                      let val = Number(e.target.value);
 
-                            // Prevent NaN or invalid numbers
-                            if (!val || val < 1) {
-                                setPage(1);
-                            } else if (val > totalPages) {
-                                setPage(totalPages);
-                            } else {
-                                setPage(val);
-                            }
-                        }}
-                        className="border rounded w-[100px] px-2 py-1 border-gray-400 mr-4"
-                    />
+                      // Prevent NaN or invalid numbers
+                      if (!val || val < 1) {
+                        setPage(1);
+                      } else if (val > totalPages) {
+                        setPage(totalPages);
+                      } else {
+                        setPage(val);
+                      }
+                    }}
+                    className="border rounded w-[100px] px-2 py-1 border-gray-400 mr-4"
+                  />
 
 
-                    <span className="text-sm  font-semibold ml-4">
-                        Page {page} of {totalPages}
-                    </span>
-                    <span className="text-sm gap-5 font-semibold">
-                        Total: {totalRecords}
-                    </span>
+                  <span className="text-sm  font-semibold ml-4">
+                    Page {page} of {totalPages}
+                  </span>
+                  <span className="text-sm gap-5 font-semibold">
+                    Total: {totalRecords}
+                  </span>
                 </div>
-            </div>
+              </div>
             </>
           )}
         </div>
