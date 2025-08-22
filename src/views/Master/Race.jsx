@@ -44,6 +44,11 @@ import { UPDATETOGGLER_Fwl_URL } from 'Constants/utils';
 import { UPDATETOGGLER_Bank_URL } from 'Constants/utils';
 import { UPDATETOGGLER_Career_URL } from 'Constants/utils';
 import { FaEdit } from 'react-icons/fa';
+import { FUND_LIST } from 'Constants/utils';
+import { ADD_FUND_DATA } from 'Constants/utils';
+import { GET_FUNDSearch_URL } from 'Constants/utils';
+import { UPDATE_FUND_URL } from 'Constants/utils';
+import { UPDATETOGGLER_FUND_URL } from 'Constants/utils';
 
 // API endpoints configuration
 const API_CONFIG = {
@@ -80,10 +85,11 @@ const API_CONFIG = {
     statusKey: 'isActive',
   },
   FUND: {
-    BASE: Fwl_LIST,
-    ADD: ADD_Fwl_DATA,
-    SEARCH: GET_FwlSearch_URL,
-    statusUpdate: UPDATETOGGLER_Fwl_URL,
+    BASE: FUND_LIST,
+    ADD: ADD_FUND_DATA,
+    SEARCH: GET_FUNDSearch_URL,
+    UPDATE: UPDATE_FUND_URL,
+    statusUpdate: UPDATETOGGLER_FUND_URL,
     statusKey: 'isActive',
   },
   FWL: {
@@ -148,7 +154,7 @@ const Race = () => {
   const currentApi = API_CONFIG[activeTab.toUpperCase()];
 
   // Define columns and form fields for each tab
-  const TAB_CONFIG = {
+  const TAB_CONFIG = { 
     race: {
       label: 'Race',
       columns: [
@@ -206,15 +212,35 @@ const Race = () => {
     fund: {
       label: 'Fund',
       columns: [
-        { header: 'Fund Code', key: 'fundCode' },
-        { header: 'Fund Name', key: 'fundName' }
+        { header: 'Fund Code', key: 'enterFundCode' },
+        { header: 'Fund Name', key: 'enterFundName' },
+        { header: 'Percent', key: 'percent' },
+        { header: 'Max Per Month', key: 'maxPerMonth' },
+        { header: 'Min Per Month', key: 'minPerMonth' },
+        { header: 'IR8A Fund', key: 'ir8AFund' },
+        { header: 'IR21', key: 'ir21' },
       ],
       fields: [
-        { name: 'fundCode', label: 'Fund Code', type: 'text', required: true },
-        { name: 'fundName', label: 'Fund Name', type: 'text', required: true }
+        { name: 'enterFundCode', label: 'Fund Code', type: 'text', required: true },
+        { name: 'enterFundName', label: 'Fund Name', type: 'text', required: true },
+        { name: 'percent', label: 'Percent', type: 'number', required: true },
+        { name: 'maxPerMonth', label: 'Max Per Month', type: 'number', required: true },
+        { name: 'minPerMonth', label: 'Min Per Month', type: 'number', required: true },
+        { name: 'ir8AFund', label: 'IR8A Fund', type: 'checkbox', required: false },
+        { name: 'ir21', label: 'IR21', type: 'text', required: false },
       ],
-      initialValues: { fundCode: '', fundName: '' }
+      initialValues: {
+        id: 0,
+        enterFundCode: '',
+        enterFundName: '',
+        percent: 0,
+        maxPerMonth: 0,
+        minPerMonth: 0,
+        ir8AFund: true,
+        ir21: '',
+      },
     },
+    
     fwl: {
       label: 'FWL',
       columns: [

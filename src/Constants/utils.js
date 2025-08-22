@@ -253,6 +253,14 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
          export const UPDATE_Education_URL = `${BASE_URL}/api/education/update`;
          export const UPDATETOGGLER_Education_URL = `${BASE_URL}/api/education`;
 
+         //fund
+         export const FUND_LIST = `${BASE_URL}/api/fund/getAll`
+         export const ADD_FUND_DATA = `${BASE_URL}/api/fund/addFund`;
+         export const GET_FUNDSearch_URL = `${BASE_URL}/api/fund/search`;
+         export const GET_FUNDBYID_URL = `${BASE_URL}/api/fund/getBy`;
+         export const UPDATE_FUND_URL = `${BASE_URL}/api/fund/update`;
+         export const UPDATETOGGLER_FUND_URL = `${BASE_URL}/api/fund`;
+
            //Category
 
            export const Category_LIST = `${BASE_URL}/api/category/getAll`
