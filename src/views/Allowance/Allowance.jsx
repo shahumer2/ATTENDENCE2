@@ -369,7 +369,17 @@ const handleSubmit = async (values, { resetForm }) => {
 
                   <Field
                     name="allowanceCode"
+                     placeholder=" ALLOWANCE CODE"
                     className="w-full p-2 border border-gray-300 rounded"
+                     style={{
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
+                    
                   />
                   <ErrorMessage name="allowanceCode" component="div" className="text-red-500 text-xs" />
                 </div>
@@ -380,7 +390,16 @@ const handleSubmit = async (values, { resetForm }) => {
                   </label>
                   <Field
                     name="allowanceName"
+                     placeholder="ALLOWANCE NAME "
                     className="w-full p-2 border border-gray-300 rounded"
+                     style={{
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
                   />
                   <ErrorMessage name="allowanceName" component="div" className="text-red-500 text-xs" />
                 </div>
@@ -391,7 +410,17 @@ const handleSubmit = async (values, { resetForm }) => {
                   </label>
                   <Field
                     name="allowanceAmount"
+                    placeholder="0.00 "
                     className="w-full p-2 border border-gray-300 rounded"
+                    style={{
+                       width: "131px",  
+    fontSize: "14px",
+    color: "#242424",
+    fontWeight: 500,
+    borderRadius: "6px",
+    backgroundColor: "transparent",
+    border: "1px solid #ced4da",
+  }}
                   />
                   <ErrorMessage name="allowanceAmount" component="div" className="text-red-500 text-xs" />
                 </div>
@@ -454,7 +483,7 @@ const handleSubmit = async (values, { resetForm }) => {
                           }
                         `}
                       >
-                        {/* <option value="">Select Option</option> */}
+                        <option value="">Select Option</option>
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
@@ -531,7 +560,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                             disabled={!values.checkByTimeOut}
                           >
-                            {/* <option value="">Select Option</option> */}
+                            <option value="" >Select Option</option>
                             <option value="=">=</option>
                             <option value="<=">&lt;=</option>
                             <option value=">=">&gt;=</option>
@@ -599,7 +628,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByActual}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -676,7 +705,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         `}
                         disabled={!values.checkBy.includes('nrm')}
                       >
-                        {/* <option value="">Select Option</option> */}
+                        <option value="">Select Option</option>
                         <option value="=">=</option>
                         <option value="<=">&lt;=</option>
                         <option value=">=">&gt;=</option>
@@ -742,7 +771,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByOt}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -810,7 +839,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByLateness}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -878,7 +907,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                           disabled={!values.checkByEarlyOut}
                         >
-                          {/* <option value="">Select Option</option> */}
+                          <option value="">Select Option</option>
                           <option value="=">=</option>
                           <option value="<=">&lt;=</option>
                           <option value=">=">&gt;=</option>
@@ -1052,7 +1081,7 @@ const handleSubmit = async (values, { resetForm }) => {
   className={`
     w-5 h-5 flex items-center justify-center 
     border-2 border-gray-400 rounded-sm 
-    ${!values.checkBy.includes('day') ? 'cursor-not-allowed bg-gray-100' : ''}
+    ${!values.checkBy.includes('day') ? 'cursor-not-allowed bg-gray-100 border-[#cdd0dd]' : ''}
     peer-checked:border-[#337ab7]
     relative
     after:content-[''] after:w-[6px] after:h-[10px] 
@@ -1109,7 +1138,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         </div>
 
                         {/* Checkbox in front of Pay */}
-                    <div className="flex items-center ml-11 space-x-2">
+                    <div className="flex items-center ml-11 ">
                       {/* Pay Checkbox */}
                       {/* <input
                         type="checkbox"
