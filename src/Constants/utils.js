@@ -149,6 +149,10 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const ADD_Autoshift_DATA = `${BASE_URL}/api/autoshift/addAutoShift`;
 
 
+//  Allowance
+    export const ADD_Allowance_DATA = `${BASE_URL}/api/allowance-criteria/create-allowance`;
+
+
  //Branch
 
  export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;

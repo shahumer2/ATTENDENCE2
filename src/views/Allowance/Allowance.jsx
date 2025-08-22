@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { ADD_Allowance_DATA } from 'Constants/utils'; // adjust path
 
 const Allowance = () => {
   const [loading, setLoading] = useState(false);
@@ -98,6 +99,109 @@ const Allowance = () => {
 
   
 
+// const handleSubmit = async (values, { resetForm }) => {
+//   setSubmitLoading(true);
+
+//   const optionMapping = {
+//     "=": "Equal to",
+//     ">=": "Greater than equal to",
+//     "<=": "Less than equal to",
+//     ">": "Greater than",
+//     "<": "Less than"
+//   };
+
+//   // Helper: ensure time string has seconds
+//   const formatTimeString = (timeStr) => {
+//     if (!timeStr) return null;
+//     return timeStr.length === 5 ? `${timeStr}:00` : timeStr;  // if "HH:mm", add ":00"
+//   };
+
+//   try {
+//     const payload = {
+//       allowanceCode: values.allowanceCode,
+//       allowanceName: values.allowanceName,
+//       allowanceAmount: Number(values.allowanceAmount),
+
+//       checkByTimeIn: optionMapping[values.checkByTimeOption] || values.checkByTimeOption,
+//       checkByTimeInClock: formatTimeString(values.checkByTimeInClock),
+
+//       checkByTimeOut: optionMapping[values.checkByTimeOutOption] || values.checkByTimeOutOption,
+//       checkByTimeOutClock: formatTimeString(values.checkByTimeOutClock),
+
+//       checkByActual: optionMapping[values.checkByActualOption] || values.checkByActualOption,
+//       checkByActualClock: formatTimeString(values.checkByActualClock),
+
+//       checkByNrm: optionMapping[values.checkByNrmOption] || values.checkByNrmOption,
+//       checkByNrmClock: formatTimeString(values.checkByNrmClock),
+
+//       checkByOt: optionMapping[values.checkByOtOption] || values.checkByOtOption,
+//       checkByOtClock: formatTimeString(values.checkByOtClock),
+
+//       checkByLateness: optionMapping[values.checkByLatenessOption] || values.checkByLatenessOption,
+//       checkByLatenessClock: formatTimeString(values.checkByLatenessClock),
+
+//       checkByEarlyOut: optionMapping[values.checkByEarlyOutOption] || values.checkByEarlyOutOption,
+//       checkByEarlyOutClock: formatTimeString(values.checkByEarlyOutClock),
+
+//       checkByPhRes: optionMapping[values.checkByPhResOption] || values.checkByPhResOption,
+//       checkByPhResClock: formatTimeString(values.checkByPhResClock),
+
+//       // Days as "YES"/"NO"
+//       checkByDayMonday: values.selectedDays?.includes("Monday") ? "YES" : "NO",
+//       checkByDayTuesday: values.selectedDays?.includes("Tuesday") ? "YES" : "NO",
+//       checkByDayWednesday: values.selectedDays?.includes("Wednesday") ? "YES" : "NO",
+//       checkByDayThursday: values.selectedDays?.includes("Thursday") ? "YES" : "NO",
+//       checkByDayFriday: values.selectedDays?.includes("Friday") ? "YES" : "NO",
+//       checkByDaySaturday: values.selectedDays?.includes("Saturday") ? "YES" : "NO",
+//       checkByDaySunday: values.selectedDays?.includes("Sunday") ? "YES" : "NO",
+
+//       // Booleans and IDs
+//       shiftPay: Boolean(values.payCheckbox),
+//       shiftIds: selectedShifts.map(Number),
+
+//       // leaveGroupPay: Boolean(values.payReason),
+//       // leaveGroupIds: selectedReasons.map(Number),
+//       leaveGroupPay: values.payReason,
+//         leaveGroupIds: selectedReasons.map(Number),
+
+//       // branchClockLocationPay: Boolean(values.payClock),
+//       // branchIds: selectedClocks.map(Number)
+
+//       branchClockLocationPay: Boolean(values.payClock),
+//   branchIds: selectedClocks.map(Number)
+//     };
+
+//     console.log("Payload sent:", JSON.stringify(payload, null, 2));
+
+//     const response = await fetch("http://localhost:8081/api/allowance-criteria/create-allowance", {
+//       method: "POST",
+//       headers: { 
+//         "Content-Type": "application/json",
+//         'Authorization': `Bearer ${token}`
+//       },
+//       body: JSON.stringify(payload)
+//     });
+
+//     if (!response.ok) {
+//       throw new Error('Failed to save allowance criteria');
+//     }
+
+//     toast.success('Allowance criteria saved successfully!');
+//     resetForm();
+//     setSelectedShifts([]);
+//     setSelectedReasons([]);
+//     setSelectedClocks([]);
+//   } catch (error) {
+//     console.error("Error saving allowance criteria:", error);
+//     toast.error(error.message || 'Failed to save allowance criteria');
+//   } finally {
+//     setSubmitLoading(false);
+//   }
+// };
+
+
+
+
 const handleSubmit = async (values, { resetForm }) => {
   setSubmitLoading(true);
 
@@ -112,7 +216,7 @@ const handleSubmit = async (values, { resetForm }) => {
   // Helper: ensure time string has seconds
   const formatTimeString = (timeStr) => {
     if (!timeStr) return null;
-    return timeStr.length === 5 ? `${timeStr}:00` : timeStr;  // if "HH:mm", add ":00"
+    return timeStr.length === 5 ? `${timeStr}:00` : timeStr; // if "HH:mm", add ":00"
   };
 
   try {
@@ -158,21 +262,16 @@ const handleSubmit = async (values, { resetForm }) => {
       shiftPay: Boolean(values.payCheckbox),
       shiftIds: selectedShifts.map(Number),
 
-      // leaveGroupPay: Boolean(values.payReason),
-      // leaveGroupIds: selectedReasons.map(Number),
       leaveGroupPay: values.payReason,
-        leaveGroupIds: selectedReasons.map(Number),
-
-      // branchClockLocationPay: Boolean(values.payClock),
-      // branchIds: selectedClocks.map(Number)
+      leaveGroupIds: selectedReasons.map(Number),
 
       branchClockLocationPay: Boolean(values.payClock),
-  branchIds: selectedClocks.map(Number)
+      branchIds: selectedClocks.map(Number)
     };
 
     console.log("Payload sent:", JSON.stringify(payload, null, 2));
 
-    const response = await fetch("http://localhost:8081/api/allowance-criteria/create-allowance", {
+    const response = await fetch(ADD_Allowance_DATA, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -197,7 +296,6 @@ const handleSubmit = async (values, { resetForm }) => {
     setSubmitLoading(false);
   }
 };
-
 
 
 

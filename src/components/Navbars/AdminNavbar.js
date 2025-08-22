@@ -788,7 +788,7 @@ function Header() {
                 : "text-slate-50 hover:text-[#FFD700]"
                 }`}
             >
-              Allowance
+              Allowance Settings
               {allowanceDropdownOpen ? (
                 <BsChevronUp className="ml-1" />
               ) : (
