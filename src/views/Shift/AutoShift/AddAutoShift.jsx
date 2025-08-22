@@ -174,7 +174,11 @@ useEffect(() => {
   return (
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Auto Shift</h1>
+        {/* <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Auto Shift</h1> */}
+        <h1 className="-mt-[5px] mb-[12px] pb-[8px] text-[23px] font-bold border-b border-[#ababab] text-[#323232] ">
+ Auto Shift Details
+</h1>
+
 
         <Formik
           initialValues={initialValues}
@@ -188,9 +192,10 @@ useEffect(() => {
               <Form>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Auto Shift Code<span className="text-red-600">*</span>
-                    </label>
+                   <label className="block text-[14px] font-bold text-gray-700 mb-[2px]">
+  Auto Shift Code<span className="text-red-600">*</span>
+</label>
+
                     <Field
                       name="autoShiftCode"
                       className="w-full p-2 border border-gray-300 rounded"
@@ -203,7 +208,7 @@ useEffect(() => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                   <label className="block text-[14px] font-bold text-gray-700 mb-[2px]">
                       Auto Shift Name<span className="text-red-600">*</span>
                     </label>
                     <Field
@@ -218,7 +223,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="overflow-x-auto mt-6">
+                <div className="overflow-z-auto mt-6">
                   <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                     <thead className="bg-gray-100">
                       <tr>
