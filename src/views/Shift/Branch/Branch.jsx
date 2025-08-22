@@ -263,38 +263,93 @@ const handleSearchChange = (e) => {
               </table>
 
               {/* Pagination */}
-              {BranchData?.content?.length > 0 && (
-                <div className="flex justify-between items-center mt-4 p-4">
-                  <div className="text-sm text-gray-700">
-                    Showing {BranchData.content.length} of {BranchData.totalElements} Branchs
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                      disabled={currentPage === 1}
-                      className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                      Previous
-                    </button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-                      <button
-                        key={number}
-                        onClick={() => setCurrentPage(number)}
-                        className={`px-3 py-1 border rounded ${currentPage === number ? 'bg-blue-500 text-white' : ''}`}
-                      >
-                        {number}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                      className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                      Next
-                    </button>
-                  </div>
+              <div className="flex w-full justify-end items-center mt-4 px-6">
+                <div className="flex space-x-2 text-blue-500">
+                    {page > 1 && (
+                        <>
+                            <button
+                                onClick={() => setPage(1)}
+                                className="px-3 py-1 border rounded"
+                            >
+                                First
+                            </button>
+                            <button
+                                onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+                                className="px-3 py-1 border rounded"
+                            >
+                                Prev
+                            </button>
+                        </>
+                    )}
+                    {page <= totalPages && (
+                        <>
+                            <button
+                                onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+                                className="px-3 py-1 border rounded"
+                            >
+                                Next
+                            </button>
+                            <button
+                                onClick={() => setPage(totalPages)}
+                                className="px-3 py-1 border rounded"
+                            >
+                                Last
+                            </button>
+                        </>
+                    )}
                 </div>
-              )}
+            </div>
+
+            <div className="flex w-full  items-center mt-4  gap-4 px-6 mb-2">
+                {/* Page size selector */}
+                <div className="flex items-center space-x-2">
+                    <label className="text-sm font-medium">Page Size:</label>
+                    <select
+                        value={pageSize}
+                        onChange={(e) => { setPageSize(Number(e.target.value)); setPage(1); }}
+                        className="border rounded px-2 py-1 w-[100px] border-gray-400"
+                    >
+                        {[5, 10, 15, 20].map(size => (
+                            <option key={size} value={size}>{size}</option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Pagination buttons */}
+
+
+                {/* Go to page + info */}
+                <div className="flex items-center space-x-2 gap-4">
+                    <label className="text-sm font-medium">Go to Page:</label>
+                    <input
+                        type="number"
+                        min="1"
+                        max={totalPages}
+                        value={page}
+                        onChange={(e) => {
+                            let val = Number(e.target.value);
+
+                            // Prevent NaN or invalid numbers
+                            if (!val || val < 1) {
+                                setPage(1);
+                            } else if (val > totalPages) {
+                                setPage(totalPages);
+                            } else {
+                                setPage(val);
+                            }
+                        }}
+                        className="border rounded w-[100px] px-2 py-1 border-gray-400 mr-4"
+                    />
+
+
+                    <span className="text-sm  font-semibold ml-4">
+                        Page {page} of {totalPages}
+                    </span>
+                    <span className="text-sm gap-5 font-semibold">
+                        Total: {totalRecords}
+                    </span>
+                </div>
+            </div>
             </>
           )}
         </div>
