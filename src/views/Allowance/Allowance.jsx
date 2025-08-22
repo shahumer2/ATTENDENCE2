@@ -560,7 +560,7 @@ const handleSubmit = async (values, { resetForm }) => {
                             }`}
                             disabled={!values.checkByTimeOut}
                           >
-                            <option value="">Select Option</option>
+                            <option value="" >Select Option</option>
                             <option value="=">=</option>
                             <option value="<=">&lt;=</option>
                             <option value=">=">&gt;=</option>
