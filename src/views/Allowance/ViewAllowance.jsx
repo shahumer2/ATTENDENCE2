@@ -131,7 +131,7 @@ const filteredCriteria = criteria
                                                                 width: "14px",
                                                                 height: "14px",
                                                                 borderRadius: "50%",
-                                                                backgroundColor: "gold",
+                                                                backgroundColor: "#fac863",
                                                                 color: "white",
                                                                 fontSize: "14px",
                                                                 fontWeight: "bold",
