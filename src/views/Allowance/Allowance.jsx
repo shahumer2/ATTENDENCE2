@@ -1109,7 +1109,7 @@ const handleSubmit = async (values, { resetForm }) => {
                         </div>
 
                         {/* Checkbox in front of Pay */}
-                    <div className="flex items-center ml-11 space-x-2">
+                    <div className="flex items-center ml-11 ">
                       {/* Pay Checkbox */}
                       {/* <input
                         type="checkbox"
