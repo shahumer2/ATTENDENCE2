@@ -145,12 +145,19 @@ const AutoShift = () => {
         <ToastContainer position="top-right" autoClose={3000} />
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold"></h2>
-          <button
+          {/* <button
             onClick={() => navigate("/admin/ETMS/AutoShift/add")}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
           >
             Add AutoShift
-          </button>
+          </button> */}
+          <button
+  onClick={() => navigate("/admin/ETMS/AutoShift/add")}
+  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+>
+  + Add AutoShift
+</button>
+
         </div>
 
 
