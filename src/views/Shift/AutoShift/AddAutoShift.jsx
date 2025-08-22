@@ -172,6 +172,75 @@ useEffect(() => {
   }
 };
   return (
+    <>
+     <div style={{ display: "flex", alignItems: "center" }}>
+                  <h2
+                    style={{
+                      fontFamily: "'Nunito Sans', sans-serif",
+                      fontWeight: 600,
+                      fontSize: "20px",
+                      color: "#091e42",
+                      paddingLeft: "40px",
+                      paddingTop: "30px",
+                      marginRight: "8px",
+                    }}
+                  >
+                    AutoShift
+                  </h2>
+
+                    {/* Tooltip Wrapper */}
+                    <div className="relative flex items-center justify-center w-4 h-4 mr-3" style={{ paddingTop: "30px"}}>
+                                                                                <span className="text-yellow-500 text-xs cursor-pointer group inline-flex items-center justify-center">
+                                                                                <span
+                                                              style={{
+                                                                display: "inline-flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "center",
+                                                                width: "14px",
+                                                                height: "14px",
+                                                                borderRadius: "50%",
+                                                                backgroundColor: "#fac863",
+                                                                color: "white",
+                                                                fontSize: "14px",
+                                                                fontWeight: "bold",
+                                                              }}
+                                                            >
+                                                              i
+                                                            </span>
+
+                                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-80 bg-yellow-100 text-black text-sm px-4 py-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 whitespace-normal text-left pointer-events-none">
+                                                        <p className="mb-2">
+                                                          This page lets you setup daily allowances and their eligible criteria.
+                                                        </p>
+                                                        <p className="mb-2">
+                                                          Assignment of allowance(s) to staff can be done in <strong>Allowance Settings &gt; Staff Allowance</strong>.
+                                                        </p>
+                                                        <p>
+                                                          Allowances can also be assigned to shift in <strong>Shift Settings &gt; Shift Master</strong>, 
+                                                          which indirectly will also be assigned to the staff if the staff is working on that shift.
+                                                        </p>
+                                                      </div>
+
+                                                                                </span>
+                    </div>
+
+                      <div className="w-full flex justify-end pr-10 pt-5">
+                      <p
+                        style={{
+                          fontSize: "17px",
+                          fontWeight: 500,
+                          lineHeight: 1.43,
+                          letterSpacing: "0.14px",
+                          color: "#4B5563", // gray-600
+                        }}
+                      >
+                        Shift Settings <span style={{ color: "#9CA3AF" }}>&gt;</span>{" "}
+                        <span style={{ color: "#111827" }}>Auto Shift</span>
+                      </p>
+                    </div>
+
+
+                </div>
     <div className="bg-white m-6 min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         {/* <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Auto Shift</h1> */}
@@ -234,9 +303,9 @@ useEffect(() => {
                   <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">From</th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700">To</th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px]">Assigned Shift</th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-r border-gray-300">From</th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-r border-gray-300">To</th>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px] border-r border-gray-300">Assigned Shift</th>
                         <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Action</th>
                       </tr>
                     </thead>
@@ -399,6 +468,7 @@ useEffect(() => {
         <ToastContainer position="top-right" autoClose={2000} />
       </div>
     </div>
+    </>
   );
 };
 
