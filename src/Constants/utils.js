@@ -101,6 +101,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  export const ADD_SHIFT_DATA = `${BASE_URL}/api/shifts/create`;
  export const GET_ShiftSearch_URL = `${BASE_URL}/api/shifts/getShiftDropdown`;
  export const GET_SHIFTBYID_URL = `${BASE_URL}/api/shifts`;
+ export const DELETE_SHIFTBYID_URL = `${BASE_URL}/api/shifts/delete`;
  export const UPDATE_SHIFT_URL = `${BASE_URL}/api/shifts/updateShift`;
 
   //Leave Category

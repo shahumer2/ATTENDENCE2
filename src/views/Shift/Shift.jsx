@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import ReactSelect from 'react-select';
-import { useQuery } from '@tanstack/react-query';
+import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Shift_LIST } from 'Constants/utils';
 import { GET_ShiftSearch_URL } from 'Constants/utils';
 import { CiEdit, CiSearch } from "react-icons/ci";
@@ -14,9 +14,11 @@ import Tooltip from 'components/Tooltip/Tooltip';
 import Breadcrumb from 'components/Breadcum/Breadcrumb';
 import { debounce } from 'lodash';
 import { FaEdit } from 'react-icons/fa';
+import { DELETE_SHIFTBYID_URL } from 'Constants/utils';
 const Shift = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -108,6 +110,25 @@ const Shift = () => {
 const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     debounceSearch(e.target.value); // ✅ will update debouncedSearchTerm
+};
+const handleDelete = async (id) => {
+  if (window.confirm('Are you sure you want to delete this record?')) {
+    try {
+      const response = await fetch(`${DELETE_SHIFTBYID_URL}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Delete failed');
+
+      toast.success('Record deleted successfully');
+      queryClient.invalidateQueries("shifts");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
 };
 
   return (
@@ -274,7 +295,7 @@ const handleSearchChange = (e) => {
 
                           </div>
                         </td>
-                        <td><MdDelete style={{ color: "#d97777" }} size="1.3rem" /></td>
+                        <td><MdDelete style={{ color: "#d97777" }} size="1.3rem"     onClick={() => handleDelete(shift.id)}/></td>
                       </tr>
                     ))
                   ) : (

@@ -20,7 +20,7 @@ const AddShift = () => {
   });
 
   // Days of the week
-  const daysOfWeek = ['SUNDAY','MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+  const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
   // Handle form submission
   // const handleSubmit = (values) => {
@@ -68,6 +68,17 @@ const AddShift = () => {
                   />
                   <ErrorMessage name="shiftName" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
+                <div className="flex items-center mt-6">
+                  <Field
+                    type="checkbox"
+                    name="isActive"
+                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label className="ml-2 block text-sm text-gray-700">Is Active</label>
+                </div>
+
+
+
               </div>
               <div className="flex flex-nowrap overflow-x-auto pb-4 gap-2">
                 {/* Lateness Section */}
@@ -650,7 +661,7 @@ const AddShift = () => {
 
 
 
-                       
+
 
 
 
@@ -658,7 +669,7 @@ const AddShift = () => {
                           <Field
                             type="time"
                             name={`shiftSchedulers[${index}].otHour1`}
-                      
+
                             className="w-full p-1 border border-gray-300 rounded"
                           />
                         </td>
