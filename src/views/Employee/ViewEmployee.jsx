@@ -75,8 +75,7 @@ const ViewEmployee = () => {
     },
     enabled: !!token
   });
-  console.log(departments,"888888");
-console.log(filters,"Filters..______");
+
   const { data: sections = [] } = useQuery({
     queryKey: ["sections", filters.departmentName],
     queryFn: async () => {
@@ -167,7 +166,7 @@ console.log(filters,"Filters..______");
 
   // 🔹 Pagination
 
-console.log(employees,"__00");
+
   return (
     <>
       <div className="flex justify-between pl-8 pt-2 pr-8">
@@ -201,9 +200,9 @@ console.log(employees,"__00");
                   }))
                 }
                 options={[
-                  { value: "", label: "All" },
-                  { value: "active", label: "Active" },
-                  { value: "resigned", label: "Resigned" },
+                  { value: "", label: "All Employee" },
+                  { value: "active", label: "Active Employee" },
+                  { value: "resigned", label: "Resigned Employee" },
                 ]}
                 className="w-44"
                 label="Employee Status"
