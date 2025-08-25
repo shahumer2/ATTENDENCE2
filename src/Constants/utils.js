@@ -88,7 +88,7 @@ export const DELETE_EMPLOYEE_DATA = `${BASE_URL}/employee/deleteEmployee`;
 export const GET_ACTIVE_EMPLOYEE_DATA = `${BASE_URL}/employee/active`;
 export const GET_RESIGNED_EMPLOYEE_DATA = `${BASE_URL}/employee/inactive`;
 export const GET_EMPLOYEEQR_DATA = `${BASE_URL}/employee/`;
-
+export const GET_EMPLOYEESEARCH_DATA = `${BASE_URL}/employee/searchEmployee`;
 
 
 //employeetype

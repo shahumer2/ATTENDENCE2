@@ -490,11 +490,11 @@ const Department = () => {
             {activeTab} List
           </h2>
 
-          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[500px]">
+          <div className="relative mt-3 mr-2 mb-2 w-[400px] md:w-[600px]">
             <input
               type="text"
               placeholder={`Enter The ${activeTab} Code or ${activeTab} Name `}
-              className=" uppercase text-xs pl-8 w-[480px] pr-4 py-3 border rounded-xl"
+              className=" uppercase text-xs pl-8 w-[500px] pr-4 py-3 border rounded-xl"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -607,6 +607,7 @@ const Department = () => {
                   })}
                 </tbody>
               </table>
+              
               <div className="flex w-full justify-end items-center mt-4 px-6">
                 <div className="flex space-x-2 text-blue-500">
                   {page > 1 && (
