@@ -250,9 +250,9 @@ function Header() {
             onMouseEnter={handleMasterMouseEnter}
             onMouseLeave={handleMasterMouseLeave}
           >
-            <div className="flex items-center text-sm font-bold cursor-pointer transition 
+            <button className="flex items-center text-sm font-bold cursor-pointer transition 
               group-hover:text-[#FFD700] 
-              text-slate-50 
+              text-white
               hover:text-[#FFD700]"
             >
               Master
@@ -261,7 +261,7 @@ function Header() {
               ) : (
                 <BsChevronDown className="ml-1" />
               )}
-            </div>
+            </button>
 
             {/* Dropdown content */}
             {masterDropdownOpen && (
@@ -369,7 +369,7 @@ function Header() {
             onMouseEnter={handleUserMouseEnter}
             onMouseLeave={handleUserMouseLeave}
           >
-            <div className="flex items-center text-sm font-bold cursor-pointer transition 
+            <button className="flex items-center text-sm font-bold cursor-pointer transition 
               group-hover:text-[#FFD700] 
               text-slate-50 
               hover:text-[#FFD700]"
@@ -380,7 +380,7 @@ function Header() {
               ) : (
                 <BsChevronDown className="ml-1" />
               )}
-            </div>
+            </button>
 
             {/* Dropdown content */}
             {userDropdownOpen && (
