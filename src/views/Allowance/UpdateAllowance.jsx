@@ -5,6 +5,11 @@ import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GET_Shift_URL } from "Constants/utils"; // adjust path as needed
+import { GET_Reason_URL } from "Constants/utils"; // adjust path if needed
+ import { GET_Clocklocation_URL } from "Constants/utils"; // adjust path if needed
+import { UPDATE_Allowance_URL } from "Constants/utils"; // adjust path if needed
+import { GET_AllowanceBYID_URL } from 'Constants/utils';
 
 const UpdateAllowance = () => {
   const { id } = useParams();
@@ -20,66 +25,139 @@ const UpdateAllowance = () => {
   const [clockList, setClockList] = useState([]);
 
   // Fetch allowance data by ID
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         setLoading(true);
         
-        // Fetch allowance criteria
-        const allowanceResponse = await fetch(`http://localhost:8081/api/allowance-criteria/${id}`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
+//         // Fetch allowance criteria
+//         const allowanceResponse = await fetch(`http://localhost:8081/api/allowance-criteria/${id}`, {
+//           headers: {
+//             'Authorization': `Bearer ${token}`,
+//           },
+//         });
 
-        if (!allowanceResponse.ok) {
-          throw new Error('Failed to fetch allowance data');
-        }
-        const allowanceData = await allowanceResponse.json();
+//         if (!allowanceResponse.ok) {
+//           throw new Error('Failed to fetch allowance data');
+//         }
+//         const allowanceData = await allowanceResponse.json();
 
-        // Fetch dropdown data
-        const [shifts, reasons, clocks] = await Promise.all([
-          fetch('http://localhost:8081/api/shifts/getShiftDropdown', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          }),
-          fetch('http://localhost:8081/api/leavegroup/fetchAll', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          }),
-          fetch('http://localhost:8081/api/branches/fetchAll', {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          }),
-        ]);
+//         // Fetch dropdown data
+//         const [shifts, reasons, clocks] = await Promise.all([
+//           // fetch('http://localhost:8081/api/shifts/getShiftDropdown', {
+//           //   headers: {
+//           //     'Authorization': `Bearer ${token}`,
+//           //   },
+//           // }),
+//           fetch(GET_Shift_URL, {
+//   headers: {
+//     Authorization: `Bearer ${token}`,
+//   },
+// }),
+//           // fetch('http://localhost:8081/api/leavegroup/fetchAll', {
+//           //   headers: {
+//           //     'Authorization': `Bearer ${token}`,
+//           //   },
+//           // }),
+          
 
-        if (!shifts.ok || !reasons.ok || !clocks.ok) {
-          throw new Error('Failed to fetch dropdown data');
-        }
+// fetch(GET_Reason_URL, {
+//   headers: {
+//     Authorization: `Bearer ${token}`,
+//   },
+// }),
 
-        const [shiftData, reasonData, clockData] = await Promise.all([
-          shifts.json(),
-          reasons.json(),
-          clocks.json(),
-        ]);
+        
 
-        setShiftList(shiftData);
-        setReasonList(reasonData);
-        setClockList(clockData);
-        setInitialData(transformData(allowanceData));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        toast.error(error.message || 'Failed to load data');
-      } finally {
-        setLoading(false);
+// fetch(GET_Clocklocation_URL, {
+//   headers: {
+//     Authorization: `Bearer ${token}`,
+//   },
+// }),
+//         ]);
+
+//         if (!shifts.ok || !reasons.ok || !clocks.ok) {
+//           throw new Error('Failed to fetch dropdown data');
+//         }
+
+//         const [shiftData, reasonData, clockData] = await Promise.all([
+//           shifts.json(),
+//           reasons.json(),
+//           clocks.json(),
+//         ]);
+
+//         setShiftList(shiftData);
+//         setReasonList(reasonData);
+//         setClockList(clockData);
+//         setInitialData(transformData(allowanceData));
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//         toast.error(error.message || 'Failed to load data');
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchData();
+//   }, [id, token]);
+
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch allowance criteria by ID
+      const allowanceResponse = await fetch(`${GET_AllowanceBYID_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!allowanceResponse.ok) {
+        throw new Error("Failed to fetch allowance data");
       }
-    };
+      const allowanceData = await allowanceResponse.json();
 
-    fetchData();
-  }, [id, token]);
+      // Fetch dropdown data in parallel
+      const [shifts, reasons, clocks] = await Promise.all([
+        fetch(GET_Shift_URL, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(GET_Reason_URL, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch(GET_Clocklocation_URL, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+
+      if (!shifts.ok || !reasons.ok || !clocks.ok) {
+        throw new Error("Failed to fetch dropdown data");
+      }
+
+      const [shiftData, reasonData, clockData] = await Promise.all([
+        shifts.json(),
+        reasons.json(),
+        clocks.json(),
+      ]);
+
+      setShiftList(shiftData);
+      setReasonList(reasonData);
+      setClockList(clockData);
+      setInitialData(transformData(allowanceData));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error(error.message || "Failed to load data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchData();
+}, [id, token]);
+
 
   // Transform backend data to form initial values
   const transformData = (data) => {
@@ -190,100 +268,197 @@ const UpdateAllowance = () => {
       .required('Please select at least one check type'),
   });
 
-  const handleSubmit = async (values, { resetForm }) => {
-    setSubmitLoading(true);
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   setSubmitLoading(true);
 
-    const optionMapping = {
-      "=": "Equal to",
-      ">=": "Greater than equal to",
-      "<=": "Less than equal to",
-      ">": "Greater than",
-      "<": "Less than"
-    };
+  //   const optionMapping = {
+  //     "=": "Equal to",
+  //     ">=": "Greater than equal to",
+  //     "<=": "Less than equal to",
+  //     ">": "Greater than",
+  //     "<": "Less than"
+  //   };
 
-    // Helper: ensure time string has seconds
-    const formatTimeString = (timeStr) => {
-      if (!timeStr) return null;
-      return timeStr.length === 5 ? `${timeStr}:00` : timeStr;
-    };
+  //   // Helper: ensure time string has seconds
+  //   const formatTimeString = (timeStr) => {
+  //     if (!timeStr) return null;
+  //     return timeStr.length === 5 ? `${timeStr}:00` : timeStr;
+  //   };
 
-    try {
-      const payload = {
-        id: parseInt(id), // Include the ID for update
-        allowanceCode: values.allowanceCode,
-        allowanceName: values.allowanceName,
-        allowanceAmount: Number(values.allowanceAmount),
+  //   try {
+  //     const payload = {
+  //       id: parseInt(id), // Include the ID for update
+  //       allowanceCode: values.allowanceCode,
+  //       allowanceName: values.allowanceName,
+  //       allowanceAmount: Number(values.allowanceAmount),
 
-        checkByTimeIn: optionMapping[values.checkByTimeOption] || values.checkByTimeOption,
-        checkByTimeInClock: formatTimeString(values.checkByTimeInClock),
+  //       checkByTimeIn: optionMapping[values.checkByTimeOption] || values.checkByTimeOption,
+  //       checkByTimeInClock: formatTimeString(values.checkByTimeInClock),
 
-        checkByTimeOut: optionMapping[values.checkByTimeOutOption] || values.checkByTimeOutOption,
-        checkByTimeOutClock: formatTimeString(values.checkByTimeOutClock),
+  //       checkByTimeOut: optionMapping[values.checkByTimeOutOption] || values.checkByTimeOutOption,
+  //       checkByTimeOutClock: formatTimeString(values.checkByTimeOutClock),
 
-        checkByActual: optionMapping[values.checkByActualOption] || values.checkByActualOption,
-        checkByActualClock: formatTimeString(values.checkByActualClock),
+  //       checkByActual: optionMapping[values.checkByActualOption] || values.checkByActualOption,
+  //       checkByActualClock: formatTimeString(values.checkByActualClock),
 
-        checkByNrm: optionMapping[values.checkByNrmOption] || values.checkByNrmOption,
-        checkByNrmClock: formatTimeString(values.checkByNrmClock),
+  //       checkByNrm: optionMapping[values.checkByNrmOption] || values.checkByNrmOption,
+  //       checkByNrmClock: formatTimeString(values.checkByNrmClock),
 
-        checkByOt: optionMapping[values.checkByOtOption] || values.checkByOtOption,
-        checkByOtClock: formatTimeString(values.checkByOtClock),
+  //       checkByOt: optionMapping[values.checkByOtOption] || values.checkByOtOption,
+  //       checkByOtClock: formatTimeString(values.checkByOtClock),
 
-        checkByLateness: optionMapping[values.checkByLatenessOption] || values.checkByLatenessOption,
-        checkByLatenessClock: formatTimeString(values.checkByLatenessClock),
+  //       checkByLateness: optionMapping[values.checkByLatenessOption] || values.checkByLatenessOption,
+  //       checkByLatenessClock: formatTimeString(values.checkByLatenessClock),
 
-        checkByEarlyOut: optionMapping[values.checkByEarlyOutOption] || values.checkByEarlyOutOption,
-        checkByEarlyOutClock: formatTimeString(values.checkByEarlyOutClock),
+  //       checkByEarlyOut: optionMapping[values.checkByEarlyOutOption] || values.checkByEarlyOutOption,
+  //       checkByEarlyOutClock: formatTimeString(values.checkByEarlyOutClock),
 
-        checkByPhRes: optionMapping[values.checkByPhResOption] || values.checkByPhResOption,
-        checkByPhResClock: formatTimeString(values.checkByPhResClock),
+  //       checkByPhRes: optionMapping[values.checkByPhResOption] || values.checkByPhResOption,
+  //       checkByPhResClock: formatTimeString(values.checkByPhResClock),
 
-        // Days as "YES"/"NO"
-        checkByDayMonday: values.selectedDays?.includes("Monday") ? "YES" : "NO",
-        checkByDayTuesday: values.selectedDays?.includes("Tuesday") ? "YES" : "NO",
-        checkByDayWednesday: values.selectedDays?.includes("Wednesday") ? "YES" : "NO",
-        checkByDayThursday: values.selectedDays?.includes("Thursday") ? "YES" : "NO",
-        checkByDayFriday: values.selectedDays?.includes("Friday") ? "YES" : "NO",
-        checkByDaySaturday: values.selectedDays?.includes("Saturday") ? "YES" : "NO",
-        checkByDaySunday: values.selectedDays?.includes("Sunday") ? "YES" : "NO",
+  //       // Days as "YES"/"NO"
+  //       checkByDayMonday: values.selectedDays?.includes("Monday") ? "YES" : "NO",
+  //       checkByDayTuesday: values.selectedDays?.includes("Tuesday") ? "YES" : "NO",
+  //       checkByDayWednesday: values.selectedDays?.includes("Wednesday") ? "YES" : "NO",
+  //       checkByDayThursday: values.selectedDays?.includes("Thursday") ? "YES" : "NO",
+  //       checkByDayFriday: values.selectedDays?.includes("Friday") ? "YES" : "NO",
+  //       checkByDaySaturday: values.selectedDays?.includes("Saturday") ? "YES" : "NO",
+  //       checkByDaySunday: values.selectedDays?.includes("Sunday") ? "YES" : "NO",
 
-        // Booleans and IDs
-        shiftPay: Boolean(values.payCheckbox),
-        shiftIds: values.selectedShifts.map(Number),
+  //       // Booleans and IDs
+  //       shiftPay: Boolean(values.payCheckbox),
+  //       shiftIds: values.selectedShifts.map(Number),
 
-        leaveGroupPay: values.payReason,
-        leaveGroupIds: values.selectedReasons.map(Number),
+  //       leaveGroupPay: values.payReason,
+  //       leaveGroupIds: values.selectedReasons.map(Number),
 
-        branchClockLocationPay: Boolean(values.payClock),
-        branchIds: values.selectedClocks.map(Number)
-      };
+  //       branchClockLocationPay: Boolean(values.payClock),
+  //       branchIds: values.selectedClocks.map(Number)
+  //     };
 
-      console.log("Sending payload:", payload); // For debugging
+  //     console.log("Sending payload:", payload); // For debugging
 
-      const response = await fetch(`http://localhost:8081/api/allowance-criteria/update-allowance/${id}`, {
-        method: "PUT",
-        headers: { 
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(payload)
-      });
+  //     const response = await fetch(`http://localhost:8081/api/allowance-criteria/update-allowance/${id}`, {
+  //       method: "PUT",
+  //       headers: { 
+  //         "Content-Type": "application/json",
+  //         'Authorization': `Bearer ${token}`
+  //       },
+  //       body: JSON.stringify(payload)
+  //     });
 
-      const responseData = await response.json();
+  //     const responseData = await response.json();
 
-      if (!response.ok) {
-        throw new Error(responseData.message || 'Failed to update allowance criteria');
-      }
+  //     if (!response.ok) {
+  //       throw new Error(responseData.message || 'Failed to update allowance criteria');
+  //     }
 
-      toast.success('Allowance criteria updated successfully!');
-      //navigate('/admin/allowance/viewAllowance');
-    } catch (error) {
-      console.error("Error updating allowance criteria:", error);
-      toast.error(error.message || 'Failed to update allowance criteria');
-    } finally {
-      setSubmitLoading(false);
-    }
+  //     toast.success('Allowance criteria updated successfully!');
+  //     //navigate('/admin/allowance/viewAllowance');
+  //   } catch (error) {
+  //     console.error("Error updating allowance criteria:", error);
+  //     toast.error(error.message || 'Failed to update allowance criteria');
+  //   } finally {
+  //     setSubmitLoading(false);
+  //   }
+  // };
+
+
+
+
+const handleSubmit = async (values, { resetForm }) => {
+  setSubmitLoading(true);
+
+  const optionMapping = {
+    "=": "Equal to",
+    ">=": "Greater than equal to",
+    "<=": "Less than equal to",
+    ">": "Greater than",
+    "<": "Less than"
   };
+
+  const formatTimeString = (timeStr) => {
+    if (!timeStr) return null;
+    return timeStr.length === 5 ? `${timeStr}:00` : timeStr;
+  };
+
+  try {
+    const payload = {
+      id: parseInt(id),
+      allowanceCode: values.allowanceCode,
+      allowanceName: values.allowanceName,
+      allowanceAmount: Number(values.allowanceAmount),
+
+      checkByTimeIn: optionMapping[values.checkByTimeOption] || values.checkByTimeOption,
+      checkByTimeInClock: formatTimeString(values.checkByTimeInClock),
+
+      checkByTimeOut: optionMapping[values.checkByTimeOutOption] || values.checkByTimeOutOption,
+      checkByTimeOutClock: formatTimeString(values.checkByTimeOutClock),
+
+      checkByActual: optionMapping[values.checkByActualOption] || values.checkByActualOption,
+      checkByActualClock: formatTimeString(values.checkByActualClock),
+
+      checkByNrm: optionMapping[values.checkByNrmOption] || values.checkByNrmOption,
+      checkByNrmClock: formatTimeString(values.checkByNrmClock),
+
+      checkByOt: optionMapping[values.checkByOtOption] || values.checkByOtOption,
+      checkByOtClock: formatTimeString(values.checkByOtClock),
+
+      checkByLateness: optionMapping[values.checkByLatenessOption] || values.checkByLatenessOption,
+      checkByLatenessClock: formatTimeString(values.checkByLatenessClock),
+
+      checkByEarlyOut: optionMapping[values.checkByEarlyOutOption] || values.checkByEarlyOutOption,
+      checkByEarlyOutClock: formatTimeString(values.checkByEarlyOutClock),
+
+      checkByPhRes: optionMapping[values.checkByPhResOption] || values.checkByPhResOption,
+      checkByPhResClock: formatTimeString(values.checkByPhResClock),
+
+      checkByDayMonday: values.selectedDays?.includes("Monday") ? "YES" : "NO",
+      checkByDayTuesday: values.selectedDays?.includes("Tuesday") ? "YES" : "NO",
+      checkByDayWednesday: values.selectedDays?.includes("Wednesday") ? "YES" : "NO",
+      checkByDayThursday: values.selectedDays?.includes("Thursday") ? "YES" : "NO",
+      checkByDayFriday: values.selectedDays?.includes("Friday") ? "YES" : "NO",
+      checkByDaySaturday: values.selectedDays?.includes("Saturday") ? "YES" : "NO",
+      checkByDaySunday: values.selectedDays?.includes("Sunday") ? "YES" : "NO",
+
+      shiftPay: Boolean(values.payCheckbox),
+      shiftIds: values.selectedShifts.map(Number),
+
+      leaveGroupPay: values.payReason,
+      leaveGroupIds: values.selectedReasons.map(Number),
+
+      branchClockLocationPay: Boolean(values.payClock),
+      branchIds: values.selectedClocks.map(Number)
+    };
+
+    console.log("Sending payload:", payload);
+
+    const response = await fetch(`${UPDATE_Allowance_URL}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.message || "Failed to update allowance criteria");
+    }
+
+    toast.success("Allowance criteria updated successfully!");
+    // navigate('/admin/allowance/viewAllowance');
+  } catch (error) {
+    console.error("Error updating allowance criteria:", error);
+    toast.error(error.message || "Failed to update allowance criteria");
+  } finally {
+    setSubmitLoading(false);
+  }
+};
+
+
 
   const handleShiftSelect = (selectedShifts, setFieldValue) => (shiftId, isChecked) => {
     const newShifts = isChecked 
