@@ -6,6 +6,10 @@ import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { ADD_Allowance_DATA } from 'Constants/utils'; // adjust path
+import { GET_Shift_URL } from "Constants/utils"; // adjust path if needed
+import { GET_Reason_URL } from "Constants/utils"; // adjust path if needed
+import { GET_Clocklocation_URL } from "Constants/utils"; // adjust the path if needed
+
 
 const Allowance = () => {
   const [loading, setLoading] = useState(false);
@@ -23,74 +27,146 @@ const Allowance = () => {
 
   
   useEffect(() => {
-    const fetchShifts = async () => {
-      try {
-        const response = await fetch('http://localhost:8081/api/shifts/getShiftDropdown', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+    // const fetchShifts = async () => {
+    //   try {
+    //     const response = await fetch('http://localhost:8081/api/shifts/getShiftDropdown', {
+    //       method: 'GET',
+    //       headers: {
+    //         'Authorization': `Bearer ${token}`,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch shift list');
-        }
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch shift list');
+    //     }
 
-        const data = await response.json();
-        setShiftList(data);
-      } catch (error) {
-        console.error('Error fetching shift data:', error);
-        toast.error('Failed to load shift data');
-      }
-    };
+    //     const data = await response.json();
+    //     setShiftList(data);
+    //   } catch (error) {
+    //     console.error('Error fetching shift data:', error);
+    //     toast.error('Failed to load shift data');
+    //   }
+    // };
 
-    const fetchReason = async () => {
-      try {
-        const response = await fetch('http://localhost:8081/api/leavegroup/fetchAll', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch reason list');
-        }
+    
 
-        const data = await response.json();
-        setReasonList(data);
-      } catch (error) {
-        console.error('Error fetching reason data:', error);
-        toast.error('Failed to load reason data');
-      }
-    };
+const fetchShifts = async () => {
+  try {
+    const response = await fetch(GET_Shift_URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-    const fetchClock = async () => {
-      try {
-        const response = await fetch('http://localhost:8081/api/branches/fetchAll', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+    if (!response.ok) {
+      throw new Error("Failed to fetch shift list");
+    }
+
+    const data = await response.json();
+    setShiftList(data);
+  } catch (error) {
+    console.error("Error fetching shift data:", error);
+    toast.error("Failed to load shift data");
+  }
+};
+
+    // const fetchReason = async () => {
+    //   try {
+    //     const response = await fetch('http://localhost:8081/api/leavegroup/fetchAll', {
+    //       method: 'GET',
+    //       headers: {
+    //         'Authorization': `Bearer ${token}`,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
+
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch reason list');
+    //     }
+
+    //     const data = await response.json();
+    //     setReasonList(data);
+    //   } catch (error) {
+    //     console.error('Error fetching reason data:', error);
+    //     toast.error('Failed to load reason data');
+    //   }
+    // };
+
+    
+
+const fetchReason = async () => {
+  try {
+    const response = await fetch(GET_Reason_URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch reason list");
+    }
+
+    const data = await response.json();
+    setReasonList(data);
+  } catch (error) {
+    console.error("Error fetching reason data:", error);
+    toast.error("Failed to load reason data");
+  }
+};
+
+    // const fetchClock = async () => {
+    //   try {
+    //     const response = await fetch('http://localhost:8081/api/branches/fetchAll', {
+    //       method: 'GET',
+    //       headers: {
+    //         'Authorization': `Bearer ${token}`,
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
 
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch clock location list');
-        }
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch clock location list');
+    //     }
 
-        const data = await response.json();
-        //console.log('API Response Data:', data); // Log the parsed JSON data
-        setClockList(data);
-      } catch (error) {
-        console.error('Error fetching clock location data:', error);
-        toast.error('Failed to load clock location data');
-      }
-    };
+    //     const data = await response.json();
+    //     //console.log('API Response Data:', data); // Log the parsed JSON data
+    //     setClockList(data);
+    //   } catch (error) {
+    //     console.error('Error fetching clock location data:', error);
+    //     toast.error('Failed to load clock location data');
+    //   }
+    // };
     
+
+const fetchClock = async () => {
+  try {
+    const response = await fetch(GET_Clocklocation_URL, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch clock location list");
+    }
+
+    const data = await response.json();
+    // console.log("API Response Data:", data);
+    setClockList(data);
+  } catch (error) {
+    console.error("Error fetching clock location data:", error);
+    toast.error("Failed to load clock location data");
+  }
+};
 
     setLoading(true);
     Promise.all([fetchShifts(), fetchReason(), fetchClock()])
