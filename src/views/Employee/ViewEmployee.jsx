@@ -238,12 +238,13 @@ const ViewEmployee = () => {
                   }))
                 }
                 options={[
+                  { value: "", label: "--No Filter--" },
                   { value: "department", label: "Department" },
                   { value: "section", label: "Section" },
                   { value: "designation", label: "Designation" },
                   { value: "gender", label: "Gender" },
                 ]}
-                className="w-44"
+                className="w-44 capitalize"
                 isClearable
               />
             </div>
@@ -259,8 +260,8 @@ const ViewEmployee = () => {
                   placeholder="Select"
                   value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName } : null}
                   onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value || "" }))}
-                  options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName }))}
-                  className="w-44"
+                  options={departments.map((dep) => ({ value: dep.departmentName, label: `${dep.departmentName} -  ${dep.departmentCode}` }))}
+                  className="w-44 uppercase"
                   isClearable
                 />
               </div>
