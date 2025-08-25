@@ -36,7 +36,7 @@ export const SECTION_DELETE = `${BASE_URL}/api/section/delete`;
 export const SECTION_LISTT = `${BASE_URL}/api/section/fetch-all`;
 export const SECTION_UPDATE = `${BASE_URL}/api/section/update`;
 export const SECTIONISACTIVE_UPDATE = `${BASE_URL}/api/section`;
-
+export const SECTIONDEPARTMENT_VIEW = `${BASE_URL}/api/section/department`;
 //category
 export const CATEGORY_ADD = `${BASE_URL}/api/category/add`;
 export const CATEGORY_LIST = `${BASE_URL}/api/category/getAll`;

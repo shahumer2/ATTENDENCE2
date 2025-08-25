@@ -15,8 +15,10 @@ import { GET_DEPARTMENT_LIST, SECTION_LISTT, DESIGNATIONS_LIST } from 'Constants
 import { GET_EMPLOYEESEARCH_DATA } from 'Constants/utils';
 import { CiSearch } from 'react-icons/ci';
 import { FaEdit } from 'react-icons/fa';
+import { SECTIONDEPARTMENT_VIEW } from 'Constants/utils';
 
 const ViewEmployee = () => {
+  const [depId, setdepId] = useState(null)
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -33,6 +35,7 @@ const ViewEmployee = () => {
     const [totalRecords, setTotalRecords] = useState(0);
 
   const [filters, setFilters] = useState({
+    depId:"",
     employeeStatus: "", // active/resigned/empty
     departmentName: "",
     sectionName: "",
@@ -72,12 +75,13 @@ const ViewEmployee = () => {
     },
     enabled: !!token
   });
-
+  console.log(departments,"888888");
+console.log(filters,"Filters..______");
   const { data: sections = [] } = useQuery({
     queryKey: ["sections", filters.departmentName],
     queryFn: async () => {
       if (!filters.departmentName) return [];
-      const res = await fetch(`${SECTION_LISTT}?department=${filters.departmentName}`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(`${SECTIONDEPARTMENT_VIEW}/${filters?.depId}`, { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error("Failed to fetch sections");
       return res.json();
     },
@@ -269,9 +273,9 @@ console.log(employees,"__00");
                   <label className='text-sm font-semibold mb-2'>Department</label>
                   <Select
                     placeholder="Select"
-                    value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName } : null}
-                    onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value || "", sectionName: "" }))}
-                    options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName }))}
+                    value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName,id: filters.depId } : null}
+                    onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value, depId: opt?.id || "",   sectionName: "" }))}
+                    options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName , id: dep.id}))}
                     className="w-44"
                     isClearable
                   />
