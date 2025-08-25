@@ -303,10 +303,10 @@ useEffect(() => {
                   <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                     <thead className="bg-gray-100">
                       <tr>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-r border-gray-300">From</th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 border-r border-gray-300">To</th>
-                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-700 w-[450px] border-r border-gray-300">Assigned Shift</th>
-                        <th className="px-4 py-2 text-center text-sm font-medium text-gray-700">Action</th>
+                       <th className="px-[10px] py-[10px] text-left text-[12px] font-bold text-gray-800 align-middle border-0 border-r border-gray-300">  From</th>
+                        <th className="px-[10px] py-[10px] text-left text-[12px] font-bold text-gray-800 align-middle border-0 border-r border-gray-300">To</th>
+                        <th className="px-[10px] py-[10px] text-left text-[12px] font-bold text-gray-800 align-middle border-0 border-r border-gray-300">Assigned Shift</th>
+                        <th className="px-[10px] py-[10px] text-left text-[12px] font-bold text-gray-800 text-center border-0">Action</th>
                       </tr>
                     </thead>
                     <FieldArray name="shiftSchedulers">

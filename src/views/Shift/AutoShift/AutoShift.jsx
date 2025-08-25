@@ -139,7 +139,24 @@ const AutoShift = () => {
           <h2 className="mt-1 font-bold text-lg capitalize text-blue-900">Auto Shift</h2>
           <Tooltip className="ml-8" content={TOOLTIP_CONTENT.shift} />
         </div>
-        <Breadcrumb className="pr-4" items={`Shift Settings,AutoShift `} />
+       <Breadcrumb
+  className="pr-4"
+  items={["Shift Settings", "AutoShift"]}
+  renderItem={(item, index) => (
+    <li
+      key={index}
+      className="text-lg font-medium leading-[1.5] tracking-[0.14px] text-center border-r border-gray-300 px-2 last:border-r-0"
+    >
+      <a
+        href="#"
+        className="no-underline bg-transparent text-gray-700 hover:underline"
+      >
+        {item}
+      </a>
+    </li>
+  )}
+/>
+
       </div>
       <div className="p-4 bg-white mt-[30px] ml-8 mr-8 mb-8">
         <ToastContainer position="top-right" autoClose={3000} />
@@ -153,7 +170,7 @@ const AutoShift = () => {
           </button> */}
           <button
   onClick={() => navigate("/admin/ETMS/AutoShift/add")}
-  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
 >
   + Add AutoShift
 </button>
