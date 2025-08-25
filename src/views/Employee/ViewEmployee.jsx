@@ -16,6 +16,7 @@ import { GET_EMPLOYEESEARCH_DATA } from 'Constants/utils';
 import { CiSearch } from 'react-icons/ci';
 import { FaEdit } from 'react-icons/fa';
 import { SECTIONDEPARTMENT_VIEW } from 'Constants/utils';
+import { Alert } from 'react-bootstrap';
 
 const ViewEmployee = () => {
   const [depId, setdepId] = useState(null)
@@ -373,6 +374,7 @@ const ViewEmployee = () => {
         <table className="min-w-full divide-y divide-gray-200 overflow-scroll">
                 <thead className="bg-gray-50 overflow-scroll">
               <tr className='overflow-scroll'>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Edit</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Code</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Short Name</th>
@@ -385,14 +387,17 @@ const ViewEmployee = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Email Address</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Join Date</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Resign Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Edit</th>
+               
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Delete</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200 ">
               {employees.map(emp => (
                 <tr key={emp.id} className="hover:bg-gray-50 text-xs">
+                     <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
+                  <FaEdit size="0.9rem" style={{ color: "#337ab7" }} onClick={()=> alert("edit")} />
+                  </td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.employeeCode}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.employeeName}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.ePayrollDTO.shortName}</td>
@@ -406,7 +411,7 @@ const ViewEmployee = () => {
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.email}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.joinDate}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.resignationDate}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.status}</td>
+                        
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                   <FaEdit size="1.3rem" style={{ color: "#337ab7" }} onClick={() => handleDelete(emp.id)} />
                   </td>
