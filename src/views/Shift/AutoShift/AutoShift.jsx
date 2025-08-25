@@ -12,17 +12,27 @@ import Breadcrumb from 'components/Breadcum/Breadcrumb';
 import { debounce } from 'lodash';
 import { FaEdit } from 'react-icons/fa';
 import { AutoShift_LIST } from 'Constants/utils';
+import { Delete_Autoshift_URL } from 'Constants/utils';
 // Fetch all AutoShifts
 
 
 // Delete AutoShift by ID
+// const deleteAutoShift = async ({ id, token }) => {
+//   return axios.delete(`http://localhost:8081/api/autoshift/delete/${id}`, {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+// };
+
 const deleteAutoShift = async ({ id, token }) => {
-  return axios.delete(`http://localhost:8081/api/autoshift/delete/${id}`, {
+  return axios.delete(`${Delete_Autoshift_URL}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 };
+
 
 const AutoShift = () => {
   const [page, setPage] = useState(1);

@@ -4,6 +4,10 @@ import { useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { MdDelete } from 'react-icons/md';
+import { Update_Autoshift_DATA } from 'Constants/utils';
+import { GET_AutoshiftBYID_URL } from 'Constants/utils';
+import { GET_SHIFTBYID_URL } from 'Constants/utils';
+
 
 const UpdateAutoShift = () => {
   const [shiftOptions, setShiftOptions] = useState([]);
@@ -45,113 +49,232 @@ const UpdateAutoShift = () => {
   }, [token]);
 
   // Fetch AutoShift by ID
-  useEffect(() => {
-    if (!id) return;
+  // useEffect(() => {
+  //   if (!id) return;
 
-    const fetchAssignedShiftDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:8081/api/autoshift/getBy/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  //   const fetchAssignedShiftDetails = async () => {
+  //     try {
+  //       const response = await fetch(`http://localhost:8081/api/autoshift/getBy/${id}`, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           'Content-Type': 'application/json',
+  //         },
+  //       });
 
-        if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-        const data = await response.json();
-        const shiftDurations = data.shiftDurations || [];
+  //       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+  //       const data = await response.json();
+  //       const shiftDurations = data.shiftDurations || [];
 
-        const enrichedShifts = await Promise.all(
-          shiftDurations.map(async (shift) => {
-            try {
-              const shiftResponse = await fetch(`http://localhost:8081/api/shifts/${shift.shiftId}`, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  'Content-Type': 'application/json',
-                },
-              });
+  //       const enrichedShifts = await Promise.all(
+  //         shiftDurations.map(async (shift) => {
+  //           try {
+  //             const shiftResponse = await fetch(`http://localhost:8081/api/shifts/${shift.shiftId}`, {
+  //               headers: {
+  //                 Authorization: `Bearer ${token}`,
+  //                 'Content-Type': 'application/json',
+  //               },
+  //             });
 
-              if (!shiftResponse.ok) throw new Error(`Shift fetch failed: ${shift.shiftId}`);
-              const shiftDetails = await shiftResponse.json();
+  //             if (!shiftResponse.ok) throw new Error(`Shift fetch failed: ${shift.shiftId}`);
+  //             const shiftDetails = await shiftResponse.json();
 
-              return {
-                shiftId: shift.shiftId,
-                shiftLabel: `${shiftDetails.shiftCode} - ${shiftDetails.shiftName}`,
-                fromTime: shift.startTime?.split('T')[1]?.substring(0, 5) || '00:00',
-                toTime: shift.endTime?.split('T')[1]?.substring(0, 5) || '00:00',
-              };
-            } catch (error) {
-              return {
-                shiftId: shift.shiftId,
-                shiftLabel: 'Unknown Shift',
-                fromTime: shift.startTime?.split('T')[1]?.substring(0, 5) || '00:00',
-                toTime: shift.endTime?.split('T')[1]?.substring(0, 5) || '00:00',
-              };
-            }
-          })
-        );
+  //             return {
+  //               shiftId: shift.shiftId,
+  //               shiftLabel: `${shiftDetails.shiftCode} - ${shiftDetails.shiftName}`,
+  //               fromTime: shift.startTime?.split('T')[1]?.substring(0, 5) || '00:00',
+  //               toTime: shift.endTime?.split('T')[1]?.substring(0, 5) || '00:00',
+  //             };
+  //           } catch (error) {
+  //             return {
+  //               shiftId: shift.shiftId,
+  //               shiftLabel: 'Unknown Shift',
+  //               fromTime: shift.startTime?.split('T')[1]?.substring(0, 5) || '00:00',
+  //               toTime: shift.endTime?.split('T')[1]?.substring(0, 5) || '00:00',
+  //             };
+  //           }
+  //         })
+  //       );
 
-        setInitialValues({
-          autoShiftCode: data.autoShiftCode || '',
-          autoShiftName: data.autoShiftName || '',
-          shiftSchedulers: enrichedShifts.filter(
-            (s) => s.shiftId || s.fromTime !== '00:00' || s.toTime !== '00:00'
-          ),
-        });
+  //       setInitialValues({
+  //         autoShiftCode: data.autoShiftCode || '',
+  //         autoShiftName: data.autoShiftName || '',
+  //         shiftSchedulers: enrichedShifts.filter(
+  //           (s) => s.shiftId || s.fromTime !== '00:00' || s.toTime !== '00:00'
+  //         ),
+  //       });
 
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching AutoShift or shift details:", err);
-        setLoading(false);
-      }
-    };
+  //       setLoading(false);
+  //     } catch (err) {
+  //       console.error("Error fetching AutoShift or shift details:", err);
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchAssignedShiftDetails();
-  }, [id, token]);
+  //   fetchAssignedShiftDetails();
+  // }, [id, token]);
+
+
+useEffect(() => {
+  if (!id) return;
+
+  const fetchAssignedShiftDetails = async () => {
+    try {
+      const response = await fetch(`${GET_AutoshiftBYID_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const data = await response.json();
+      const shiftDurations = data.shiftDurations || [];
+
+      const enrichedShifts = await Promise.all(
+        shiftDurations.map(async (shift) => {
+          try {
+            // const shiftResponse = await fetch(
+            //   `http://localhost:8081/api/shifts/${shift.shiftId}`, // 👈 this one is still hardcoded
+            //   {
+            //     headers: {
+            //       Authorization: `Bearer ${token}`,
+            //       "Content-Type": "application/json",
+            //     },
+            //   }
+            // );
+            const shiftResponse = await fetch(
+  `${GET_SHIFTBYID_URL}/${shift.shiftId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  }
+);
+
+            if (!shiftResponse.ok) throw new Error(`Shift fetch failed: ${shift.shiftId}`);
+            const shiftDetails = await shiftResponse.json();
+
+            return {
+              shiftId: shift.shiftId,
+              shiftLabel: `${shiftDetails.shiftCode} - ${shiftDetails.shiftName}`,
+              fromTime: shift.startTime?.split("T")[1]?.substring(0, 5) || "00:00",
+              toTime: shift.endTime?.split("T")[1]?.substring(0, 5) || "00:00",
+            };
+          } catch (error) {
+            return {
+              shiftId: shift.shiftId,
+              shiftLabel: "Unknown Shift",
+              fromTime: shift.startTime?.split("T")[1]?.substring(0, 5) || "00:00",
+              toTime: shift.endTime?.split("T")[1]?.substring(0, 5) || "00:00",
+            };
+          }
+        })
+      );
+
+      setInitialValues({
+        autoShiftCode: data.autoShiftCode || "",
+        autoShiftName: data.autoShiftName || "",
+        shiftSchedulers: enrichedShifts.filter(
+          (s) => s.shiftId || s.fromTime !== "00:00" || s.toTime !== "00:00"
+        ),
+      });
+
+      setLoading(false);
+    } catch (err) {
+      console.error("Error fetching AutoShift or shift details:", err);
+      setLoading(false);
+    }
+  };
+
+  fetchAssignedShiftDetails();
+}, [id, token]);
+
 
   const validationSchema = Yup.object().shape({
     autoShiftCode: Yup.string().required('Auto Shift Code is required'),
     autoShiftName: Yup.string().required('Auto Shift Name is required'),
   });
 
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const today = new Date().toISOString().split('T')[0];
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   try {
+  //     const today = new Date().toISOString().split('T')[0];
 
-      const payload = {
-        autoShiftCode: values.autoShiftCode,
-        autoShiftName: values.autoShiftName,
-        shiftDurations: values.shiftSchedulers
-          .filter((s) => s.shiftId !== null)
-          .map((s) => ({
-            shiftId: s.shiftId,
-            startTime: `${today}T${s.fromTime}:00`,
-            endTime: `${today}T${s.toTime}:00`,
-          })),
-      };
+  //     const payload = {
+  //       autoShiftCode: values.autoShiftCode,
+  //       autoShiftName: values.autoShiftName,
+  //       shiftDurations: values.shiftSchedulers
+  //         .filter((s) => s.shiftId !== null)
+  //         .map((s) => ({
+  //           shiftId: s.shiftId,
+  //           startTime: `${today}T${s.fromTime}:00`,
+  //           endTime: `${today}T${s.toTime}:00`,
+  //         })),
+  //     };
 
-      const response = await fetch(
-        `http://localhost:8081/api/autoshift/updateAutoShift/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+  //     const response = await fetch(
+  //       `http://localhost:8081/api/autoshift/updateAutoShift/${id}`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         body: JSON.stringify(payload),
+  //       }
+  //     );
 
-      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+  //     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-      alert("AutoShift updated successfully!");
-      navigate("/admin/ETMS/AutoShift");
-      resetForm();
-    } catch (error) {
-      console.error("Error updating AutoShift:", error);
-      alert("Failed to update AutoShift.");
+  //     alert("AutoShift updated successfully!");
+  //     navigate("/admin/ETMS/AutoShift");
+  //     resetForm();
+  //   } catch (error) {
+  //     console.error("Error updating AutoShift:", error);
+  //     alert("Failed to update AutoShift.");
+  //   }
+  // };
+
+
+
+const handleSubmit = async (values, { resetForm }) => {
+  try {
+    const today = new Date().toISOString().split("T")[0];
+
+    const payload = {
+      autoShiftCode: values.autoShiftCode,
+      autoShiftName: values.autoShiftName,
+      shiftDurations: values.shiftSchedulers
+        .filter((s) => s.shiftId !== null)
+        .map((s) => ({
+          shiftId: s.shiftId,
+          startTime: `${today}T${s.fromTime}:00`,
+          endTime: `${today}T${s.toTime}:00`,
+        })),
+    };
+
+    const response = await fetch(`${Update_Autoshift_DATA}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
-  };
+
+    alert("AutoShift updated successfully!");
+    navigate("/admin/ETMS/AutoShift");
+    resetForm();
+  } catch (error) {
+    console.error("Error updating AutoShift:", error);
+    alert("Failed to update AutoShift.");
+  }
+};
+
 
   if (loading || !initialValues) {
     return <div className="p-6">Loading...</div>;
