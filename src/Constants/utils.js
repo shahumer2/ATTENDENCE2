@@ -158,6 +158,8 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
     export const GET_Clocklocation_URL = `${BASE_URL}/api/branches/fetchAll`;
     export const GET_AllowanceBYID_URL = `${BASE_URL}/api/allowance-criteria`;
     export const UPDATE_Allowance_URL = `${BASE_URL}/api/allowance-criteria/update-allowance`
+    export const Delete_Allowance_URL = `${BASE_URL}/api/allowance-criteria`
+
 
  //Branch
 

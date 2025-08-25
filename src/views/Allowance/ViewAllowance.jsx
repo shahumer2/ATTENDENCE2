@@ -9,6 +9,8 @@ import { MdDelete, MdSearch } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { FaEdit } from "react-icons/fa";
 import { GET_AllowanceSearch_URL } from "Constants/utils";
+import { Delete_Allowance_URL } from "Constants/utils";
+
 
 // 🔄 Fetch allowance criteria using search API (POST)
 // const fetchAllowanceCriteria = async ({ queryKey }) => {
@@ -47,12 +49,18 @@ const fetchAllowanceCriteria = async ({ queryKey }) => {
 
 
 // Delete allowance criteria
+// const deleteAllowance = async ({ id, token }) => {
+//   await axios.delete(`http://localhost:8081/api/allowance-criteria/${id}`, {
+//     headers: { Authorization: `Bearer ${token}` },
+//   });
+// };
+
+
 const deleteAllowance = async ({ id, token }) => {
-  await axios.delete(`http://localhost:8081/api/allowance-criteria/${id}`, {
+  await axios.delete(`${Delete_Allowance_URL}/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
-
 
 
 
