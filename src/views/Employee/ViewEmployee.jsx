@@ -102,7 +102,7 @@ const ViewEmployee = () => {
   const fetchEmployees = useCallback(async () => {
     try {
       let baseUrl = GET_EMPLOYEESEARCH_DATA;
-      // if (filters.employeeStatus === "active") baseUrl = GET_ACTIVE_EMPLOYEE_DATA;
+      // if (filters.employeeStatus === "Active Employees") baseUrl = GET_ACTIVE_EMPLOYEE_DATA;
       // else if (filters.employeeStatus === "resigned") baseUrl = GET_RESIGNED_EMPLOYEE_DATA;
       // else baseUrl = GET_EMPLOYEESEARCH_DATA;
 
@@ -113,7 +113,7 @@ const ViewEmployee = () => {
         designationName: filters.designationName,
         gender: filters.gender,
         resignedFrom: filters.employeeStatus === "resigned" ? filters.resignedFrom : undefined,
-        isActive: filters.employeeStatus === "active" ? true : undefined,
+        isActive: filters.employeeStatus === "Active Employees" ? true : undefined,
 
       };
 
@@ -201,7 +201,7 @@ const ViewEmployee = () => {
                 }
                 options={[
                   { value: "", label: "All Employee" },
-                  { value: "active", label: "Active Employee" },
+                  { value: "Active Employees", label: "Active Employee" },
                   { value: "resigned", label: "Resigned Employee" },
                 ]}
                 className="w-44"

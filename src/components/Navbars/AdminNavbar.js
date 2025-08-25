@@ -479,10 +479,10 @@ function Header() {
 
                 <div className="relative group" onMouseEnter={() => setBranchSetupHover(true)}
                   onMouseLeave={() => setBranchSetupHover(false)}>
-                  <div className="flex justify-between items-center px-4 py-2 text-sm text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]">
+                  <button className="flex justify-between items-center px-4 py-2 text-sm text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]">
                     Branch Setup
                     <BsChevronRight className="ml-1 text-xs" />
-                  </div>
+                  </button>
 
                   {/* Branch Setup Submenu */}
 
