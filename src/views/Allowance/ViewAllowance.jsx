@@ -53,6 +53,9 @@ const deleteAllowance = async ({ id, token }) => {
   });
 };
 
+
+
+
 const ViewAllowance = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
