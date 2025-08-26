@@ -537,9 +537,10 @@ const AddEmployee = () => {
                                     type="checkbox"
                                     checked={selectedApps[app]}
                                     onChange={(e) => setSelectedApps({ ...selectedApps, [app]: e.target.checked })}
-                                    className="form-checkbox h-4 w-4 text-blue-600"
+                                    className="h-4 w-4 appearance-none border border-gray-400 rounded checked:bg-sky-500 checked:border-sky-500 focus:ring-0 relative
+             checked:after:content-['✔'] checked:after:absolute checked:after:left-1 checked:after:top-[-2px] checked:after:text-white checked:after:text-sm"
                                   />
-                                  <span>{app.split(0, 1).join('-')}</span>
+                                  <span className='text-md text-gray-700'>{app.split(0, 1).join('-')}</span>
                                 </label>
                               ))}
                             </div>
@@ -556,7 +557,7 @@ const AddEmployee = () => {
                   {/* Application Tabs Section */}
                   <div className="flex border-b bg-blue-600  text-white border-gray-200 mb-2">
                     <button
-                      className={`px-12 py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      className={`px-[80px] py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                       onClick={(e) => {
 
                         e.preventDefault();
@@ -569,7 +570,7 @@ const AddEmployee = () => {
                     </button>
                     {selectedApps['E-TMS'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault()
                           setActiveMainTab('etmsDetailsDto')
@@ -585,7 +586,7 @@ const AddEmployee = () => {
 
                     {selectedApps['E-payroll'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault()
 
@@ -599,7 +600,7 @@ const AddEmployee = () => {
                     )}
                     {selectedApps['E-LEAVE'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault();
                           setActiveMainTab('eLeave')
@@ -803,7 +804,7 @@ const AddEmployee = () => {
                                   </div>
                                 )}
                               </div>
-                              <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
+                              <label className="cursor-pointer upload bg-blue-600 text-white  px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
                                 Upload Photo
                                 <input
                                   type="file"
