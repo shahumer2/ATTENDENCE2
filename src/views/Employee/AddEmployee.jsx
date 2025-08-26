@@ -403,7 +403,7 @@ const AddEmployee = () => {
     'E-TMS': false,
     'E-payroll': false,
     'E-LEAVE': false,
-    'MOBILEATTENDENCE': false,
+    'MOBILE ATTENDENCE': false,
     'E-HR': false
   });
 
