@@ -54,32 +54,35 @@ const BranchAllocation = () => {
     });
 
     // Employees (filtered)
-    const { data: employees = [] } = useQuery({
-        queryKey: ["employees", searchTerm, filters,pageSize,totalPages],
+    const { data: employees = {} } = useQuery({
+        queryKey: ["employees", searchTerm, filters, page, pageSize],
         queryFn: async () => {
-            const body = {
-                searchTerm,
-                departmentName: filters.departmentName,
-                sectionName: filters.sectionName,
-            };
-            const res = await fetch(`${GET_EMPLOYEESEARCH_DATA}?page=${page}&size=${pageSize}`, {
-                method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(body),
-            });
-            const data = await res.json();
-
-            setTotalItems(data?.totalElements || 0);
-            setTotalPages(data?.totalPages || 1);
-            setTotalRecords(data?.totalElements || 0);
-            if (!res.ok) throw new Error("Failed to fetch employees");
-            return res.json();
+          const body = {
+            searchTerm,
+            departmentName: filters.departmentName,
+            sectionName: filters.sectionName,
+          };
+          const res = await fetch(`${GET_EMPLOYEESEARCH_DATA}?page=${page}&size=${pageSize}`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          });
+      
+          if (!res.ok) throw new Error("Failed to fetch employees");
+      
+          const data = await res.json();
+      
+          setTotalPages(data?.totalPages || 1);
+          setTotalRecords(data?.totalElements || 0);
+      
+          return data; // ✅ return parsed data directly
         },
         enabled: !!token,
-    });
+      });
+      
 
     // Branch list
     const { data: branches = [] } = useQuery({
@@ -150,7 +153,7 @@ const BranchAllocation = () => {
             </div>
         ),
     };
-
+console.log(employees,"jj");
     return (
 
         <>
@@ -266,14 +269,18 @@ const BranchAllocation = () => {
                         <table className="w-full border overflow-y-scroll h-[50px]">
                             <thead className="bg-gray-100">
                                 <tr>
-                                    <th className="px-3 py-2 text-left">Select</th>
+                                   
                                     <th className="px-3 py-2 text-left">Employee Code</th>
                                     <th className="px-3 py-2 text-left">Employee Name</th>
+                                    <th className="px-3 py-2 text-left">Select</th>
                                 </tr>
                             </thead>
                             <tbody className="overflow-y-scroll h-[20px]">
                                 {employees?.content?.map((emp) => (
                                     <tr key={emp.id} className="border-t">
+                                      
+                                        <td className="px-3 py-2">{emp.employeeCode}</td>
+                                        <td className="px-3 py-2">{emp.employeeName}</td>
                                         <td className="px-3 py-2">
                                             <input
                                                 type="checkbox"
@@ -281,8 +288,6 @@ const BranchAllocation = () => {
                                                 onChange={() => handleEmployeeSelect(emp.id)}
                                             />
                                         </td>
-                                        <td className="px-3 py-2">{emp.employeeCode}</td>
-                                        <td className="px-3 py-2">{emp.employeeName}</td>
                                     </tr>
                                 ))}
                             </tbody>
