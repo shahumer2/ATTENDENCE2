@@ -774,16 +774,16 @@ const LeaveGroup = () => {
                   <div className="flex w-full justify-end items-center mt-4 px-6">
                     <div className="flex space-x-2 text-blue-500">
                       {page > 1 && (
-                        <>
+                        <> 
                           <button
                             onClick={() => setPage(1)}
-                            className="px-3 py-1 border rounded"
+                            className="px-3 py-1 border rounded pag"
                           >
                             First
                           </button>
                           <button
                             onClick={() => setPage(prev => Math.max(prev - 1, 1))}
-                            className="px-3 py-1 border rounded"
+                            className="px-3 py-1 border rounded pag"
                           >
                             Prev
                           </button>
@@ -793,13 +793,13 @@ const LeaveGroup = () => {
                         <>
                           <button
                             onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
-                            className="px-3 py-1 border rounded"
+                            className="px-3 py-1 border rounded pag"
                           >
                             Next
                           </button>
                           <button
                             onClick={() => setPage(totalPages)}
-                            className="px-3 py-1 border rounded"
+                            className="px-3 py-1 border rounded pag"
                           >
                             Last
                           </button>
