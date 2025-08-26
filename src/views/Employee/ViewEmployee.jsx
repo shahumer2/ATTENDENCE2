@@ -415,9 +415,7 @@ const ViewEmployee = () => {
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.joinDate}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.resignationDate}</td>
                         
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
-                  <FaEdit size="1.3rem" style={{ color: "#337ab7" }} onClick={() => handleDelete(emp.id)} />
-                  </td>
+                     
                   <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                   <MdDelete style={{ color: "#d97777" }} size="1.3rem" onClick={() => handleDelete(emp.id)} />
                   </td>
