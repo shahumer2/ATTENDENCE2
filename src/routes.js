@@ -32,6 +32,8 @@ import HolidayManagement from "views/Master/HolidayGroup/HolidayGroup";
 import LeaveCategory from "views/LeaveManagement/LeaveCategory";
 import AddLeaveCategory from "views/LeaveManagement/AddLeaveCategory";
 import BatchLeave from "views/LeaveManagement/BatchLeave/BatchLeave";
+import AddJob from "views/Job/AddJob";
+import ViewJob from "views/Job/ViewJob";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -272,6 +274,25 @@ const dashboardRoutes = [
     component :UpdateAllowance,
     layout: "/admin",
   },
+
+//Job
+{
+    path: "job/addJob",
+    name: "View Allowance", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :AddJob,
+    layout: "/admin",
+  },
+
+  {
+    path: "job/viewJob",
+    name: "View Allowance", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :ViewJob,
+    layout: "/admin",
+  },
+
+
 
   //Group
 
