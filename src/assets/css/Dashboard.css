@@ -25,6 +25,14 @@ body, html {
     font-size: 13px;
   }
 
+  /* h2{
+    color: white !important;
+  } */
+ 
+  button{
+    color: white !important;
+  }
+
   
   .dashboard-container {
     background-color: #ebf8ff; /* light blue bg if not using Tailwind */
