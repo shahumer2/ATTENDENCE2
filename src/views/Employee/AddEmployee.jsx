@@ -622,10 +622,10 @@ const AddEmployee = () => {
                   {activeMainTab === 'basic' && (
                     <>
                       <div className="p-4 m-4 rounded-md border border-gray-500">
-                      <h2 className='font-semibold text-lg'>Basic Details</h2>
-                        <hr className="my-2 border-t-2 border-gray-300" /> 
+                        <h2 className='font-semibold text-lg'>Basic Details</h2>
+                        <hr className="my-2 border-t-2 border-gray-300" />
                         <div className=" p-3 flex border rounded-md">
-                    
+
                           <div className="w-3/4 pr-6">
                             <div className="grid grid-cols-3 gap-6 mb-6">
                               <div>
@@ -772,23 +772,23 @@ const AddEmployee = () => {
                                 />
                               </div>
                               <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
-                            <DatePicker
-                              selected={resignationDate}
-                              onChange={(date) => setResignationDate(date)}
-                              className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                              placeholderText="Select date"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
-                            <Field
-                              name="resignationReason"
-                              type="text"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                              placeholder="Enter reason if applicable"
-                            />
-                          </div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
+                                <DatePicker
+                                  selected={resignationDate}
+                                  onChange={(date) => setResignationDate(date)}
+                                  className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                  placeholderText="Select date"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
+                                <Field
+                                  name="resignationReason"
+                                  type="text"
+                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                  placeholder="Enter reason if applicable"
+                                />
+                              </div>
                             </div>
                           </div>
 
@@ -816,12 +816,12 @@ const AddEmployee = () => {
                             </div>
                           </div>
 
-                          
-                        
-                        </div>
-                        
 
-                        
+
+                        </div>
+
+
+
                       </div>
                       {/* Department Section */}
                       <div className="mb-6  bg-white rounded-lg shadow-md overflow-hidden">
@@ -1259,9 +1259,21 @@ const AddEmployee = () => {
 
                           <hr className='mb-3 border shadow-2xl'></hr>
 
-                          <div className='p-3 bg-blue-200 text-xs text-blue-800 mb-4'>
-                            <h2 className='flex flex-row gap-3 items-center'><FaInfoCircle /> The 3 Settings Below Are Optional. You Can Choose Only 1 out Of 3 Settings If Applicable</h2>
+                          <div
+                            className="p-3 alert text-xs mb-4"
+                            style={{
+                              color: "#0c5460",
+                              backgroundColor: "#d1ecf1",
+                              border: "1px solid #bee5eb",
+                              borderRadius: "4px"
+                            }}
+                          >
+                            <h2 className="flex flex-row gap-3 items-center">
+                              <FaInfoCircle />
+                              The 3 Settings Below Are Optional. You Can Choose Only 1 out Of 3 Settings If Applicable
+                            </h2>
                           </div>
+
 
                           {/* Radio buttons in one line */}
                           <div className="flex gap-6 mb-4">

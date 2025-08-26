@@ -201,7 +201,7 @@ const ViewEmployee = () => {
                   }))
                 }
                 options={[
-                  { value: "Select", label: "All Employee" },
+                  { value: "All Employee", label: "All Employee" },
                   { value: "Active Employees", label: "Active Employee" },
                   { value: "Resigned Employees", label: "Resigned Employee" },
                 ]}
