@@ -166,10 +166,17 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
  //Branch
 
  export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;
+ export const Branchh_LIST = `${BASE_URL}/api/branches/fetchAll`;
  export const ADD_Branch_DATA = `${BASE_URL}/api/branches/addBranch`;
  export const GET_BranchSearch_URL = `${BASE_URL}/api/branches/search`;
  export const GET_BranchBYID_URL = `${BASE_URL}/api/branches/getBy`;
  export const UPDATE_Branch_URL = `${BASE_URL}/api/branches/updateBranch`;
+
+
+
+ //assign branch
+
+ export const ASSIGN_BRANCH = `${BASE_URL}/api/employee/assign-branch`;
  //aws
 
  export const Aws_LIST = `${BASE_URL}/api/aws/getAll`;

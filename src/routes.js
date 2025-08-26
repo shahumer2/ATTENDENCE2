@@ -32,6 +32,7 @@ import HolidayManagement from "views/Master/HolidayGroup/HolidayGroup";
 import LeaveCategory from "views/LeaveManagement/LeaveCategory";
 import AddLeaveCategory from "views/LeaveManagement/AddLeaveCategory";
 import BatchLeave from "views/LeaveManagement/BatchLeave/BatchLeave";
+import BranchAllocation from "views/Shift/Branch/BranchAllocation";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -208,6 +209,16 @@ const dashboardRoutes = [
   component :UpdateBranch,
   layout: "/admin",
 },
+
+//branch allocation 
+{
+  path: "/ETMS/BranchAllocation",
+  name: "Branch Allocation", 
+  icon: "nc-icon nc-chart-pie-35",
+  component :BranchAllocation,
+  layout: "/admin",
+},
+
 
 //race  master>> race
 
