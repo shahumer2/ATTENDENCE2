@@ -15,8 +15,11 @@ import { GET_DEPARTMENT_LIST, SECTION_LISTT, DESIGNATIONS_LIST } from 'Constants
 import { GET_EMPLOYEESEARCH_DATA } from 'Constants/utils';
 import { CiSearch } from 'react-icons/ci';
 import { FaEdit } from 'react-icons/fa';
+import { SECTIONDEPARTMENT_VIEW } from 'Constants/utils';
+import { Alert } from 'react-bootstrap';
 
 const ViewEmployee = () => {
+  const [depId, setdepId] = useState(null)
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -33,6 +36,7 @@ const ViewEmployee = () => {
     const [totalRecords, setTotalRecords] = useState(0);
 
   const [filters, setFilters] = useState({
+    depId:"",
     employeeStatus: "", // active/resigned/empty
     departmentName: "",
     sectionName: "",
@@ -77,7 +81,7 @@ const ViewEmployee = () => {
     queryKey: ["sections", filters.departmentName],
     queryFn: async () => {
       if (!filters.departmentName) return [];
-      const res = await fetch(`${SECTION_LISTT}?department=${filters.departmentName}`, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(`${SECTIONDEPARTMENT_VIEW}/${filters?.depId}`, { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error("Failed to fetch sections");
       return res.json();
     },
@@ -99,7 +103,7 @@ const ViewEmployee = () => {
   const fetchEmployees = useCallback(async () => {
     try {
       let baseUrl = GET_EMPLOYEESEARCH_DATA;
-      // if (filters.employeeStatus === "active") baseUrl = GET_ACTIVE_EMPLOYEE_DATA;
+      // if (filters.employeeStatus === "Active Employees") baseUrl = GET_ACTIVE_EMPLOYEE_DATA;
       // else if (filters.employeeStatus === "resigned") baseUrl = GET_RESIGNED_EMPLOYEE_DATA;
       // else baseUrl = GET_EMPLOYEESEARCH_DATA;
 
@@ -110,7 +114,7 @@ const ViewEmployee = () => {
         designationName: filters.designationName,
         gender: filters.gender,
         resignedFrom: filters.employeeStatus === "resigned" ? filters.resignedFrom : undefined,
-        isActive: filters.employeeStatus === "active" ? true : undefined,
+        isActive: filters.employeeStatus === "Active Employees" ? true : undefined,
 
       };
 
@@ -163,7 +167,7 @@ const ViewEmployee = () => {
 
   // 🔹 Pagination
 
-console.log(employees,"__00");
+
   return (
     <>
       <div className="flex justify-between pl-8 pt-2 pr-8">
@@ -197,9 +201,9 @@ console.log(employees,"__00");
                   }))
                 }
                 options={[
-                  { value: "", label: "All" },
-                  { value: "active", label: "Active" },
-                  { value: "resigned", label: "Resigned" },
+                  { value: "", label: "All Employee" },
+                  { value: "Active Employees", label: "Active Employee" },
+                  { value: "resigned", label: "Resigned Employee" },
                 ]}
                 className="w-44"
                 label="Employee Status"
@@ -235,12 +239,13 @@ console.log(employees,"__00");
                   }))
                 }
                 options={[
+                  { value: "", label: "--No Filter--" },
                   { value: "department", label: "Department" },
                   { value: "section", label: "Section" },
                   { value: "designation", label: "Designation" },
                   { value: "gender", label: "Gender" },
                 ]}
-                className="w-44"
+                className="w-44 capitalize"
                 isClearable
               />
             </div>
@@ -256,8 +261,8 @@ console.log(employees,"__00");
                   placeholder="Select"
                   value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName } : null}
                   onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value || "" }))}
-                  options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName }))}
-                  className="w-44"
+                  options={departments.map((dep) => ({ value: dep.departmentName, label: `${dep.departmentName} -  ${dep.departmentCode}` }))}
+                  className="w-44 uppercase"
                   isClearable
                 />
               </div>
@@ -269,9 +274,9 @@ console.log(employees,"__00");
                   <label className='text-sm font-semibold mb-2'>Department</label>
                   <Select
                     placeholder="Select"
-                    value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName } : null}
-                    onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value || "", sectionName: "" }))}
-                    options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName }))}
+                    value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName,id: filters.depId } : null}
+                    onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value, depId: opt?.id || "",   sectionName: "" }))}
+                    options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName , id: dep.id}))}
                     className="w-44"
                     isClearable
                   />
@@ -369,26 +374,33 @@ console.log(employees,"__00");
         <table className="min-w-full divide-y divide-gray-200 overflow-scroll">
                 <thead className="bg-gray-50 overflow-scroll">
               <tr className='overflow-scroll'>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Edit</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Code</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Short Name</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">NRIC/Work Permit/FIN</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Short Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">NRIC/Work Permit/FIN</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Gender</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Department</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Section</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Designation</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Finger Print/Face IDs</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+  Finger Print/Face IDs
+</th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Email Address</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Join Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Resign Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Edit</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Join Date</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Resign Date</th>
+               
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Delete</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200 ">
               {employees.map(emp => (
                 <tr key={emp.id} className="hover:bg-gray-50 text-xs">
+                     <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
+                  <FaEdit size="0.9rem" style={{ color: "#337ab7" }} onClick={()=> alert("edit")} />
+                  </td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.employeeCode}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.employeeName}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.ePayrollDTO.shortName}</td>
@@ -402,10 +414,8 @@ console.log(employees,"__00");
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.email}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.joinDate}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.resignationDate}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp.status}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
-                  <FaEdit size="1.3rem" style={{ color: "#337ab7" }} onClick={() => handleDelete(emp.id)} />
-                  </td>
+                        
+                     
                   <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                   <MdDelete style={{ color: "#d97777" }} size="1.3rem" onClick={() => handleDelete(emp.id)} />
                   </td>
