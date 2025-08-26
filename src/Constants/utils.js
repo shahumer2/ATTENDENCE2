@@ -163,6 +163,10 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
     export const Delete_Allowance_URL = `${BASE_URL}/api/allowance-criteria`;
 
 
+
+// Job
+export const ADD_Job_DATA = `${BASE_URL}/api/jobs/add`;
+
  //Branch
 
  export const Branch_LIST = `${BASE_URL}/api/branches/getAll`;

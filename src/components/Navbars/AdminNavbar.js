@@ -336,6 +336,18 @@ function Header() {
                 >
                   Staff Qr Code
                 </NavLink>
+
+                <NavLink
+                  to="/admin/job/viewJob"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Job
+                </NavLink>
                 {/* <NavLink
                   to="/admin/designation"
                   className={({ isActive }) =>
