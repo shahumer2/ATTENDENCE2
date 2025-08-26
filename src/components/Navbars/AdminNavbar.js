@@ -517,7 +517,7 @@ function Header() {
                           Branch
                         </NavLink>
                         <NavLink
-                          to="/admin/ETMS/BranchEmployeeAllocation"
+                          to="/admin/ETMS/BranchAllocation"
                           className={({ isActive }) =>
                             `block px-4 py-2 text-sm ${isActive
                               ? "bg-[#FFD700] text-[#0e2288] font-bold"

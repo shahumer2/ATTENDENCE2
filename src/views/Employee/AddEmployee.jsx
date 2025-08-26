@@ -403,7 +403,7 @@ const AddEmployee = () => {
     'E-TMS': false,
     'E-payroll': false,
     'E-LEAVE': false,
-    'MOBILEATTENDENCE': false,
+    'MOBILE ATTENDENCE': false,
     'E-HR': false
   });
 
@@ -537,9 +537,10 @@ const AddEmployee = () => {
                                     type="checkbox"
                                     checked={selectedApps[app]}
                                     onChange={(e) => setSelectedApps({ ...selectedApps, [app]: e.target.checked })}
-                                    className="form-checkbox h-4 w-4 text-blue-600"
+                                    className="h-4 w-4 appearance-none border border-gray-400 rounded checked:bg-sky-500 checked:border-sky-500 focus:ring-0 relative
+             checked:after:content-['✔'] checked:after:absolute checked:after:left-1 checked:after:top-[-2px] checked:after:text-white checked:after:text-sm"
                                   />
-                                  <span>{app.split(0, 1).join('-')}</span>
+                                  <span className='text-md text-gray-700'>{app.split(0, 1).join('-')}</span>
                                 </label>
                               ))}
                             </div>
@@ -556,7 +557,7 @@ const AddEmployee = () => {
                   {/* Application Tabs Section */}
                   <div className="flex border-b bg-blue-600  text-white border-gray-200 mb-2">
                     <button
-                      className={`px-12 py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                      className={`px-[80px] py-2 font-xs ${activeMainTab === 'basic' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                       onClick={(e) => {
 
                         e.preventDefault();
@@ -569,7 +570,7 @@ const AddEmployee = () => {
                     </button>
                     {selectedApps['E-TMS'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'etmsDetailsDto' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault()
                           setActiveMainTab('etmsDetailsDto')
@@ -585,7 +586,7 @@ const AddEmployee = () => {
 
                     {selectedApps['E-payroll'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'ePayroll' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault()
 
@@ -599,7 +600,7 @@ const AddEmployee = () => {
                     )}
                     {selectedApps['E-LEAVE'] && (
                       <button
-                        className={`px-4 py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
+                        className={`px-[80px] py-2 font-xs ${activeMainTab === 'eLeave' ? 'text-white-600 border-b-2 border-blue-600 bg-blue-900' : 'text-white-500'}`}
                         onClick={(e) => {
                           e.preventDefault();
                           setActiveMainTab('eLeave')
@@ -622,10 +623,10 @@ const AddEmployee = () => {
                   {activeMainTab === 'basic' && (
                     <>
                       <div className="p-4 m-4 rounded-md border border-gray-500">
-                      <h2 className='font-semibold text-lg'>Basic Details</h2>
-                        <hr className="my-2 border-t-2 border-gray-300" /> 
+                        <h2 className='font-semibold text-lg'>Basic Details</h2>
+                        <hr className="my-2 border-t-2 border-gray-300" />
                         <div className=" p-3 flex border rounded-md">
-                    
+
                           <div className="w-3/4 pr-6">
                             <div className="grid grid-cols-3 gap-6 mb-6">
                               <div>
@@ -772,23 +773,23 @@ const AddEmployee = () => {
                                 />
                               </div>
                               <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
-                            <DatePicker
-                              selected={resignationDate}
-                              onChange={(date) => setResignationDate(date)}
-                              className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                              placeholderText="Select date"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
-                            <Field
-                              name="resignationReason"
-                              type="text"
-                              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                              placeholder="Enter reason if applicable"
-                            />
-                          </div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
+                                <DatePicker
+                                  selected={resignationDate}
+                                  onChange={(date) => setResignationDate(date)}
+                                  className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                  placeholderText="Select date"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
+                                <Field
+                                  name="resignationReason"
+                                  type="text"
+                                  className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                  placeholder="Enter reason if applicable"
+                                />
+                              </div>
                             </div>
                           </div>
 
@@ -803,7 +804,7 @@ const AddEmployee = () => {
                                   </div>
                                 )}
                               </div>
-                              <label className="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
+                              <label className="cursor-pointer upload bg-blue-600 text-white  px-4 py-2 rounded-md hover:bg-blue-700 transition duration-150 ease-in-out shadow-sm text-sm font-medium">
                                 Upload Photo
                                 <input
                                   type="file"
@@ -816,12 +817,12 @@ const AddEmployee = () => {
                             </div>
                           </div>
 
-                          
-                        
-                        </div>
-                        
 
-                        
+
+                        </div>
+
+
+
                       </div>
                       {/* Department Section */}
                       <div className="mb-6  bg-white rounded-lg shadow-md overflow-hidden">
@@ -1259,9 +1260,21 @@ const AddEmployee = () => {
 
                           <hr className='mb-3 border shadow-2xl'></hr>
 
-                          <div className='p-3 bg-blue-200 text-xs text-blue-800 mb-4'>
-                            <h2 className='flex flex-row gap-3 items-center'><FaInfoCircle /> The 3 Settings Below Are Optional. You Can Choose Only 1 out Of 3 Settings If Applicable</h2>
+                          <div
+                            className="p-3 alert text-xs mb-4"
+                            style={{
+                              color: "#0c5460",
+                              backgroundColor: "#d1ecf1",
+                              border: "1px solid #bee5eb",
+                              borderRadius: "4px"
+                            }}
+                          >
+                            <h2 className="flex flex-row gap-3 items-center">
+                              <FaInfoCircle />
+                              The 3 Settings Below Are Optional. You Can Choose Only 1 out Of 3 Settings If Applicable
+                            </h2>
                           </div>
+
 
                           {/* Radio buttons in one line */}
                           <div className="flex gap-6 mb-4">

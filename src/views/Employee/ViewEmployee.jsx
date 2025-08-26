@@ -104,7 +104,7 @@ const ViewEmployee = () => {
     try {
       let baseUrl = GET_EMPLOYEESEARCH_DATA;
       // if (filters.employeeStatus === "Active Employees") baseUrl = GET_ACTIVE_EMPLOYEE_DATA;
-      // else if (filters.employeeStatus === "resigned") baseUrl = GET_RESIGNED_EMPLOYEE_DATA;
+      // else if (filters.employeeStatus === "Resigned Employees") baseUrl = GET_RESIGNED_EMPLOYEE_DATA;
       // else baseUrl = GET_EMPLOYEESEARCH_DATA;
 
       const body = {
@@ -113,7 +113,7 @@ const ViewEmployee = () => {
         sectionName: filters.sectionName,
         designationName: filters.designationName,
         gender: filters.gender,
-        resignedFrom: filters.employeeStatus === "resigned" ? filters.resignedFrom : undefined,
+        resignedFrom: filters.employeeStatus === "Resigned Employees" ? filters.resignedFrom : undefined,
         isActive: filters.employeeStatus === "Active Employees" ? true : undefined,
 
       };
@@ -201,16 +201,16 @@ const ViewEmployee = () => {
                   }))
                 }
                 options={[
-                  { value: "", label: "All Employee" },
+                  { value: "All Employee", label: "All Employee" },
                   { value: "Active Employees", label: "Active Employee" },
-                  { value: "resigned", label: "Resigned Employee" },
+                  { value: "Resigned Employees", label: "Resigned Employee" },
                 ]}
                 className="w-44"
                 label="Employee Status"
               />
             </div>
             {/* Resigned Date (if resigned status) */}
-            {filters.employeeStatus === "resigned" && (
+            {filters.employeeStatus === "Resigned Employees" && (
               <div className="flex flex-col w-44">
                 <label className='text-sm font-semibold mb-2'>Resigned From</label>
                 <input
@@ -254,15 +254,15 @@ const ViewEmployee = () => {
 
             {/* Dynamic fields based on filter type */}
             {filters.filterType === "department" && (
-              <div className="flex flex-col w-44">
+              <div className="flex flex-col w-[30rem]">
                 <label className='text-sm font-semibold mb-2'>Department</label>
 
                 <Select
                   placeholder="Select"
                   value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName } : null}
                   onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value || "" }))}
-                  options={departments.map((dep) => ({ value: dep.departmentName, label: `${dep.departmentName} -  ${dep.departmentCode}` }))}
-                  className="w-44 uppercase"
+                  options={departments.map((dep) => ({ value: dep.departmentName, label: `${dep.departmentCode}  -   ${dep.departmentName} ` }))}
+                  className="w-[30rem] uppercase mr-[20rem]"
                   isClearable
                 />
               </div>
@@ -270,26 +270,26 @@ const ViewEmployee = () => {
 
             {filters.filterType === "section" && (
               <>
-                <div className="flex flex-col w-44">
+                <div className="flex flex-col w-[30rem]">
                   <label className='text-sm font-semibold mb-2'>Department</label>
                   <Select
                     placeholder="Select"
                     value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName,id: filters.depId } : null}
                     onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value, depId: opt?.id || "",   sectionName: "" }))}
                     options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName , id: dep.id}))}
-                    className="w-44"
+                    className="w-[30rem]"
                     isClearable
                   />
                 </div>
                 {filters.departmentName && (
-                  <div className="flex flex-col w-44">
+                  <div className="flex flex-col w-[30rem]">
                     <label className='text-sm font-semibold mb-2'>Section</label>
                     <Select
                       placeholder="Select Section"
                       value={filters.sectionName ? { value: filters.sectionName, label: filters.sectionName } : null}
                       onChange={(opt) => setFilters((f) => ({ ...f, sectionName: opt?.value || "" }))}
                       options={sections.map((sec) => ({ value: sec.sectionName, label: sec.sectionName }))}
-                      className="w-44"
+                      className="w-[18rem]"
                       isClearable
                     />
                   </div>

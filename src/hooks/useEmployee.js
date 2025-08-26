@@ -13,9 +13,12 @@ import { GET_EMPLOYEEDROPDOWN_DATA } from "Constants/utils";
 import { Religion_LIST } from "Constants/utils";
 import { ADD_EMPLOYEE_DATA } from "Constants/utils";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useEmployee = (params = {}) => {
+
+    const navigate = useNavigate()
   const {
     startDate = null,
     confirmationDate = null,
@@ -148,6 +151,8 @@ console.log(children,"00000000000000000");
           
           if (response.ok) {
             toast.success('Employee Added Successfully!');
+            navigate("/admin/employee/view")
+
           } else {
             toast.error('Error While Adding Employee');
           }
