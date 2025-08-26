@@ -176,7 +176,7 @@ export const GET_ALL_EMPLOYEETYPE_DATA = `${BASE_URL}/api/employeetype/getAll`;
 
  //assign branch
 
- export const ASSIGN_BRANCH = `${BASE_URL}/api/employee/assign-branch`;
+ export const ASSIGN_BRANCH = `${BASE_URL}/employee/assign-branch`;
  //aws
 
  export const Aws_LIST = `${BASE_URL}/api/aws/getAll`;
