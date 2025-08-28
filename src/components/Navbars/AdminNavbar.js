@@ -29,7 +29,9 @@ function Header() {
 
   const companyDropdownTimeoutRef = useRef(null);
   const [allowanceDropdownOpen, setAllowanceDropdownOpen] = useState(false);
+  const [atdDropdownOpen, setAtdDropdownOpen] = useState(false);
   const allowanceDropdownTimeoutRef = useRef(null);
+  const atdDropdownTimeoutRef = useRef(null);
 
 
   // Sample companies data
@@ -48,6 +50,7 @@ function Header() {
       if (masterDropdownTimeoutRef.current) clearTimeout(masterDropdownTimeoutRef.current);
       if (companyDropdownTimeoutRef.current) clearTimeout(companyDropdownTimeoutRef.current);
       if (allowanceDropdownTimeoutRef.current) clearTimeout(allowanceDropdownTimeoutRef.current);
+      if (atdDropdownTimeoutRef.current) clearTimeout(atdDropdownTimeoutRef.current);
     };
   }, []);
   // Clear timeouts when component unmounts
@@ -92,6 +95,20 @@ function Header() {
   const handleAllowanceMouseLeave = () => {
     allowanceDropdownTimeoutRef.current = setTimeout(() => {
       setAllowanceDropdownOpen(false);
+    }, 300);
+  };
+
+  //atd
+  const handleAtdMouseEnter = () => {
+    if (allowanceDropdownTimeoutRef.current) {
+      clearTimeout(allowanceDropdownTimeoutRef.current);
+    }
+    setAtdDropdownOpen(true);
+  };
+
+  const handleAtdMouseLeave = () => {
+    allowanceDropdownTimeoutRef.current = setTimeout(() => {
+      setAtdDropdownOpen(false);
     }, 300);
   };
 
@@ -833,6 +850,166 @@ function Header() {
       >
         View Allowances
       </NavLink> */}
+              </div>
+            )}
+          </div>
+
+        {/*   ATD */}
+        <div
+            className="relative"
+            onMouseEnter={handleAtdMouseEnter}
+            onMouseLeave={handleAtdMouseLeave}
+          >
+            <button
+              className={`flex items-center text-sm font-bold transition ${atdDropdownOpen || window.location.pathname.includes('/admin/employee/add')
+                ? "text-[#FFD700]"
+                : "text-slate-50 hover:text-[#FFD700]"
+                }`}
+            >
+             ATD
+              {atdDropdownOpen ? (
+                <BsChevronUp className="ml-1" />
+              ) : (
+                <BsChevronDown className="ml-1" />
+              )}
+            </button>
+            {atdDropdownOpen && (
+              <div
+                className="absolute left-0 mt-2 w-48 bg-[#0e2288] border border-[#FFD700] rounded-md shadow-lg z-10"
+                onMouseEnter={handleAtdMouseEnter}
+                onMouseLeave={handleAtdMouseLeave}
+              >
+                <NavLink
+                  to="/admin/ELeave/batchLeave"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Batch Leave
+                </NavLink>
+                {/* 
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                Maternity Leave Setting
+                </NavLink>
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Leave ReCalculate
+                </NavLink>
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+               Paternity Leave Setting
+                </NavLink>
+
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Leave Year End Process
+                </NavLink>
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+              Off-in-lieu Setting
+                </NavLink>
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Credit Annual Leave
+                </NavLink>
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+               Paternity Leave Setting
+                </NavLink> */}
+
+
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                  Leave Category
+                </NavLink>
+                {/* <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+               Leave Apply On Behalf
+                </NavLink>
+
+
+                <NavLink
+                  to="/admin/ELeave/LeaveCategory"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+                 Import Leave
+                </NavLink> */}
+
+
+
+
               </div>
             )}
           </div>

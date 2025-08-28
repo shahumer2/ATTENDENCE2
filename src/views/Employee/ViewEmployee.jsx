@@ -131,6 +131,7 @@ const ViewEmployee = () => {
       if (!res.ok) throw new Error("Failed to fetch employees");
 
       const data = await res.json();
+      console.log(data,"lolo");
       setEmployees(data.content || []);
       setTotalItems(data?.totalElements || 0);
       setTotalPages(data?.totalPages || 1);
@@ -276,7 +277,7 @@ const ViewEmployee = () => {
                     placeholder="Select"
                     value={filters.departmentName ? { value: filters.departmentName, label: filters.departmentName,id: filters.depId } : null}
                     onChange={(opt) => setFilters((f) => ({ ...f, departmentName: opt?.value, depId: opt?.id || "",   sectionName: "" }))}
-                    options={departments.map((dep) => ({ value: dep.departmentName, label: dep.departmentName , id: dep.id}))}
+                    options={departments.map((dep) => ({ value: dep.departmentName, label: `${dep.departmentCode}  -   ${dep.departmentName} ` , id: dep.id}))}
                     className="w-[30rem]"
                     isClearable
                   />
@@ -304,7 +305,7 @@ const ViewEmployee = () => {
                   placeholder="Select Designation"
                   value={filters.designationName ? { value: filters.designationName, label: filters.designationName } : null}
                   onChange={(opt) => setFilters((f) => ({ ...f, designationName: opt?.value || "" }))}
-                  options={designations.map((d) => ({ value: d.designationName, label: d.designationName }))}
+                  options={designations.map((d) => ({ value: d.designationName, label: `${d.designationCode}  -   ${d.designationName} ` }))}
                   className="w-44"
                   isClearable
                 />
