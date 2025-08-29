@@ -134,7 +134,7 @@ console.log(children,"00000000000000000");
         
         // For debugging - convert FormData to plain object for console logging
         console.log('FormData ready for submission', Object.fromEntries(formData.entries()));
-        
+        console.log(formData, "employee response");
         // Uncomment this when ready to send
         try {
           const response = await fetch(ADD_EMPLOYEE_DATA, {
@@ -147,7 +147,7 @@ console.log(children,"00000000000000000");
           });
           
           const data = await response.json();
-          console.log(data, "employee response");
+          
           
           if (response.ok) {
             toast.success('Employee Added Successfully!');

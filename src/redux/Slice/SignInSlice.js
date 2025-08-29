@@ -41,6 +41,15 @@ const SignInSlice = createSlice({
       state.Loading = false;
       state.error = action.payload;
     },
+    updateToken: (state, action) => {
+      if (state.currentUser) {
+        state.currentUser = {
+          ...state.currentUser,
+          token: action.payload.token,
+          refreshToken: action.payload.refreshToken || state.currentUser.refreshToken,
+        };
+      }
+    },
   },
 });
 
@@ -52,6 +61,7 @@ export const {
   signoutStart,
   signoutSuccess,
   signoutFailure,
+  updateToken
 } = SignInSlice.actions;
 
 // Export the reducer to be used in the store

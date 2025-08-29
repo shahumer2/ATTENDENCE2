@@ -629,9 +629,8 @@ function Header() {
                 >
                   Batch Leave
                 </NavLink>
-                {/* 
                 <NavLink
-                  to="/admin/ELeave/LeaveCategory"
+                  to="/admin/ELeave/MatnLvSettings"
                   className={({ isActive }) =>
                     `block px-4 py-2 text-sm ${isActive
                       ? "bg-[#FFD700] text-[#0e2288] font-bold"
@@ -641,6 +640,19 @@ function Header() {
                 >
                 Maternity Leave Setting
                 </NavLink>
+                <NavLink
+                  to="/admin/ELeave/PaternityLvSettings"
+                  className={({ isActive }) =>
+                    `block px-4 py-2 text-sm ${isActive
+                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
+                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
+                    }`
+                  }
+                >
+               Paternity Leave Setting
+                </NavLink>
+                {/* 
+              
                 <NavLink
                   to="/admin/ELeave/LeaveCategory"
                   className={({ isActive }) =>
@@ -652,17 +664,7 @@ function Header() {
                 >
                  Leave ReCalculate
                 </NavLink>
-                <NavLink
-                  to="/admin/ELeave/LeaveCategory"
-                  className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${isActive
-                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
-                    }`
-                  }
-                >
-               Paternity Leave Setting
-                </NavLink>
+              
 
                 <NavLink
                   to="/admin/ELeave/LeaveCategory"
@@ -890,8 +892,7 @@ function Header() {
                 >
                   Batch Leave
                 </NavLink>
-                {/* 
-                <NavLink
+                {/* <NavLink
                   to="/admin/ELeave/LeaveCategory"
                   className={({ isActive }) =>
                     `block px-4 py-2 text-sm ${isActive
@@ -901,7 +902,9 @@ function Header() {
                   }
                 >
                 Maternity Leave Setting
-                </NavLink>
+                </NavLink> */}
+                {/* 
+              
                 <NavLink
                   to="/admin/ELeave/LeaveCategory"
                   className={({ isActive }) =>

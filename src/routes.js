@@ -35,6 +35,8 @@ import BatchLeave from "views/LeaveManagement/BatchLeave/BatchLeave";
 import AddJob from "views/Job/AddJob";
 import ViewJob from "views/Job/ViewJob";
 import BranchAllocation from "views/Shift/Branch/BranchAllocation";
+import MaternityLeave from "views/LeaveManagement/MaternityLeave/MaternityLeave";
+import PaternityLeave from "views/LeaveManagement/PaternityLeave/PaternityLeave";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -106,6 +108,22 @@ const dashboardRoutes = [
       name: "View Leave Category", 
       icon: "nc-icon nc-chart-pie-35",
       component :BatchLeave,
+      layout: "/admin",
+    },
+    //maternity leave
+    {
+      path: "/ELeave/MatnLvSettings",
+      name: "View Leave Category", 
+      icon: "nc-icon nc-chart-pie-35",
+      component :MaternityLeave,
+      layout: "/admin",
+    },
+    //paternity leave
+    {
+      path: "/ELeave/PaternityLvSettings",
+      name: "View Leave Category", 
+      icon: "nc-icon nc-chart-pie-35",
+      component :PaternityLeave,
       layout: "/admin",
     },
     

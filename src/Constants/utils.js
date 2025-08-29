@@ -3,7 +3,7 @@ export const BASE_URL = 'http://localhost:8081';
 
 // auth
 export const SIGNIN_URL = `${BASE_URL}/api/v1/auth/signin`; 
-
+export const REFRESH_URL = `${BASE_URL}/api/v1/auth/refresh`; 
 //department
 export const DEPARTMENT_ADD = `${BASE_URL}/api/department/save`;
 export const DEPARTMENT_LIST = `${BASE_URL}/api/department/departmentList`;
