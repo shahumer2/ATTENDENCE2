@@ -11,7 +11,7 @@ import { IMAGE } from 'Constants/utils';
 import Tooltip from 'components/Tooltip/Tooltip';
 import Breadcrumb from 'components/Breadcum/Breadcrumb';
 import { CiSearch } from 'react-icons/ci';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { MdDelete } from 'react-icons/md';
 import { COMPANY_SEARCH } from 'Constants/utils';
 
@@ -19,7 +19,7 @@ const Company = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
   const { id } = useParams();
-
+  const queryClient = useQueryClient();
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [companies, setCompanies] = useState([]);
@@ -153,7 +153,9 @@ console.log(companyData,"lolo");
         resetForm();
         setShowModal(false);
         setShowModalUpdate(false);
-        fetchCompanies(currentPage, debouncedSearchTerm);
+        queryClient.invalidateQueries({
+          queryKey: ['companies'],
+        });
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Operation failed');

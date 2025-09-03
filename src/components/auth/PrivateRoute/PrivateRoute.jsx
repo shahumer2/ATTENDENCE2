@@ -59,7 +59,7 @@ const PrivateRoute = ({ children }) => {
     resetInactivityTimer();
 
     return () => {
-      events.forEach((event) =>
+      events.forEach((event) => 
         window.removeEventListener(event, resetInactivityTimer)
       );
       if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
