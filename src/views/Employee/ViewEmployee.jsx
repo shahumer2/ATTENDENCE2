@@ -289,7 +289,7 @@ const ViewEmployee = () => {
                       placeholder="Select Section"
                       value={filters.sectionName ? { value: filters.sectionName, label: filters.sectionName } : null}
                       onChange={(opt) => setFilters((f) => ({ ...f, sectionName: opt?.value || "" }))}
-                      options={sections.map((sec) => ({ value: sec.sectionName, label: sec.sectionName }))}
+                      options={sections.map((sec) => ({ value: sec.sectionName, label: `${sec.sectionCode}   -    ${sec.sectionName}` }))}
                       className="w-[18rem]"
                       isClearable
                     />
@@ -299,14 +299,14 @@ const ViewEmployee = () => {
             )}
 
             {filters.filterType === "designation" && (
-              <div className="flex flex-col w-44">
+              <div className="flex flex-col w-[30rem]">
                 <label className='text-sm font-semibold mb-2'>Designation</label>
                 <Select
                   placeholder="Select Designation"
                   value={filters.designationName ? { value: filters.designationName, label: filters.designationName } : null}
                   onChange={(opt) => setFilters((f) => ({ ...f, designationName: opt?.value || "" }))}
                   options={designations.map((d) => ({ value: d.designationName, label: `${d.designationCode}  -   ${d.designationName} ` }))}
-                  className="w-44"
+                  className="w-[30rem] capitalize"
                   isClearable
                 />
               </div>
