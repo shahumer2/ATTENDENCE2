@@ -404,7 +404,7 @@ const ViewEmployee = () => {
                   </td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeCode}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO.shortName}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO?.shortName}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO.nircWorkPermitFin}</td>
                         <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.gender}</td>
 
