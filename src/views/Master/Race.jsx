@@ -99,14 +99,14 @@ const API_CONFIG = {
     statusUpdate: UPDATETOGGLER_Fwl_URL,
     statusKey: 'isActive',
   },
-  DAILY: {
-    BASE: Bank_LIST,
-    ADD: ADD_Bank_DATA,
-    SEARCH: GET_BankSearch_URL,
-    UPDATE: UPDATE_Bank_URL,
-    statusUpdate: UPDATETOGGLER_Bank_URL,
-    statusKey: 'isActive',
-  },
+  // DAILY: {
+  //   BASE: Bank_LIST,
+  //   ADD: ADD_Bank_DATA,
+  //   SEARCH: GET_BankSearch_URL,
+  //   UPDATE: UPDATE_Bank_URL,
+  //   statusUpdate: UPDATETOGGLER_Bank_URL,
+  //   statusKey: 'isActive',
+  // },
   BANK: {
     BASE: Bank_LIST,
     ADD: ADD_Bank_DATA,
@@ -115,14 +115,14 @@ const API_CONFIG = {
     statusUpdate: UPDATETOGGLER_Bank_URL,
     statusKey: 'isActive',
   },
-  COMPONENT: {
-    BASE: Career_LIST,
-    ADD: ADD_Career_DATA,
-    SEARCH: GET_CareerSearch_URL,
-    UPDATE: UPDATE_Career_URL,
-    statusUpdate: UPDATETOGGLER_Career_URL,
-    statusKey: 'isActive',
-  },
+  // COMPONENT: {
+  //   BASE: Career_LIST,
+  //   ADD: ADD_Career_DATA,
+  //   SEARCH: GET_CareerSearch_URL,
+  //   UPDATE: UPDATE_Career_URL,
+  //   statusUpdate: UPDATETOGGLER_Career_URL,
+  //   statusKey: 'isActive',
+  // },
   CAREER: {
     BASE: Career_LIST,
     ADD: ADD_Career_DATA,
@@ -257,18 +257,20 @@ const Race = () => {
       ],
       initialValues: { fwlCode: '', fwlName: '', maxPerMonth: 0, daily: 0 }
     },
-    daily: {
-      label: 'Daily',
-      columns: [
-        { header: 'Daily Code', key: 'dailyCode' },
-        { header: 'Daily Name', key: 'dailyName' }
-      ],
-      fields: [
-        { name: 'dailyCode', label: 'Daily Code', type: 'text', required: true },
-        { name: 'dailyName', label: 'Daily Name', type: 'text', required: true }
-      ],
-      initialValues: { dailyCode: '', dailyName: '' }
-    },
+
+    // daily: {
+    //   label: 'Daily',
+    //   columns: [
+    //     { header: 'Daily Code', key: 'dailyCode' },
+    //     { header: 'Daily Name', key: 'dailyName' }
+    //   ],
+    //   fields: [
+    //     { name: 'dailyCode', label: 'Daily Code', type: 'text', required: true },
+    //     { name: 'dailyName', label: 'Daily Name', type: 'text', required: true }
+    //   ],
+    //   initialValues: { dailyCode: '', dailyName: '' }
+    // },
+
     bank: {
       label: 'Bank',
       columns: [
@@ -281,18 +283,20 @@ const Race = () => {
       ],
       initialValues: { bankCode: '', bankName: '' }
     },
-    component: {
-      label: 'Component',
-      columns: [
-        { header: 'Component Code', key: 'componentCode' },
-        { header: 'Component Name', key: 'componentName' }
-      ],
-      fields: [
-        { name: 'componentCode', label: 'Component Code', type: 'text', required: true },
-        { name: 'componentName', label: 'Component Name', type: 'text', required: true }
-      ],
-      initialValues: { componentCode: '', componentName: '' }
-    },
+
+    // component: {
+    //   label: 'Component',
+    //   columns: [
+    //     { header: 'Component Code', key: 'componentCode' },
+    //     { header: 'Component Name', key: 'componentName' }
+    //   ],
+    //   fields: [
+    //     { name: 'componentCode', label: 'Component Code', type: 'text', required: true },
+    //     { name: 'componentName', label: 'Component Name', type: 'text', required: true }
+    //   ],
+    //   initialValues: { componentCode: '', componentName: '' }
+    // },
+
     career: {
       label: 'Career',
       columns: [
