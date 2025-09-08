@@ -8,10 +8,12 @@ import { debounce } from 'lodash';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { GET_ShiftSearch_URL } from 'Constants/utils';
 import useBranch from 'hooks/useBranch';
+import { useNavigate } from 'react-router-dom';
 
 const AddBranch = () => {
   const { currentUser } = useSelector((state) => state.user);
   const token = currentUser?.token;
+  const navigate = useNavigate();
 
   // Tab configuration
   const TABS = {
@@ -109,8 +111,8 @@ const AddBranch = () => {
     BranchCode: Yup.string().required('Branch Code is required'),
     BranchName: Yup.string().required('Branch Name is required'),
   });
-  const {handleSubmit}=useBranch(selectedShifts)
- 
+  const { handleSubmit } = useBranch(selectedShifts)
+
 
   return (
     <div className="bg-white m-6 min-h-screen p-6">
@@ -153,19 +155,20 @@ const AddBranch = () => {
                   <ErrorMessage name="BranchName" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
                 <div className="mt-6  space-x-4">
-                <button
-                  type="button"
-                  className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-green-600 text-white px-8 py-2 rounded-md hover:bg-green-700 transition"
-                >
-                  Save Branch
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    className="bg-gray-200 text-gray-800 px-6 py-2 rounded-md hover:bg-gray-300 transition"
+                    onClick={() => navigate("/admin/ETMS/Branch")}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-green-600 text-white px-8 py-2 rounded-md hover:bg-green-700 transition"
+                  >
+                    Save Branch
+                  </button>
+                </div>
               </div>
 
               {/* Tab Section */}
@@ -173,11 +176,11 @@ const AddBranch = () => {
                 <div className="flex border-b mb-6">
                   {Object.values(TABS).map((tab) => (
                     <button
-                    type='button'
+                      type='button'
                       key={tab.key}
                       className={`px-4 py-2 font-medium ${activeTab === tab.key
-                          ? 'border-b-2 border-blue-500 text-blue-600'
-                          : 'text-gray-500 hover:text-gray-700'
+                        ? 'border-b-2 border-blue-500 text-blue-600'
+                        : 'text-gray-500 hover:text-gray-700'
                         }`}
                       onClick={() => setActiveTab(tab.key)}
                     >
@@ -258,7 +261,7 @@ const AddBranch = () => {
               </div>
 
               {/* Form Actions */}
-            
+
             </Form>
           )}
         </Formik>
