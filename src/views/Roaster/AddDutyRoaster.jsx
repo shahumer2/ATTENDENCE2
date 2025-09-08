@@ -189,6 +189,7 @@ const AddDutyRoaster = () => {
 
       if (response.ok) {
         toast.success('Duty Roaster Added Successfully!');
+         navigate("/admin/ETMS/DutyRoaster")
         // resetForm();
       } else {
         toast.error(data.message || 'Error While Adding Duty Roaster');

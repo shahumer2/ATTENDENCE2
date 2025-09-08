@@ -362,6 +362,7 @@ const handleSubmit = async (values, { resetForm }) => {
 
     toast.success('Allowance criteria saved successfully!');
     resetForm();
+navigate("/admin/allowance/viewAllowance")
     setSelectedShifts([]);
     setSelectedReasons([]);
     setSelectedClocks([]);
