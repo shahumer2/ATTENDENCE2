@@ -23,8 +23,7 @@ const PrivateRoute = ({ children }) => {
       const decoded = jwtDecode(currentUser.token);
       const expiryTime = decoded.exp * 1000;
       const now = Date.now();
-
-      const warningTime = expiryTime - now - 20 * 1000;
+const warningTime = expiryTime - now - 20 * 1000;
 
       if (warningTime > 0) {
         const timer = setTimeout(() => {
