@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { Groups_LIST, GET_ShiftSearch_URL } from 'Constants/utils';
 import useDutyRoaster from 'hooks/useDutyRoaster';
 import { ADD_DutyROASTER_DATA } from 'Constants/utils';
+import { useNavigate } from 'react-router-dom';
 
 const AddDutyRoaster = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,6 +20,7 @@ const AddDutyRoaster = () => {
   const [groupIds, setGroupIds] = useState([]);
   const [mainGroupId, setMainGroupId] = useState(null);
   const [subGroupIds, setSubGroupIds] = useState([]);
+  const navigate = useNavigate()
 
 
 
@@ -423,6 +425,7 @@ const AddDutyRoaster = () => {
                   <button
                     type="button"
                     className="px-6 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                    onClick={() => navigate("/admin/ETMS/DutyRoaster")}
                   >
                     Cancel
                   </button>
