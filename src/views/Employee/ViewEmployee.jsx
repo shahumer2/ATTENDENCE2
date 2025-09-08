@@ -402,19 +402,19 @@ const ViewEmployee = () => {
                      <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
                   <FaEdit size="0.9rem" style={{ color: "#337ab7" }} onClick={()=> alert("edit")} />
                   </td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeCode}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO?.shortName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO.nircWorkPermitFin}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.gender}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeCode ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.employeeName ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO?.shortName ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.ePayrollDTO.nircWorkPermitFin ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.gender ||" "}</td>
 
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.departmentName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.sectionName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.designationName}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.fingerPrint}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.email}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.joinDate}</td>
-                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.resignationDate}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.departmentName ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.sectionName ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.designationName ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.fingerPrint ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.email ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.joinDate ||" "}</td>
+                        <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">{emp?.resignationDate ||" "}</td>
                         
                      
                   <td className="uppercase px-6 py-4 text-xs text-gray-700 whitespace-nowrap">
