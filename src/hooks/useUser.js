@@ -2,6 +2,7 @@ import { USER_ADD } from "Constants/utils";
 import { GET_COMPANY_LIST } from "Constants/utils";
 import { GET_EMPLOYEE_DATA } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
+import { error } from "jquery";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -67,7 +68,11 @@ const useUser = () => {
             toast.success('User created successfully');
             navigate("/admin/user/view")
           } else {
-            throw new Error('Failed to create user');
+            const errorData = await response.json(); // parse error body
+            console.log(errorData);
+          
+            // show API error message if available, fallback otherwise
+            toast.error(errorData.details || "Something went wrong. Please try again.");
           }
         } catch (error) {
           console.error(error);
