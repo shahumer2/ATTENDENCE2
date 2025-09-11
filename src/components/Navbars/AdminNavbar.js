@@ -898,15 +898,15 @@ const handleHrMouseLeave = () => {
                 onMouseLeave={handleHrMouseLeave}
               >
                 <NavLink
-                  to="/admin/ELeave/batchLeave"
+                  to="/admin/EPayroll/EmpPersonalMaster"
                   className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${isActive
+                    `block -tracking-tighter px-4 py-2 text-sm ${isActive
                       ? "bg-[#FFD700] text-[#0e2288] font-bold"
                       : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
                   }
                 >
-                  Batch Leave
+                 Employee Loan / Withhold / Savings Details
                 </NavLink>
                 {/* <NavLink
                   to="/admin/ELeave/LeaveCategory"

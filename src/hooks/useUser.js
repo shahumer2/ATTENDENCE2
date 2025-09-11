@@ -4,9 +4,11 @@ import { GET_EMPLOYEE_DATA } from "Constants/utils";
 import { GET_DEPARTMENT_LIST } from "Constants/utils";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useUser = () => {
+  const navigate = useNavigate()
     
     const { currentUser } = useSelector((state) => state.user);
     const token = currentUser?.token;
@@ -63,6 +65,7 @@ const useUser = () => {
       
           if (response.ok) {
             toast.success('User created successfully');
+            navigate("/admin/user/view")
           } else {
             throw new Error('Failed to create user');
           }
