@@ -774,12 +774,16 @@ const AddEmployee = () => {
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Date</label>
-                                <DatePicker
-                                  selected={resignationDate}
-                                  onChange={(date) => setResignationDate(date)}
-                                  className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                  placeholderText="Select date"
-                                />
+                                <Field name="resignationDate">
+                                  {({ field, form }) => (
+                                    <DatePicker
+                                      selected={field.value ? new Date(field.value) : null}
+                                      onChange={(date) => form.setFieldValue(field.name, date)}
+                                      className="w-full p-2 border mr-8 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                      placeholderText="Select date"
+                                    />
+                                  )}
+                                </Field>
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Resignation Reason</label>
@@ -1089,6 +1093,12 @@ const AddEmployee = () => {
                     </>
 
                   )}
+
+
+
+
+
+
                   {activeMainTab === 'etmsDetailsDto' && selectedApps['E-TMS'] && (
                     <>
                       <div className="mb-6 bg-white rounded-lg shadow-md overflow-hidden">

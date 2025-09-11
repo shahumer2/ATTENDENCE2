@@ -114,6 +114,7 @@ const useShift = (id) => {
     
             if (response.ok) {
                 toast.success('Shift Added Successfully!');
+               navigate("/admin/shift/view")
             } else {
                 toast.error(data.message || 'Error While Adding Shift');
             }

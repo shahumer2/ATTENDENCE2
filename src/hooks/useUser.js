@@ -32,8 +32,8 @@ const useUser = () => {
           const {
             profilePicFile,
             profileImage,
-            selectedCompanies,
-            selectedDepartments,
+             selectedCompanies,
+           selectedDepartments,
             ...rest
           } = values;
           
@@ -50,6 +50,8 @@ const useUser = () => {
           if (values.profilePicFile) {
             formData.append("image", values.profilePicFile);
           }
+
+          console.log(values,"kkjj");
       
           const response = await fetch(USER_ADD, {
             method: 'POST',

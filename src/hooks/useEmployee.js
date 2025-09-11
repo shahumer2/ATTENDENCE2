@@ -91,9 +91,10 @@ console.log(profilePic,"profilepic+++++");
         probationMonths: '',
         fingerPrint: '',
         faceId: '',
-        joinDate:'',
-        leaveCalDate:'',
-        resignationReason: '',
+        joinDate: startDate, 
+        leaveCalDate: leaveCalDate, 
+        resignationDate: resignationDate, 
+       
         departmentId: '',
         designationId: '',
         awsId: '',
@@ -112,10 +113,28 @@ console.log(children,"00000000000000000");
 
     const handleSubmit = async (values) => {
         console.log(appDetails, "ePayroll details"); 
+        console.log(resignationDate,"resig___________________________");
+        const formatDate = (date) => {
+            if (!date) return null;
+            // If it's a Date object, format it
+            if (date instanceof Date) {
+              return date.toISOString().split('T')[0];
+            }
+            // If it's already a string in ISO format, extract the date part
+            if (typeof date === 'string' && date.includes('T')) {
+              return date.split('T')[0];
+            }
+            // Otherwise, return as-is (assuming it's already in YYYY-MM-DD format)
+            return date;
+          };
         
         // Combine form values with appDetails
         const formattedEmployee = {
           ...values,
+          joinDate: formatDate(values.joinDate),
+          confirmationDate: formatDate(values.confirmationDate),
+          leaveCalDate: formatDate(values.leaveCalDate),
+          resignationDate: formatDate(values.resignationDate),
           childrenDetails: children,
           ...appDetails
         };
@@ -202,6 +221,9 @@ console.log(children,"00000000000000000");
             ];
         }
     });
+
+
+
 
     const { data: religionOptions, isLoading: optionssLoading } = useQuery({
       queryKey: ['religionOptions'],
