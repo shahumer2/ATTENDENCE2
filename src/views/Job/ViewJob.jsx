@@ -8,6 +8,10 @@ import axios from "axios";
 import { MdDelete, MdSearch } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { GET_AllowanceSearch_URL, Delete_Allowance_URL } from "Constants/utils";
+import { MapIcon } from "lucide-react";
+// import JobMap from 'views/Job/JobMap';
+import JobMap from 'views/Job/JobMap'; // Adjust the path if necessary
+
 
 const ViewJob = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -34,6 +38,7 @@ const ViewJob = () => {
         },
       }
     );
+    console.log("Fetched jobs data:", response.data); // ✅ log the response
     return response.data;
   };
   const { data, isLoading, isError, error } = useQuery({
@@ -163,11 +168,12 @@ const ViewJob = () => {
           <table className="min-w-full shadow-xl rounded-md border divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-xs font-bold text-gray-700">Job Code</th>
-                <th className="px-6 py-3 text-xs font-bold text-gray-700">Job Name</th>
-                <th className="px-6 py-3 text-xs font-bold text-gray-700">Location</th>
-                <th className="px-6 py-3 text-xs font-bold text-gray-700">Postal Code</th>
-                <th className="px-6 py-3 text-xs font-bold text-gray-700">Job Status</th>
+                <th className="px-6 py-3 text-xs font-bold text-gray-700 text-left">Job Code</th>
+                <th className="px-6 py-3 text-xs font-bold text-gray-700 text-left">Job Name</th>
+                <th className="px-6 py-3 text-xs font-bold text-gray-700 text-left">Location</th>
+                <th className="px-6 py-3 text-xs font-bold text-gray-700 text-left">Postal Code</th>
+                <th className="px-6 py-3 text-xs font-bold text-gray-700 text-left">Job Status</th>
+                 <th className="px-6 py-3 text-xs font-bold text-gray-700 text-center">Map View </th>
                 <th className="px-6 py-3 text-xs font-bold text-gray-700 text-center">Edit</th>
                 <th className="px-6 py-3 text-xs font-bold text-gray-700 text-center">Delete</th>
               </tr>
@@ -189,14 +195,39 @@ const ViewJob = () => {
                     <td className="px-6 py-3 border">{job.jobCode}</td>
                     <td className="px-6 py-3 border">{job.jobName}</td>
                     <td className="px-6 py-3 border">{job.address}</td>
+                 {/* <td className="px-6 py-3 border">
+  <JobMap 
+    latitude={job.latitude} 
+    longitude={job.longitude} 
+    address={job.address} 
+  />
+</td> */}
+
                     <td className="px-6 py-3 border">{job.postalCode}</td>
     <td className="px-6 py-3 border">
-  {Number(job.status) === 1 ? "Active" : "Inactive"}
+  {job.isActive ? "Active" : "Inactive"}
 </td>
 
 
 
 
+{/* <td className="px-6 py-3 border text-center">
+                      <button
+                        onClick={() => navigate(`/admin/job/map/${job.id}`)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                         <MapIcon size={18} />
+                      </button>
+                    </td> */}
+                     <td className="px-6 py-3 border">
+  <JobMap 
+    latitude={job.latitude} 
+    longitude={job.longitude} 
+    address={job.address} 
+  />
+</td>
+
+                    
 
                     <td className="px-6 py-3 border text-center">
                       <button

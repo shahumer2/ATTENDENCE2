@@ -37,6 +37,7 @@ import ViewJob from "views/Job/ViewJob";
 import BranchAllocation from "views/Shift/Branch/BranchAllocation";
 import MaternityLeave from "views/LeaveManagement/MaternityLeave/MaternityLeave";
 import PaternityLeave from "views/LeaveManagement/PaternityLeave/PaternityLeave";
+import  JobMap  from "views/Job/JobMap";
 
 // import Typography from "views/Typography.js";
 // import Icons from "views/Icons.js";
@@ -318,6 +319,13 @@ const dashboardRoutes = [
     name: "View Allowance", 
     icon: "nc-icon nc-chart-pie-35",
     component :ViewJob,
+    layout: "/admin",
+  },
+    {
+    path: "job/map/:id",
+    name: "Job Map", 
+    icon: "nc-icon nc-chart-pie-35",
+    component :JobMap,
     layout: "/admin",
   },
 
