@@ -66,7 +66,7 @@ const useUser = () => {
       
           if (response.ok) {
             toast.success('User created successfully');
-            navigate("/admin/user/view")
+            navigate("/admin/user/view")   
           } else {
             const errorData = await response.json(); // parse error body
             console.log(errorData);
