@@ -74,6 +74,8 @@ export const USER_CREATE = `${BASE_URL}/api/companies`;
 export const GET_ACTIVEUSERS = `${BASE_URL}/api/user/active`;
 export const GET_INACTIVEUSERS = `${BASE_URL}/api/user/inactive`;
 
+export const SENDRESENDEMAIL = `${BASE_URL}/api/user`;
+
 
 
 

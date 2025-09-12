@@ -116,7 +116,7 @@ function Header() {
 //hr
 const handleHrMouseEnter = () => {
   if (hrDropdownTimeoutRef.current) {
-    clearTimeout(allowanceDropdownTimeoutRef.current);
+    clearTimeout(hrDropdownTimeoutRef.current);
   }
   setHrDropdownOpen(true);
 };
@@ -432,17 +432,7 @@ const handleHrMouseLeave = () => {
                 onMouseEnter={handleUserMouseEnter}
                 onMouseLeave={handleUserMouseLeave}
               >
-                <NavLink
-                  to="/admin/user/add"
-                  className={({ isActive }) =>
-                    `block px-4 py-2 text-sm ${isActive
-                      ? "bg-[#FFD700] text-[#0e2288] font-bold"
-                      : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
-                    }`
-                  }
-                >
-                  Add User
-                </NavLink>
+              
                 <NavLink
                   to="/admin/user/view"
                   className={({ isActive }) =>
@@ -452,7 +442,7 @@ const handleHrMouseLeave = () => {
                     }`
                   }
                 >
-                  View Users
+                 User Creation
                 </NavLink>
               </div>
             )}
@@ -900,7 +890,7 @@ const handleHrMouseLeave = () => {
                 <NavLink
                   to="/admin/EPayroll/EmpPersonalMaster"
                   className={({ isActive }) =>
-                    `block -tracking-tighter px-4 py-2 text-sm ${isActive
+                    `block -tracking-tighter whitespace-pre-wrap px-4 py-2 text-sm ${isActive
                       ? "bg-[#FFD700] text-[#0e2288] font-bold"
                       : "text-slate-300 hover:bg-[#1a3188] hover:text-[#FFD700]"
                     }`
